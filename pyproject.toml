@@ -1,0 +1,49 @@
+[build-system]
+build-backend = "maturin"
+requires = [
+    "maturin<0.15,>=0.14",
+]
+
+[project]
+name = "mittagleffler"
+version = "2023.4.0"
+description = "High performance implementations of the Mittag-Leffler function"
+readme = "README.rst"
+keywords = [
+    "fractional-calculus",
+    "special-functions",
+]
+license = {file = "LICENSE"}
+maintainers = [{ name = "Alexandru Fikl", email = "alexfikl@gmail.com" }]
+authors = [{ name = "Alexandru Fikl", email = "alexfikl@gmail.com" }]
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Utilities",
+]
+urls = {repository = "https://github.com/alexfikl/mittagleffler"}
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+exclude='\.eggs|\.git|\.mypy_cache|build|dist|\.pytest_cache|\.pytype'
+
+[tool.isort]
+profile = "black"
+
+[tool.maturin]
+python-source = "mittagleffler"
+features = ["pyo3/extension-module"]
+strip = true

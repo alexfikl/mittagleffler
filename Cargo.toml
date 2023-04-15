@@ -1,0 +1,11 @@
+[package]
+name = "mittagleffler"
+version = "2023.4.0"
+edition = "2021"
+
+[lib]
+name = "mittagleffler"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = "0.18.1"
