@@ -1,3 +1,3 @@
-from .mittagleffler import sum_as_string
+from ._mittagleffler import sum_as_string
 
 __all__ = ("sum_as_string",)
