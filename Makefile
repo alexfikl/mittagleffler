@@ -13,6 +13,7 @@ help: 			## Show this help
 fmt: black		## Run all formatting scripts
 	$(PYTHON) -m pyproject_fmt --indent 4 pyproject.toml
 	$(PYTHON) -m isort python/mittagleffler
+	rustfmt src/*.rs
 .PHONY: fmt
 
 black:			## Run black over the source code
