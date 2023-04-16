@@ -3,8 +3,10 @@ Upstream-Name: mittagleffler
 Upstream-Contact: Alexandru Fikl <alexfikl@gmail.com>
 Source: https://github.com/alexfikl/mittagleffler
 
-# Sample paragraph, commented out:
-#
-# Files: src/*
-# Copyright: $YEAR $NAME <$CONTACT>
-# License: ...
+Files: Makefile README.rst
+Copyright: 2023 Alexandru Fikl <alexfikl@gmail.com>
+License: CC0-1.0
+
+Files: .gitignore Cargo.toml Cargo.lock setup.cfg pyproject.toml .github/workflows/*.yml
+Copyright: 2023 Alexandru Fikl <alexfikl@gmail.com>
+License: CC0-1.0

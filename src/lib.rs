@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2023 Alexandru Fikl <alexfikl@gmail.com>
+// SPDX-License-Identifier: MIT
+
 use num_complex::Complex64;
 use pyo3::prelude::*;
 use pyo3::types::PyComplex;
