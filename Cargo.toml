@@ -1,7 +1,12 @@
 [package]
 name = "mittagleffler"
 version = "2023.4.0"
+authors = ["Alexandru Fikl <alexfikl@gmail.com>"]
 edition = "2021"
+description = "High performance implementations of the Mittag-Leffler function"
+readme = "README.rst"
+homepage = "https://github.com/alexfikl/mittagleffler"
+license-file = "LICENSES/MIT.txt"
 
 [lib]
 name = "mittagleffler"

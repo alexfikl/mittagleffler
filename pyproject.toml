@@ -14,7 +14,8 @@ keywords = [
     "fractional-calculus",
     "special-functions",
 ]
-license = {file = "LICENSE"}
+license = {file = "LICENSES/MIT.txt"}
+license-files = ["LICENSES/MIT.txt"]
 maintainers = [{ name = "Alexandru Fikl", email = "alexfikl@gmail.com" }]
 authors = [{ name = "Alexandru Fikl", email = "alexfikl@gmail.com" }]
 requires-python = ">=3.8"

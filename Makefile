@@ -49,7 +49,7 @@ reuse:			## Check REUSE license compliance
 # {{{ testing
 
 install:				## Install dependencies
-	$(PYTHON) -m pip install --upgrade pip wheel
+	$(PYTHON) -m pip install --upgrade pip wheel maturin
 	maturin develop --extras dev
 .PHONY: pip-install
 
