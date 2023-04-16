@@ -2,6 +2,7 @@
 build-backend = "maturin"
 requires = [
     "maturin<0.15,>=0.14",
+    "oldest-supported-numpy",
 ]
 
 [project]
@@ -33,7 +34,24 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Utilities",
 ]
+dependencies = [
+    "numpy",
+]
 urls = {repository = "https://github.com/alexfikl/mittagleffler"}
+
+[project.optional-dependencies]
+dev = [
+    "flake8",
+    "flake8-bugbear",
+    "flake8-comprehensions",
+    "flake8-isort",
+    "flake8-quotes",
+    "mypy",
+    "pep8-naming",
+    "pip-tools",
+    "pylint",
+    "pytest",
+]
 
 [tool.black]
 line-length = 88
@@ -48,3 +66,7 @@ module-name = "mittagleffler._mittagleffler"
 python-source = "python"
 features = ["pyo3/extension-module"]
 strip = true
+
+[tool.pytest]
+testpaths = ["tests"]
+cache_dir = ".pytest-cache"

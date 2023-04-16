@@ -33,6 +33,7 @@ jobs:
           manylinux: auto
       - name: Run tests
         run: |
+          make install
           make test
 
   windows:
@@ -56,6 +57,7 @@ jobs:
           sccache: 'true'
       - name: Run tests
         run: |
+          make install
           make test
 
   macos:
@@ -78,4 +80,5 @@ jobs:
           sccache: 'true'
       - name: Run tests
         run: |
+          make install
           make test

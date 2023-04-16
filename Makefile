@@ -12,30 +12,30 @@ help: 			## Show this help
 
 fmt: black		## Run all formatting scripts
 	$(PYTHON) -m pyproject_fmt --indent 4 pyproject.toml
-	$(PYTHON) -m isort python/mittagleffler
+	$(PYTHON) -m isort python/mittagleffler tests
 	rustfmt src/*.rs
 .PHONY: fmt
 
 black:			## Run black over the source code
 	$(PYTHON) -m black \
 		--safe --target-version py38 --preview \
-		python/mittagleffler
+		python/mittagleffler tests
 .PHONY: black
 
 flake8:			## Run flake8 checks over the source code
-	PYTHONWARNINGS=ignore $(PYTHON) -m flake8 python/mittagleffler
+	PYTHONWARNINGS=ignore $(PYTHON) -m flake8 python/mittagleffler tests
 	@echo -e "\e[1;32mflake8 clean!\e[0m"
 .PHONY: flake8
 
 pylint:			## Run pylint checks over the source code
-	PYTHONWARNINGS=ignore $(PYTHON) -m pylint python/mittagleffler
+	PYTHONWARNINGS=ignore $(PYTHON) -m pylint python/mittagleffler tests/*.py
 	@echo -e "\e[1;32mpylint clean!\e[0m"
 .PHONY: pylint
 
 mypy:			## Run mypy checks over the source code
 	$(PYTHON) -m mypy \
 		--strict --show-error-codes \
-		python/mittagleffler
+		python/mittagleffler tests
 	@echo -e "\e[1;32mmypy clean!\e[0m"
 .PHONY: mypy
 
@@ -48,27 +48,9 @@ reuse:			## Check REUSE license compliance
 
 # {{{ testing
 
-REQUIREMENTS=\
-	requirements-dev.txt \
-	requirements.txt
-
-requirements-dev.txt: pyproject.toml
-	$(PYTHON) -m piptools compile \
-		--resolver=backtracking --upgrade \
-		--extra dev \
-		-o $@ $<
-
-requirements.txt: setup.cfg
-	$(PYTHON) -m piptools compile \
-		--resolver=backtracking --upgrade \
-		-o $@ $<
-
-pin: $(REQUIREMENTS)	## Pin dependencies versions to requirements.txt
-.PHONY: pin
-
-pip-install:			## Install pinned depdencies from requirements.txt
-	$(PYTHON) -m pip install --upgrade pip setuptools maturin
-	$(PYTHON) -m pip install -r requirements-dev.txt -e .
+install:				## Install dependencies
+	$(PYTHON) -m pip install --upgrade pip wheel
+	maturin develop --extras dev
 .PHONY: pip-install
 
 test:					## Run pytest tests
