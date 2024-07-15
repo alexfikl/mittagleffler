@@ -40,7 +40,7 @@ mypy:			## Run mypy checks over the source code
 .PHONY: mypy
 
 reuse:			## Check REUSE license compliance
-	reuse lint
+	$(PYTHON) -m reuse lint
 	@echo -e "\e[1;32mREUSE compliant!\e[0m"
 .PHONY: reuse
 
