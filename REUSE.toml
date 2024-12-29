@@ -7,7 +7,7 @@ SPDX-PackageSupplier = "Alexandru Fikl <alexfikl@gmail.com>"
 SPDX-PackageDownloadLocation = "https://github.com/alexfikl/mittagleffler"
 
 [[annotations]]
-path = ["Cargo.toml", "Cargo.lock", "setup.cfg", "pyproject.toml", "Makefile", "README.rst"]
+path = ["Cargo.toml", "pyproject.toml", "Makefile", "README.rst"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2023 Alexandru Fikl <alexfikl@gmail.com>"
 SPDX-License-Identifier = "CC0-1.0"
@@ -16,4 +16,10 @@ SPDX-License-Identifier = "CC0-1.0"
 path = [".gitignore", ".github/workflows/**.yml"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2023 Alexandru Fikl <alexfikl@gmail.com>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ["requirements.in", "requirements.txt", "requirements-dev.txt", "Cargo.lock"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2024 Alexandru Fikl <alexfikl@gmail.com>"
 SPDX-License-Identifier = "CC0-1.0"
