@@ -90,8 +90,16 @@ pip-install:			## Install pinned dependencies from requirements.txt
 	$(PYTHON) -m pip install --verbose --editable --no-build-isolation .
 .PHONY: pip-install
 
-test:					## Run pytest tests
+build:			## Build the project in debug mode
+	cargo build --locked --all-features --verbose
+.PHONY: build
+
+pytest:					## Run pytest tests
 	$(PYTHON) -m pytest
+.PHONY: pytest
+
+test:					## Run cargo test
+	RUST_BACKTRACE=1 cargo test --all-features
 .PHONY: test
 
 # }}}
