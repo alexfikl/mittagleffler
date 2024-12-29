@@ -2,4 +2,4 @@
 // SPDX-License-Identifier: MIT
 
 mod garrappa;
-pub use garrappa::mittag_leffler;
+pub use garrappa::MittagLeffler;
