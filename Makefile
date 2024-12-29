@@ -10,60 +10,103 @@ help: 			## Show this help
 
 # {{{ linting
 
-fmt: black		## Run all formatting scripts
-	$(PYTHON) -m pyproject_fmt --indent 4 pyproject.toml
-	$(PYTHON) -m isort python/mittagleffler tests
-	rustfmt src/*.rs
+format: isort black rustfmt pyproject	## Run all formatting scripts
+.PHONY: format
+
+fmt: format
 .PHONY: fmt
 
-black:			## Run black over the source code
-	$(PYTHON) -m black \
-		--safe --target-version py38 --preview \
-		python/mittagleffler tests
+isort:									## Run ruff isort fixes over the source code
+	ruff check --fix --select=I python
+	ruff check --fix --select=RUF022 python
+	@echo -e "\e[1;32mruff isort clean!\e[0m"
+.PHONY: isort
+
+black:								## Run ruff format over the source code
+	ruff format python
+	@echo -e "\e[1;32mruff format clean!\e[0m"
 .PHONY: black
 
-flake8:			## Run flake8 checks over the source code
-	PYTHONWARNINGS=ignore $(PYTHON) -m flake8 python/mittagleffler tests
-	@echo -e "\e[1;32mflake8 clean!\e[0m"
-.PHONY: flake8
+rustfmt:						## Run rustfmt
+	cargo fmt -- src/*.rs
+	@echo -e "\e[1;32mrustfmt clean!\e[0m"
+.PHONY: rustfmt
 
-pylint:			## Run pylint checks over the source code
-	PYTHONWARNINGS=ignore $(PYTHON) -m pylint python/mittagleffler tests/*.py
-	@echo -e "\e[1;32mpylint clean!\e[0m"
-.PHONY: pylint
+pyproject:							## Run pyproject-fmt over the configuration
+	$(PYTHON) -m pyproject_fmt \
+		--indent 4 --max-supported-python '3.13' \
+		pyproject.toml
+	@echo -e "\e[1;32mpyproject clean!\e[0m"
+.PHONY: pyproject
 
-mypy:			## Run mypy checks over the source code
-	$(PYTHON) -m mypy \
-		--strict --show-error-codes \
-		python/mittagleffler tests
-	@echo -e "\e[1;32mmypy clean!\e[0m"
-.PHONY: mypy
+lint: typos reuse ruff mypy			## Run all linting scripts
+.PHONY: lint
+
+typos:			## Run typos over the source code and documentation
+	typos --sort
+	@echo -e "\e[1;32mtypos clean!\e[0m"
+.PHONY: typos
 
 reuse:			## Check REUSE license compliance
 	$(PYTHON) -m reuse lint
 	@echo -e "\e[1;32mREUSE compliant!\e[0m"
 .PHONY: reuse
 
+ruff:			## Run ruff checks over the source code
+	ruff check python
+	@echo -e "\e[1;32mruff lint clean!\e[0m"
+.PHONY: ruff
+
+mypy:			## Run mypy checks over the source code
+	$(PYTHON) -m mypy python
+	@echo -e "\e[1;32mmypy clean!\e[0m"
+.PHONY: mypy
+
 # }}}
 
 # {{{ testing
 
-install:				## Install dependencies
+REQUIREMENTS=\
+	requirements-dev.txt \
+	requirements.txt
+
+requirements-dev.txt: pyproject.toml
+	uv pip compile --upgrade --universal --python-version '3.10' \
+		--extra dev --extra docs \
+		-o $@ $<
+.PHONY: requirements-dev.txt
+
+requirements.txt: pyproject.toml
+	uv pip compile --upgrade --universal --python-version '3.10' \
+		-o $@ $<
+.PHONY: requirements.txt
+
+pin: $(REQUIREMENTS)	## Pin dependencies versions to requirements.txt
+.PHONY: pin
+
+pip-install:			## Install pinned dependencies from requirements.txt
 	$(PYTHON) -m pip install --upgrade pip wheel maturin
-	maturin develop --extras dev
+	$(PYTHON) -m pip install -r requirements-dev.txt
+	$(PYTHON) -m pip install --verbose --editable --no-build-isolation .
 .PHONY: pip-install
 
 test:					## Run pytest tests
-	$(PYTHON) -m pytest -rswx --durations=25 -v -s
+	$(PYTHON) -m pytest
 .PHONY: test
 
 # }}}
 
-ctags:			## Regenerate ctags
-	ctags --recurse=yes \
-		--tag-relative=yes \
-		--exclude=.git \
-		--exclude=docs \
-		--python-kinds=-i \
-		--language-force=python
-.PHONY: ctags
+# {{{
+
+clean:						## Remove various build artifacts
+	rm -rf *.png
+	rm -rf build dist
+	rm -rf docs/_build
+.PHONY: clean
+
+purge: clean				## Remove various temporary files
+	rm -rf .ruff_cache .pytest_cache .mypy_cache
+.PHONY: purge
+
+# }}}
+

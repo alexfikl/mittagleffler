@@ -1,73 +1,58 @@
 [build-system]
 build-backend = "maturin"
 requires = [
-    "maturin<0.15,>=0.14",
-    "oldest-supported-numpy",
+    "maturin>=1.6",
+    "numpy",
 ]
 
 [project]
 name = "mittagleffler"
-version = "2023.4.0"
-description = "High performance implementations of the Mittag-Leffler function"
+version = "0.1.0"
+description = "High performance implementation of the Mittag-Leffler function"
 readme = "README.rst"
 keywords = [
     "fractional-calculus",
     "special-functions",
 ]
-license = {file = "LICENSES/MIT.txt"}
-license-files = ["LICENSES/MIT.txt"]
-maintainers = [{ name = "Alexandru Fikl", email = "alexfikl@gmail.com" }]
-authors = [{ name = "Alexandru Fikl", email = "alexfikl@gmail.com" }]
-requires-python = ">=3.8"
+license = { text = "MIT" }
+maintainers = [ { name = "Alexandru Fikl", email = "alexfikl@gmail.com" } ]
+authors = [ { name = "Alexandru Fikl", email = "alexfikl@gmail.com" } ]
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
-    "Programming Language :: Rust",
-    "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Rust",
     "Topic :: Scientific/Engineering",
     "Topic :: Utilities",
 ]
 dependencies = [
-    "numpy",
+    "numpy>=2",
 ]
-urls = {repository = "https://github.com/alexfikl/mittagleffler"}
-
-[project.optional-dependencies]
-dev = [
-    "flake8",
-    "flake8-bugbear",
-    "flake8-comprehensions",
-    "flake8-isort",
-    "flake8-quotes",
+optional-dependencies.dev = [
     "mypy",
-    "pep8-naming",
-    "pip-tools",
-    "pylint",
+    "pyproject-fmt",
     "pytest",
+    "reuse",
+    "ruff",
+    "typos",
+    "uv",
 ]
-
-[tool.black]
-line-length = 88
-target-version = ['py38']
-exclude='\.eggs|\.git|\.mypy_cache|build|dist|\.pytest_cache|\.pytype'
-
-[tool.isort]
-profile = "black"
+urls = { repository = "https://github.com/alexfikl/mittagleffler" }
 
 [tool.maturin]
 module-name = "mittagleffler._mittagleffler"
 python-source = "python"
-features = ["pyo3/extension-module"]
+features = [ "pyo3/extension-module" ]
 strip = true
 
 [tool.pytest]
-testpaths = ["tests"]
+testpaths = [ "tests" ]
 cache_dir = ".pytest-cache"
