@@ -39,7 +39,7 @@ pyproject:							## Run pyproject-fmt over the configuration
 	@echo -e "\e[1;32mpyproject clean!\e[0m"
 .PHONY: pyproject
 
-lint: typos reuse ruff mypy			## Run all linting scripts
+lint: typos reuse clippy			## Run all linting scripts
 .PHONY: lint
 
 typos:			## Run typos over the source code and documentation
@@ -51,6 +51,11 @@ reuse:			## Check REUSE license compliance
 	$(PYTHON) -m reuse lint
 	@echo -e "\e[1;32mREUSE compliant!\e[0m"
 .PHONY: reuse
+
+clippy:			## Run clippy lint checks
+	cargo clippy --all-targets --all-features
+	@echo -e "\e[1;32mclippy clean!\e[0m"
+.PHONY: clippy
 
 ruff:			## Run ruff checks over the source code
 	ruff check python
