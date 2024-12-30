@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2024 Alexandru Fikl <alexfikl@gmail.com>
 // SPDX-License-Identifier: MIT
 
+use std::f64::consts::PI;
+
 use num::complex::{c64, Complex64};
 use num::{Complex, Float, Num};
 
@@ -79,8 +81,8 @@ fn argmin<T: Float>(data: &[T]) -> usize {
         .unwrap()
 }
 
-fn pick<T: Num + Clone>(data: Vec<T>, indices: &[usize]) -> Vec<T> {
-    indices.iter().map(|&i| data[i].clone()).collect()
+fn pick<T: Num + Copy>(data: &[T], indices: &[usize]) -> Vec<T> {
+    indices.iter().map(|&i| data[i]).collect()
 }
 
 fn laplace_transform_inversion(
@@ -99,25 +101,24 @@ fn laplace_transform_inversion(
     let d_log_eps = log_eps - log_mach_eps;
 
     // evaluate poles
-    let pi = std::f64::consts::PI;
-    let (_, theta) = z.to_polar();
-    let kmin = (-alpha / 2.0 - theta / (2.0 * pi)).ceil() as u64;
-    let kmax = (alpha / 2.0 - theta / (2.0 * pi)).floor() as u64;
+    let theta = z.arg();
+    let kmin = (-alpha / 2.0 - theta / (2.0 * PI)).ceil() as u64;
+    let kmax = (alpha / 2.0 - theta / (2.0 * PI)).floor() as u64;
     let mut s_star: Vec<Complex<f64>> = (kmin..=kmax)
         .map(|k| {
-            znorm.powf(alpha.recip()) * c64(0.0, (theta + 2.0 * pi * (k as f64)) / alpha).exp()
+            znorm.powf(alpha.recip()) * c64(0.0, (theta + 2.0 * PI * (k as f64)) / alpha).exp()
         })
         .collect();
 
     // sort poles
     let mut phi_star: Vec<f64> = s_star
         .iter()
-        .map(|&s| (s.re + s.norm()) / 2.0)
+        .map(|s| (s.re + s.norm()) / 2.0)
         .filter(|&phi| phi > ml.eps)
         .collect();
     let s_star_index = argsort(&phi_star);
-    s_star = pick(s_star, &s_star_index);
-    phi_star = pick(phi_star, &s_star_index);
+    s_star = pick(&s_star, &s_star_index);
+    phi_star = pick(&phi_star, &s_star_index);
 
     // add back the origin
     s_star.insert(0, c64(0.0, 0.0));
@@ -203,7 +204,7 @@ fn laplace_transform_inversion(
         .zip(zk.iter())
         .map(|(f_i, &zk_i)| f_i * (zk_i * t).exp())
         .sum();
-    let integral = h_min * sv / c64(0.0, 2.0 * pi);
+    let integral = h_min * sv / c64(0.0, 2.0 * PI);
 
     // evaluate residues
     let residues: Complex64 = (jmin + 1..n_star)
@@ -298,7 +299,7 @@ fn find_optimal_bounded_param(
         };
 
         let mu = (((1.0 + w) * phibar_star0_sq + phibar_star1_sq) / (2.0 + w)).powi(2);
-        let h = -2.0 * std::f64::consts::PI / log_eps_bar * (phibar_star1_sq - phibar_star0_sq)
+        let h = -2.0 * PI / log_eps_bar * (phibar_star1_sq - phibar_star0_sq)
             / ((1.0 + w) * phibar_star0_sq + phibar_star1_sq);
         let npoints = ((1.0 - log_eps_bar / t / mu).sqrt() / h).ceil();
 
@@ -315,7 +316,10 @@ fn find_optional_unbounded_param(
     p: f64,
     log_eps: f64,
 ) -> (f64, f64, f64) {
-    let pi = std::f64::consts::PI;
+    const F_MIN: f64 = 1.0;
+    const F_MAX: f64 = 10.0;
+    const F_TAR: f64 = 5.0;
+
     let phi_star_sq = phi_star.sqrt();
     let mut phibar_star = if phi_star > 0.0 {
         ml.fac * phi_star
@@ -325,30 +329,28 @@ fn find_optional_unbounded_param(
     let mut phibar_star_sq = phibar_star.sqrt();
 
     // search for fbar in [f_min, f_max]
-    let f_min = 1.0;
-    let f_max = 10.0;
-    let f_tar = 5.0;
-    let mut found = false;
-    let mut f_bar;
-    let mut mu = 0.0;
-    let mut n = 0.0;
+    let mut a;
+    let mut mu;
+    let mut n;
     let mut h;
-    let mut a = 0.0;
+    let mut f_bar;
 
-    while !found {
+    loop {
         let phi = phibar_star * t;
         let log_eps_phi = log_eps / phi;
 
-        n = (phi / pi * (1.0 - 3.0 * log_eps_phi / 2.0 + (1.0 - 2.0 * log_eps_phi).sqrt())).ceil();
-        a = pi * n / phi;
+        n = (phi / PI * (1.0 - 3.0 * log_eps_phi / 2.0 + (1.0 - 2.0 * log_eps_phi).sqrt())).ceil();
+        a = PI * n / phi;
         mu = phibar_star_sq * (4.0 - a).abs() / (7.0 - (1.0 + 12.0 * a).sqrt()).abs();
         f_bar = ((phibar_star_sq - phi_star_sq) / mu).powf(-p);
 
-        found = (p < ml.p_eps) || (f_min < f_bar && f_bar < f_max);
-        if !found {
-            phibar_star_sq = f_tar.powf(-p.recip()) * mu + phi_star_sq;
-            phibar_star = phibar_star_sq.powi(2);
+        let found = (p < ml.p_eps) || (F_MIN < f_bar && f_bar < F_MAX);
+        if found {
+            break;
         }
+
+        phibar_star_sq = F_TAR.powf(-p.recip()) * mu + phi_star_sq;
+        phibar_star = phibar_star_sq.powi(2);
     }
 
     mu = mu.powi(2);
@@ -360,7 +362,7 @@ fn find_optional_unbounded_param(
         let q = if p.abs() < ml.p_eps {
             0.0
         } else {
-            f_tar.powf(-p.recip()) * mu.sqrt()
+            F_TAR.powf(-p.recip()) * mu.sqrt()
         };
         phibar_star = (q + phi_star.sqrt()).powi(2);
 
@@ -369,7 +371,7 @@ fn find_optional_unbounded_param(
             let u = (-phibar_star * t / ml.log_mach_eps).sqrt();
 
             mu = thresh;
-            n = (w * log_eps / (2.0 * pi * (u * w - 1.0))).ceil();
+            n = (w * log_eps / (2.0 * PI * (u * w - 1.0))).ceil();
             h = w / n;
         } else {
             n = f64::INFINITY;
