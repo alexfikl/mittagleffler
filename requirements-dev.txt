@@ -28,9 +28,9 @@ license-expression==30.4.0
     # via reuse
 markupsafe==3.0.2
     # via jinja2
-maturin==1.8.0
+maturin==1.8.1
     # via -r requirements.in
-mypy==1.14.0
+mypy==1.14.1
     # via mittagleffler (pyproject.toml)
 mypy-extensions==1.0.0
     # via mypy
@@ -64,7 +64,7 @@ tomlkit==0.13.2
     # via reuse
 typing-extensions==4.12.2
     # via mypy
-typos==1.28.4
+typos==1.29.0
     # via mittagleffler (pyproject.toml)
 uv==0.5.13
     # via mittagleffler (pyproject.toml)
