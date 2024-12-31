@@ -99,7 +99,7 @@ pin: $(REQUIREMENTS)	## Pin dependencies versions to requirements.txt
 
 pip-install:			## Install pinned dependencies from requirements.txt
 	$(PYTHON) -m pip install -r requirements-dev.txt
-	$(PYTHON) -m pip install --verbose --editable --no-build-isolation .
+	$(PYTHON) -m pip install --verbose --no-build-isolation --editable .
 .PHONY: pip-install
 
 build:			## Build the project in debug mode
