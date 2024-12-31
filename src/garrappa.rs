@@ -4,7 +4,7 @@
 use std::f64::consts::PI;
 
 use num::complex::{c64, Complex64};
-use num::{Complex, Float, Num};
+use num::{Float, Num};
 
 // {{{ trait
 
@@ -13,6 +13,9 @@ use num::{Complex, Float, Num};
 /// Evaluates the Mittag-Leffler function using default parameters. It can be
 /// used as
 /// ```rust
+///     let alpha: f64 = 1.0;
+///     let beta: f64 = 1.0;
+///     let z: f64 = 1.0;
 ///     let result = z.mittag_leffler(alpha, beta);
 /// ```
 /// on real or complex arguments.
@@ -20,18 +23,18 @@ pub trait MittagLeffler
 where
     Self: Sized,
 {
-    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Complex<f64>;
+    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Option<Complex64>;
 }
 
 impl MittagLeffler for f64 {
-    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Complex<f64> {
+    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Option<Complex64> {
         let ml = MittagLefflerParam::new(None);
         ml.evaluate(c64(*self, 0.0), alpha, beta)
     }
 }
 
-impl MittagLeffler for Complex<f64> {
-    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Complex<f64> {
+impl MittagLeffler for Complex64 {
+    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Option<Complex64> {
         let ml = MittagLefflerParam::new(None);
         ml.evaluate(*self, alpha, beta)
     }
@@ -74,19 +77,19 @@ pub struct MittagLefflerParam {
 impl MittagLefflerParam {
     pub fn new(eps: Option<f64>) -> Self {
         let mach_eps = f64::epsilon();
-        let eps = match eps {
+        let ml_eps = match eps {
             Some(value) => value,
             None => 5.0 * mach_eps,
         };
 
         MittagLefflerParam {
-            eps,
+            eps: ml_eps,
             fac: 1.01,
             p_eps: 100.0 * f64::epsilon(),
             q_eps: 100.0 * f64::epsilon(),
             conservative_error_analysis: false,
 
-            log_eps: eps.ln(),
+            log_eps: ml_eps.ln(),
             log_mach_eps: mach_eps.ln(),
         }
     }
@@ -97,12 +100,12 @@ impl MittagLefflerParam {
         self
     }
 
-    pub fn evaluate(&self, z: Complex<f64>, alpha: f64, beta: f64) -> Complex<f64> {
+    pub fn evaluate(&self, z: Complex64, alpha: f64, beta: f64) -> Option<Complex64> {
         if z.norm() < self.eps {
-            return Complex {
+            return Some(Complex64 {
                 re: special::Gamma::gamma(beta).recip(),
                 im: 0.0,
-            };
+            });
         }
 
         laplace_transform_inversion(self, 1.0, z, alpha, beta)
@@ -115,16 +118,19 @@ impl MittagLefflerParam {
 
 fn argsort<T: Float>(data: &[T]) -> Vec<usize> {
     let mut indices: Vec<usize> = (0..data.len()).collect();
-    indices.sort_by(|&i, &j| data[j].partial_cmp(&data[i]).unwrap());
+    indices.sort_by(|&i, &j| {
+        data[i]
+            .partial_cmp(&data[j])
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
     indices
 }
 
-fn argmin<T: Float>(data: &[T]) -> usize {
+fn argmin<T: Float>(data: &[T]) -> Option<usize> {
     data.iter()
         .enumerate()
-        .max_by(|(_, x), (_, y)| x.partial_cmp(y).unwrap())
+        .min_by(|(_, x), (_, y)| x.partial_cmp(y).unwrap_or(std::cmp::Ordering::Equal))
         .map(|(j, _)| j)
-        .unwrap()
 }
 
 fn pick<T: Num + Copy>(data: &[T], indices: &[usize]) -> Vec<T> {
@@ -134,10 +140,10 @@ fn pick<T: Num + Copy>(data: &[T], indices: &[usize]) -> Vec<T> {
 fn laplace_transform_inversion(
     ml: &MittagLefflerParam,
     t: f64,
-    z: Complex<f64>,
+    z: Complex64,
     alpha: f64,
     beta: f64,
-) -> Complex<f64> {
+) -> Option<Complex64> {
     let znorm = z.norm();
 
     // get precision constants
@@ -148,35 +154,42 @@ fn laplace_transform_inversion(
 
     // evaluate poles
     let theta = z.arg();
-    let kmin = (-alpha / 2.0 - theta / (2.0 * PI)).ceil() as u64;
-    let kmax = (alpha / 2.0 - theta / (2.0 * PI)).floor() as u64;
-    let mut s_star: Vec<Complex<f64>> = (kmin..=kmax)
+    let kmin = (-alpha / 2.0 - theta / (2.0 * PI)).ceil() as i64;
+    let kmax = (alpha / 2.0 - theta / (2.0 * PI)).floor() as i64;
+    let mut s_star: Vec<Complex64> = (kmin..=kmax)
         .map(|k| {
             znorm.powf(alpha.recip()) * c64(0.0, (theta + 2.0 * PI * (k as f64)) / alpha).exp()
         })
         .collect();
+    // println!("s_star: {:?}", s_star);
 
     // sort poles
-    let mut phi_star: Vec<f64> = s_star
-        .iter()
-        .map(|s| (s.re + s.norm()) / 2.0)
-        .filter(|&phi| phi > ml.eps)
-        .collect();
-    let s_star_index = argsort(&phi_star);
-    s_star = pick(&s_star, &s_star_index);
-    phi_star = pick(&phi_star, &s_star_index);
+    let mut phi_star: Vec<f64> = s_star.iter().map(|s| (s.re + s.norm()) / 2.0).collect();
+    // println!("phi_star: {:?}", phi_star);
+
+    let mut phi_star_index = argsort(&phi_star);
+    phi_star_index.retain(|&i| phi_star[i] > ml.eps);
+    // println!("phi_star_index: {:?}", phi_star_index);
+    s_star = pick(&s_star, &phi_star_index);
+    // println!("s_star: {:?}", s_star);
+    phi_star = pick(&phi_star, &phi_star_index);
+    // println!("phi_star: {:?}", phi_star);
 
     // add back the origin
     s_star.insert(0, c64(0.0, 0.0));
     phi_star.insert(0, 0.0);
     phi_star.push(f64::INFINITY);
+    // println!("s_star: {:?}", s_star);
+    // println!("phi_star: {:?}", phi_star);
 
     // evaluate the strength of the singularities
     let n_star = s_star.len();
-    let mut p = vec![0.0; n_star];
+    let mut p = vec![1.0; n_star];
     p[0] = (-2.0 * (alpha - beta + 1.0)).max(0.0);
-    let mut q = vec![0.0; n_star];
+    let mut q = vec![1.0; n_star];
     q[n_star - 1] = f64::INFINITY;
+    // println!("p: {:?}", p);
+    // println!("q: {:?}", q);
 
     // find admissible regions
     let region_index: Vec<usize> = phi_star
@@ -185,12 +198,15 @@ fn laplace_transform_inversion(
         .enumerate()
         .filter_map(|(i, value)| if value { Some(i) } else { None })
         .collect();
+    // println!("region_index: {:?}", region_index);
 
     // evaluate parameters of the Laplace Transform inversion in each region
     let nregions = region_index.last().unwrap() + 1;
     let mut mu = vec![f64::INFINITY; nregions];
     let mut npoints = vec![f64::INFINITY; nregions];
     let mut h = vec![f64::INFINITY; nregions];
+    // println!("nregions {}", nregions);
+    // println!("mu {:?}", mu);
 
     let mut found_region = false;
     while !found_region {
@@ -211,10 +227,12 @@ fn laplace_transform_inversion(
                     find_optional_unbounded_param(ml, t, phi_star[j], p[j], log_eps);
             }
         }
+        // println!("mu {:?} N {:?} h {:?}", mu, npoints, h);
 
         let n_min = npoints
             .iter()
-            .fold(-f64::INFINITY, |max, &x| if x > max { x } else { max });
+            .fold(f64::INFINITY, |min, &x| if x < min { x } else { min });
+        // println!("n_min {}", n_min);
         if n_min > 200.0 {
             log_eps += log_10;
         } else {
@@ -222,15 +240,20 @@ fn laplace_transform_inversion(
         }
 
         if log_eps >= 0.0 {
-            panic!("Failed to find an admissible region");
+            println!("Failed to find an admissible region");
+            return None;
         }
     }
 
     // select region that contains the minimum number of nodes
-    let jmin = argmin(&npoints);
-    let n_min = npoints[jmin] as i64;
+    let jmin = argmin(&npoints).unwrap();
     let mu_min = mu[jmin];
+    let n_min = npoints[jmin] as i64;
     let h_min = h[jmin];
+    // println!(
+    //     "jmin {} mu_min {} n_min {} h_min {}",
+    //     jmin, mu_min, n_min, h_min
+    // );
 
     // evaluate inverse Laplace Transform integral
     let hk: Vec<f64> = (-n_min..=n_min).map(|k| h_min * (k as f64)).collect();
@@ -257,7 +280,7 @@ fn laplace_transform_inversion(
         .map(|j| 1.0 / alpha * s_star[j].powf(1.0 - beta) * (s_star[j] * t).exp())
         .sum();
 
-    residues + integral
+    Some(residues + integral)
 }
 
 fn find_optimal_bounded_param(

@@ -111,7 +111,7 @@ pytest:					## Run pytest tests
 .PHONY: pytest
 
 test:					## Run cargo test
-	RUST_BACKTRACE=1 cargo test --all-features
+	RUST_BACKTRACE=1 cargo test --tests
 .PHONY: test
 
 # }}}
@@ -122,6 +122,7 @@ clean:						## Remove various build artifacts
 	rm -rf *.png
 	rm -rf build dist
 	rm -rf docs/_build
+	rm -rf target
 .PHONY: clean
 
 purge: clean				## Remove various temporary files
