@@ -6,7 +6,51 @@ use std::f64::consts::PI;
 use num::complex::{c64, Complex64};
 use num::{Complex, Float, Num};
 
-pub struct MittagLeffler {
+// {{{ trait
+
+/// Mittag-Leffler function.
+///
+/// Evaluates the Mittag-Leffler function using default parameters. It can be
+/// used as
+/// ```rust
+///     let result = z.mittag_leffler(alpha, beta);
+/// ```
+/// on real or complex arguments.
+pub trait MittagLeffler
+where
+    Self: Sized,
+{
+    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Complex<f64>;
+}
+
+impl MittagLeffler for f64 {
+    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Complex<f64> {
+        let ml = MittagLefflerParam::new(None);
+        ml.evaluate(c64(*self, 0.0), alpha, beta)
+    }
+}
+
+impl MittagLeffler for Complex<f64> {
+    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Complex<f64> {
+        let ml = MittagLefflerParam::new(None);
+        ml.evaluate(*self, alpha, beta)
+    }
+}
+
+// }}}
+
+// {{{ MittagLeffler
+
+/// Parameters for the Mittag-Leffler function evaluation.
+///
+/// This implements the algorithm described in [1]. It is largely a direct port
+/// of the MATLAB implementation at [2].
+///
+/// [1] R. Garrappa, *Numerical Evaluation of Two and Three Parameter Mittag-Leffler
+///     Functions*, SIAM Journal on Numerical Analysis, Vol. 53, pp. 1350--1369, 2015,
+///     DOI: [10.1137/140971191](https://doi.org/10.1137/140971191).
+/// [2] https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function
+pub struct MittagLefflerParam {
     /// Tolerance used to control the accuracy of evaluating the inverse Laplace
     /// transform used to compute the function. This should match the tolerance
     /// for evaluating the Mittag-Leffler function itself.
@@ -27,7 +71,7 @@ pub struct MittagLeffler {
     log_mach_eps: f64,
 }
 
-impl MittagLeffler {
+impl MittagLefflerParam {
     pub fn new(eps: Option<f64>) -> Self {
         let mach_eps = f64::epsilon();
         let eps = match eps {
@@ -35,7 +79,7 @@ impl MittagLeffler {
             None => 5.0 * mach_eps,
         };
 
-        MittagLeffler {
+        MittagLefflerParam {
             eps,
             fac: 1.01,
             p_eps: 100.0 * f64::epsilon(),
@@ -65,6 +109,8 @@ impl MittagLeffler {
     }
 }
 
+// }}}
+
 // {{{ impl
 
 fn argsort<T: Float>(data: &[T]) -> Vec<usize> {
@@ -86,7 +132,7 @@ fn pick<T: Num + Copy>(data: &[T], indices: &[usize]) -> Vec<T> {
 }
 
 fn laplace_transform_inversion(
-    ml: &MittagLeffler,
+    ml: &MittagLefflerParam,
     t: f64,
     z: Complex<f64>,
     alpha: f64,
@@ -215,7 +261,7 @@ fn laplace_transform_inversion(
 }
 
 fn find_optimal_bounded_param(
-    ml: &MittagLeffler,
+    ml: &MittagLefflerParam,
     t: f64,
     phi_star0: f64,
     phi_star1: f64,
@@ -310,7 +356,7 @@ fn find_optimal_bounded_param(
 }
 
 fn find_optional_unbounded_param(
-    ml: &MittagLeffler,
+    ml: &MittagLefflerParam,
     t: f64,
     phi_star: f64,
     p: f64,
@@ -380,18 +426,6 @@ fn find_optional_unbounded_param(
     }
 
     (mu, n, h)
-}
-
-// }}}
-
-// {{{ tests
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_mittag_leffler() {}
 }
 
 // }}}
