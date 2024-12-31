@@ -5,12 +5,12 @@ use num::complex::c64;
 use rand::prelude::*;
 
 mod reference_data;
-use mittagleffler::{MittagLeffler, MittagLefflerParam};
+use mittagleffler::{GarrappaMittagLeffler, MittagLeffler};
 use reference_data::MATHEMATICA_RESULTS;
 
 #[test]
 fn test_param() {
-    let ml = MittagLefflerParam::new(None);
+    let ml = GarrappaMittagLeffler::new(None);
     assert!(ml.eps > f64::EPSILON);
     assert!(ml.fac >= 1.0);
     assert!(ml.p_eps > f64::EPSILON);
@@ -26,15 +26,7 @@ fn test_vs_exponential() {
     let alpha = 1.0;
     let beta = 1.0;
     let eps = 5.0 * f64::EPSILON;
-    let ml = MittagLefflerParam::new(Some(eps));
-
-    // println!(
-    //     "Result {} Reference {} Error {:.8e} (eps {:.8e})",
-    //     result,
-    //     reference,
-    //     (result - reference).norm(),
-    //     eps * reference.norm()
-    // );
+    let ml = GarrappaMittagLeffler::new(Some(eps));
 
     // test real only
     for _ in 0..512 {
@@ -84,7 +76,7 @@ fn test_vs_cosine() {
     let alpha = 2.0;
     let beta = 1.0;
     let eps = 5.0 * f64::EPSILON;
-    let ml = MittagLefflerParam::new(Some(eps));
+    let ml = GarrappaMittagLeffler::new(Some(eps));
 
     // test real only
     for _ in 0..512 {
@@ -134,7 +126,7 @@ fn test_vs_hyperbolic_cosine() {
     let alpha = 2.0;
     let beta = 1.0;
     let eps = 5.0 * f64::EPSILON;
-    let ml = MittagLefflerParam::new(Some(eps));
+    let ml = GarrappaMittagLeffler::new(Some(eps));
 
     // test real only
     for _ in 0..512 {
@@ -184,7 +176,7 @@ fn test_vs_exponential_inv() {
     let alpha = 1.0;
     let beta = 2.0;
     let eps = 5.0 * f64::EPSILON;
-    let ml = MittagLefflerParam::new(Some(eps));
+    let ml = GarrappaMittagLeffler::new(Some(eps));
 
     // test real only
     for _ in 0..512 {
@@ -234,7 +226,7 @@ fn test_vs_hyperbolic_sine() {
     let alpha = 2.0;
     let beta = 2.0;
     let eps = 5.0 * f64::EPSILON;
-    let ml = MittagLefflerParam::new(Some(eps));
+    let ml = GarrappaMittagLeffler::new(Some(eps));
 
     // test real only
     for _ in 0..512 {
