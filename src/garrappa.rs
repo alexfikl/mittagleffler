@@ -57,13 +57,15 @@ impl MittagLeffler for Complex64 {
 
 /// Parameters for the Mittag-Leffler function evaluation.
 ///
-/// This implements the algorithm described in [1]. It is largely a direct port
-/// of the MATLAB implementation at [2].
+/// This implements the algorithm described in
+/// [Garrappa 2015](https://doi.org/10.1137/140971191). It is largely a direct
+/// port of the [MATLAB implementation](https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function).
 ///
-/// [1] R. Garrappa, *Numerical Evaluation of Two and Three Parameter Mittag-Leffler
+/// ## References
+///
+/// 1. R. Garrappa, *Numerical Evaluation of Two and Three Parameter Mittag-Leffler
 ///     Functions*, SIAM Journal on Numerical Analysis, Vol. 53, pp. 1350--1369, 2015,
 ///     DOI: [10.1137/140971191](https://doi.org/10.1137/140971191).
-/// [2] https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function
 pub struct GarrappaMittagLeffler {
     /// Tolerance used to control the accuracy of evaluating the inverse Laplace
     /// transform used to compute the function. This should match the tolerance
