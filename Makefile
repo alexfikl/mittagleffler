@@ -20,6 +20,7 @@ fmt: format
 rustfmt:								## Run rustfmt
 	cargo fmt -- src/*.rs
 	@echo -e "\e[1;32mrustfmt clean!\e[0m"
+	make -C python rustfmt
 .PHONY: rustfmt
 
 lint: typos reuse ruff clippy			## Run all linting scripts
@@ -39,6 +40,7 @@ reuse:			## Check REUSE license compliance
 clippy:			## Run clippy lint checks
 	cargo clippy --all-targets --all-features
 	@echo -e "\e[1;32mclippy clean!\e[0m"
+	make -C python clippy
 .PHONY: clippy
 
 ruff:			## Run ruff checks over the source code
@@ -51,6 +53,7 @@ ruff:			## Run ruff checks over the source code
 # {{{ testing
 
 pin:			## Pin dependencies versions to requirements.txt
+	cargo update
 	make -C python pin
 .PHONY: pin
 

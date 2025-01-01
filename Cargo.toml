@@ -20,3 +20,6 @@ special = { version = "0.11" }
 
 [dev-dependencies]
 rand = { "version" = "0.8" }
+
+[package.metadata.typos.files]
+extend-exclude = ["python/target", "target"]

@@ -6,7 +6,7 @@ requires = [
 ]
 
 [project]
-name = "mittagleffler"
+name = "pymittagleffler"
 version = "0.1.0"
 description = "High performance implementation of the Mittag-Leffler function"
 readme = "README.rst"
@@ -48,8 +48,8 @@ optional-dependencies.dev = [
 urls = { repository = "https://github.com/alexfikl/mittagleffler" }
 
 [tool.maturin]
-module-name = "mittagleffler._mittagleffler"
-python-source = "python"
+module-name = "pymittagleffler._bindings"
+python-source = "src"
 features = [ "pyo3/extension-module" ]
 strip = true
 

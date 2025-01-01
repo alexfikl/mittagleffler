@@ -10,7 +10,7 @@ help: 			## Show this help
 
 # {{{ linting
 
-format: isort black pyproject	## Run all formatting scripts
+format: isort black pyproject rustfmt	## Run all formatting scripts
 .PHONY: format
 
 fmt: format
@@ -22,30 +22,40 @@ isort:									## Run ruff isort fixes over the source code
 	@echo -e "\e[1;32mruff isort clean!\e[0m"
 .PHONY: isort
 
-black:								## Run ruff format over the source code
+black:									## Run ruff format over the source code
 	ruff format src
 	@echo -e "\e[1;32mruff format clean!\e[0m"
 .PHONY: black
 
-pyproject:							## Run pyproject-fmt over the configuration
+pyproject:								## Run pyproject-fmt over the configuration
 	$(PYTHON) -m pyproject_fmt \
 		--indent 4 --max-supported-python '3.13' \
 		pyproject.toml
 	@echo -e "\e[1;32mpyproject clean!\e[0m"
 .PHONY: pyproject
 
-lint: ruff mypy			## Run all linting scripts
+rustfmt:								## Run rustfmt
+	cargo fmt -- bindings/*.rs
+	@echo -e "\e[1;32mrustfmt clean!\e[0m"
+.PHONY: rustfmt
+
+lint: ruff clippy mypy					## Run all linting scripts
 .PHONY: lint
 
-ruff:			## Run ruff checks over the source code
+ruff:									## Run ruff checks over the source code
 	ruff check src
 	@echo -e "\e[1;32mruff lint clean!\e[0m"
 .PHONY: ruff
 
-mypy:			## Run mypy checks over the source code
+mypy:									## Run mypy checks over the source code
 	$(PYTHON) -m mypy src
 	@echo -e "\e[1;32mmypy clean!\e[0m"
 .PHONY: mypy
+
+clippy:									## Run clippy lint checks
+	cargo clippy --all-targets --all-features
+	@echo -e "\e[1;32mclippy clean!\e[0m"
+.PHONY: clippy
 
 # }}}
 
@@ -75,6 +85,7 @@ requirements.txt: requirements.in pyproject.toml
 .PHONY: requirements.txt
 
 pin: $(REQUIREMENTS)	## Pin dependencies versions to requirements.txt
+	cargo update
 .PHONY: pin
 
 pip-install:			## Install pinned dependencies from requirements.txt

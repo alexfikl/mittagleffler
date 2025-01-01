@@ -80,11 +80,6 @@ pub struct GarrappaMittagLeffler {
     /// If true, a more conservative method is used to estimate the integration
     /// region. This should not be necessary for most evaluation.
     pub conservative_error_analysis: bool,
-
-    /// Log of epsilon.
-    log_eps: f64,
-    /// Log of machine epsilon for *T*.
-    log_mach_eps: f64,
 }
 
 impl GarrappaMittagLeffler {
@@ -101,15 +96,11 @@ impl GarrappaMittagLeffler {
             p_eps: 100.0 * f64::epsilon(),
             q_eps: 100.0 * f64::epsilon(),
             conservative_error_analysis: false,
-
-            log_eps: ml_eps.ln(),
-            log_mach_eps: mach_eps.ln(),
         }
     }
 
     pub fn with_eps(mut self, eps: f64) -> Self {
         self.eps = eps;
-        self.log_eps = eps.ln();
         self
     }
 
@@ -160,8 +151,8 @@ fn laplace_transform_inversion(
     let znorm = z.norm();
 
     // get precision constants
-    let log_mach_eps = ml.log_mach_eps;
-    let mut log_eps = ml.log_eps;
+    let log_mach_eps = f64::EPSILON.ln();
+    let mut log_eps = ml.eps.ln();
     let log_10 = 10.0_f64.ln();
     let d_log_eps = log_eps - log_mach_eps;
 
@@ -306,8 +297,9 @@ fn find_optimal_bounded_param(
     log_eps: f64,
 ) -> (f64, f64, f64) {
     // set maximum value for fbar (the ratio of the tolerance to the machine tolerance)
-    let f_max = (log_eps - ml.log_mach_eps).exp();
-    let thresh = 2.0 * ((log_eps - ml.log_mach_eps) / t).sqrt();
+    let log_mach_eps = f64::EPSILON.ln();
+    let f_max = (log_eps - log_mach_eps).exp();
+    let thresh = 2.0 * ((log_eps - log_mach_eps) / t).sqrt();
 
     // starting values
     let phi_star0_sq = phi_star0.sqrt();
@@ -402,6 +394,7 @@ fn find_optional_unbounded_param(
     const F_MAX: f64 = 10.0;
     const F_TAR: f64 = 5.0;
 
+    let log_mach_eps = f64::EPSILON.ln();
     let phi_star_sq = phi_star.sqrt();
     let mut phibar_star = if phi_star > 0.0 {
         ml.fac * phi_star
@@ -439,7 +432,7 @@ fn find_optional_unbounded_param(
     h = (-3.0 * a - 2.0 + 2.0 * (1.0 + 12.0 * a).sqrt()) / (4.0 - a) / n;
 
     // adjust the integration parameters
-    let thresh = (log_eps - ml.log_mach_eps) / t;
+    let thresh = (log_eps - log_mach_eps) / t;
     if mu > thresh {
         let q = if p.abs() < ml.p_eps {
             0.0
@@ -449,8 +442,8 @@ fn find_optional_unbounded_param(
         phibar_star = (q + phi_star.sqrt()).powi(2);
 
         if phibar_star < thresh {
-            let w = (ml.log_mach_eps / (ml.log_mach_eps - log_eps)).sqrt();
-            let u = (-phibar_star * t / ml.log_mach_eps).sqrt();
+            let w = (log_mach_eps / (log_mach_eps - log_eps)).sqrt();
+            let u = (-phibar_star * t / log_mach_eps).sqrt();
 
             mu = thresh;
             n = (w * log_eps / (2.0 * PI * (u * w - 1.0))).ceil();
