@@ -165,26 +165,19 @@ fn laplace_transform_inversion(
             znorm.powf(alpha.recip()) * c64(0.0, (theta + 2.0 * PI * (k as f64)) / alpha).exp()
         })
         .collect();
-    // println!("s_star: {:?}", s_star);
 
     // sort poles
     let mut phi_star: Vec<f64> = s_star.iter().map(|s| (s.re + s.norm()) / 2.0).collect();
-    // println!("phi_star: {:?}", phi_star);
 
     let mut phi_star_index = argsort(&phi_star);
     phi_star_index.retain(|&i| phi_star[i] > ml.eps);
-    // println!("phi_star_index: {:?}", phi_star_index);
     s_star = pick(&s_star, &phi_star_index);
-    // println!("s_star: {:?}", s_star);
     phi_star = pick(&phi_star, &phi_star_index);
-    // println!("phi_star: {:?}", phi_star);
 
     // add back the origin
     s_star.insert(0, c64(0.0, 0.0));
     phi_star.insert(0, 0.0);
     phi_star.push(f64::INFINITY);
-    // println!("s_star: {:?}", s_star);
-    // println!("phi_star: {:?}", phi_star);
 
     // evaluate the strength of the singularities
     let n_star = s_star.len();
@@ -192,8 +185,6 @@ fn laplace_transform_inversion(
     p[0] = (-2.0 * (alpha - beta + 1.0)).max(0.0);
     let mut q = vec![1.0; n_star];
     q[n_star - 1] = f64::INFINITY;
-    // println!("p: {:?}", p);
-    // println!("q: {:?}", q);
 
     // find admissible regions
     let region_index: Vec<usize> = phi_star
@@ -202,15 +193,12 @@ fn laplace_transform_inversion(
         .enumerate()
         .filter_map(|(i, value)| if value { Some(i) } else { None })
         .collect();
-    // println!("region_index: {:?}", region_index);
 
     // evaluate parameters of the Laplace Transform inversion in each region
     let nregions = region_index.last().unwrap() + 1;
     let mut mu = vec![f64::INFINITY; nregions];
     let mut npoints = vec![f64::INFINITY; nregions];
     let mut h = vec![f64::INFINITY; nregions];
-    // println!("nregions {}", nregions);
-    // println!("mu {:?}", mu);
 
     let mut found_region = false;
     while !found_region {
@@ -231,12 +219,10 @@ fn laplace_transform_inversion(
                     find_optional_unbounded_param(ml, t, phi_star[j], p[j], log_eps);
             }
         }
-        // println!("mu {:?} N {:?} h {:?}", mu, npoints, h);
 
         let n_min = npoints
             .iter()
             .fold(f64::INFINITY, |min, &x| if x < min { x } else { min });
-        // println!("n_min {}", n_min);
         if n_min > 200.0 {
             log_eps += log_10;
         } else {
@@ -254,10 +240,6 @@ fn laplace_transform_inversion(
     let mu_min = mu[jmin];
     let n_min = npoints[jmin] as i64;
     let h_min = h[jmin];
-    // println!(
-    //     "jmin {} mu_min {} n_min {} h_min {}",
-    //     jmin, mu_min, n_min, h_min
-    // );
 
     // evaluate inverse Laplace Transform integral
     let hk: Vec<f64> = (-n_min..=n_min).map(|k| h_min * (k as f64)).collect();
