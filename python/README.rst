@@ -1,4 +1,1 @@
-Mittag-Leffler
---------------
-
-WIP
+../README.rst
