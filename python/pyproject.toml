@@ -58,3 +58,9 @@ python-source = "src"
 [tool.pytest]
 testpaths = [ "tests" ]
 cache_dir = ".pytest-cache"
+addopts = [
+    "-rswx",
+    "--durations=25",
+    "--capture=no",
+    "--verbose",
+]
