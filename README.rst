@@ -1,3 +1,13 @@
+.. |badge-ci| image:: https://github.com/alexfikl/mittagleffler/workflows/CI/badge.svg
+    :alt: Build Status
+    :target: https://github.com/alexfikl/mittagleffler/actions?query=branch%3Amain+workflow%3ACI
+
+.. |badge-reuse| image:: https://api.reuse.software/badge/github.com/alexfikl/mittagleffler
+    :alt: REUSE
+    :target: https://api.reuse.software/info/github.com/alexfikl/mittagleffler
+
+|badge-ci| |badge-reuse|
+
 mittagleffler
 -------------
 
@@ -27,7 +37,7 @@ Evaluating the Mittag Leffler function can be performed directly by
     println!("E_{}_{}({}) = {}", alpha, beta, z, z.mittag_leffler(alpha, beta));
 
 This method will call the best underlying algorithm and take care of any special
-cases that are known in the literature, e.g. for $(\alpha, \beta) = (1, 1)$ we
+cases that are known in the literature, e.g. for $`(\alpha, \beta) = (1, 1)`$ we
 know that the Mittag-Leffler function is equivalent to the standard exponential.
 To call a specific algorithm, we can do
 
