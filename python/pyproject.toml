@@ -9,7 +9,6 @@ requires = [
 name = "pymittagleffler"
 version = "0.1.0"
 description = "High performance implementation of the Mittag-Leffler function"
-readme = "README.rst"
 keywords = [
     "fractional-calculus",
     "special-functions",
@@ -48,10 +47,13 @@ optional-dependencies.dev = [
 urls = { repository = "https://github.com/alexfikl/mittagleffler" }
 
 [tool.maturin]
+manifest-path = "Cargo.toml"
+profile = "release"
+strip = true
+
+bindings = "pyo3"
 module-name = "pymittagleffler._bindings"
 python-source = "src"
-features = [ "pyo3/extension-module" ]
-strip = true
 
 [tool.pytest]
 testpaths = [ "tests" ]
