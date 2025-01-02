@@ -17,13 +17,13 @@ fmt: format
 .PHONY: fmt
 
 isort:									## Run ruff isort fixes over the source code
-	ruff check --fix --select=I src
-	ruff check --fix --select=RUF022 src
+	ruff check --fix --select=I src tests
+	ruff check --fix --select=RUF022 src tests
 	@echo -e "\e[1;32mruff isort clean!\e[0m"
 .PHONY: isort
 
 black:									## Run ruff format over the source code
-	ruff format src
+	ruff format src tests
 	@echo -e "\e[1;32mruff format clean!\e[0m"
 .PHONY: black
 
@@ -43,12 +43,12 @@ lint: ruff clippy mypy					## Run all linting scripts
 .PHONY: lint
 
 ruff:									## Run ruff checks over the source code
-	ruff check src
+	ruff check src tests
 	@echo -e "\e[1;32mruff lint clean!\e[0m"
 .PHONY: ruff
 
 mypy:									## Run mypy checks over the source code
-	$(PYTHON) -m mypy src
+	$(PYTHON) -m mypy src tests
 	@echo -e "\e[1;32mmypy clean!\e[0m"
 .PHONY: mypy
 

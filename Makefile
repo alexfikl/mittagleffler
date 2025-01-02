@@ -57,17 +57,9 @@ pin:			## Pin dependencies versions to requirements.txt
 	make -C python pin
 .PHONY: pin
 
-pip-install:	## Install pinned dependencies from requirements.txt
-	make -C python pip-install
-.PHONY: pip-install
-
 build:			## Build the project in debug mode
 	cargo build --locked --all-features --verbose
 .PHONY: build
-
-pytest:			## Run pytest tests
-	make -C python test
-.PHONY: pytest
 
 test:			## Run cargo test
 	RUST_BACKTRACE=1 cargo test --tests

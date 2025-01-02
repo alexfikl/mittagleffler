@@ -15,13 +15,15 @@ def test_mittag_leffler_scalar() -> None:
 
     alpha = beta = 1.0
 
-    for cls in (bool, int, float, np.float32, np.float64):
+    types: tuple[type, ...] = (bool, int, float, np.float32, np.float64)
+    for cls in types:
         z = cls(1)
         _ = mittag_leffler(z, alpha, beta)
         print(f"({type(z)}, {type(_)}): {_} {np.exp(z + 0j)}")
 
-    for cls in (complex, np.complex64, np.complex128):
-        z = cls(1.0, 1.0)
+    types = (complex, np.complex64, np.complex128)
+    for cls in types:
+        z = cls(1.0, 1.0)  # type: ignore[call-arg]
         _ = mittag_leffler(z, alpha, beta)
         print(f"({type(z)}, {type(_)}): {_} {np.exp(z + 0j)}")
 
@@ -30,7 +32,9 @@ def test_mittag_leffler_scalar() -> None:
         _ = mittag_leffler(z, alpha, beta)
 
 
-@pytest.mark.parametrize("etype", [np.int32, np.float32, np.float64, np.complex64, np.complex128])
+@pytest.mark.parametrize(
+    "etype", [np.int32, np.float32, np.float64, np.complex64, np.complex128]
+)
 def test_mittag_leffler_vector(etype: Any) -> None:
     from pymittagleffler import mittag_leffler
 
