@@ -18,7 +18,7 @@ fmt: format
 .PHONY: fmt
 
 rustfmt:								## Run rustfmt
-	cargo fmt -- src/*.rs
+	cargo fmt -- src/*.rs tests/*.rs benches/*.rs
 	@echo -e "\e[1;32mrustfmt clean!\e[0m"
 	make -C python rustfmt
 .PHONY: rustfmt
