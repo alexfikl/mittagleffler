@@ -5,7 +5,7 @@ use num::complex::c64;
 use rand::prelude::*;
 
 mod reference_data;
-use mittagleffler::{GarrappaMittagLeffler, MittagLeffler};
+use mittagleffler::{GarrappaMittagLeffler, MittagLeffler, MittagLefflerAlgorithm};
 use reference_data::MATHEMATICA_RESULTS;
 
 #[test]

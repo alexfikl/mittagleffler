@@ -8,7 +8,7 @@ use pyo3::exceptions::PyTypeError;
 use pyo3::prelude::*;
 use pyo3::types::PyComplex;
 
-use mittagleffler::{GarrappaMittagLeffler, MittagLeffler};
+use mittagleffler::{GarrappaMittagLeffler, MittagLeffler, MittagLefflerAlgorithm};
 
 #[pyclass]
 #[pyo3(name = "GarrappaMittagLeffler")]

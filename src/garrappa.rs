@@ -3,63 +3,17 @@
 
 use std::f64::consts::PI;
 
-use num::complex::{c64, Complex64};
+use num::complex::Complex64;
 use num::{Float, Num};
 
-use crate::special::mittag_leffler_special;
+use crate::algorithm::MittagLefflerAlgorithm;
 
-// {{{ trait
-
-/// Mittag-Leffler function.
-///
-/// Evaluates the Mittag-Leffler function using default parameters. It can be
-/// used as
-/// ```rust
-///     let alpha: f64 = 1.0;
-///     let beta: f64 = 1.0;
-///     let z: f64 = 1.0;
-///     let result = z.mittag_leffler(alpha, beta);
-/// ```
-/// on real or complex arguments.
-pub trait MittagLeffler
-where
-    Self: Sized,
-{
-    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Option<Complex64>;
-}
-
-impl MittagLeffler for f64 {
-    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Option<Complex64> {
-        let ml = GarrappaMittagLeffler::new(None);
-        let z = c64(*self, 0.0);
-
-        match mittag_leffler_special(z, alpha, beta) {
-            Some(value) => Some(value),
-            None => ml.evaluate(c64(*self, 0.0), alpha, beta),
-        }
-    }
-}
-
-impl MittagLeffler for Complex64 {
-    fn mittag_leffler(&self, alpha: f64, beta: f64) -> Option<Complex64> {
-        let ml = GarrappaMittagLeffler::new(None);
-
-        match mittag_leffler_special(*self, alpha, beta) {
-            Some(value) => Some(value),
-            None => ml.evaluate(*self, alpha, beta),
-        }
-    }
-}
-
-// }}}
-
-// {{{ MittagLeffler
-
-/// Parameters for the Mittag-Leffler function evaluation.
+/// Parameters for evaluating the Mittag-Leffler function.
 ///
 /// This implements the algorithm described in
 /// [Garrappa 2015](https://doi.org/10.1137/140971191). It is largely a direct
-/// port of the [MATLAB implementation](https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function).
+/// port of the [MATLAB implementation](https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function). For a more thorough description
+/// of the parameters see the paper.
 ///
 /// ## References
 ///
@@ -103,8 +57,10 @@ impl GarrappaMittagLeffler {
         self.eps = eps;
         self
     }
+}
 
-    pub fn evaluate(&self, z: Complex64, alpha: f64, beta: f64) -> Option<Complex64> {
+impl MittagLefflerAlgorithm for GarrappaMittagLeffler {
+    fn evaluate(&self, z: Complex64, alpha: f64, beta: f64) -> Option<Complex64> {
         if z.norm() < self.eps {
             return Some(Complex64 {
                 re: special::Gamma::gamma(beta).recip(),
@@ -162,7 +118,8 @@ fn laplace_transform_inversion(
     let kmax = (alpha / 2.0 - theta / (2.0 * PI)).floor() as i64;
     let mut s_star: Vec<Complex64> = (kmin..=kmax)
         .map(|k| {
-            znorm.powf(alpha.recip()) * c64(0.0, (theta + 2.0 * PI * (k as f64)) / alpha).exp()
+            znorm.powf(alpha.recip())
+                * Complex64::new(0.0, (theta + 2.0 * PI * (k as f64)) / alpha).exp()
         })
         .collect();
 
@@ -175,7 +132,7 @@ fn laplace_transform_inversion(
     phi_star = pick(&phi_star, &phi_star_index);
 
     // add back the origin
-    s_star.insert(0, c64(0.0, 0.0));
+    s_star.insert(0, Complex64::new(0.0, 0.0));
     phi_star.insert(0, 0.0);
     phi_star.push(f64::INFINITY);
 
@@ -245,11 +202,11 @@ fn laplace_transform_inversion(
     let hk: Vec<f64> = (-n_min..=n_min).map(|k| h_min * (k as f64)).collect();
     let zk: Vec<Complex64> = hk
         .iter()
-        .map(|&hk_i| mu_min * c64(1.0, hk_i).powi(2))
+        .map(|&hk_i| mu_min * Complex64::new(1.0, hk_i).powi(2))
         .collect();
     let zd: Vec<Complex64> = hk
         .iter()
-        .map(|&hk_i| c64(-2.0 * mu_min * hk_i, 2.0 * mu_min))
+        .map(|&hk_i| Complex64::new(-2.0 * mu_min * hk_i, 2.0 * mu_min))
         .collect();
 
     let sv: Complex64 = zk
@@ -259,7 +216,7 @@ fn laplace_transform_inversion(
         .zip(zk.iter())
         .map(|(f_i, &zk_i)| f_i * (zk_i * t).exp())
         .sum();
-    let integral = h_min * sv / c64(0.0, 2.0 * PI);
+    let integral = h_min * sv / Complex64::new(0.0, 2.0 * PI);
 
     // evaluate residues
     let residues: Complex64 = (jmin + 1..n_star)

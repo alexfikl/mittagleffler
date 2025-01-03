@@ -3,7 +3,7 @@
 
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 
-use mittagleffler::GarrappaMittagLeffler;
+use mittagleffler::{GarrappaMittagLeffler, MittagLefflerAlgorithm};
 use num::complex::Complex64;
 
 pub fn benchmark_vs_tolerance(c: &mut Criterion) {

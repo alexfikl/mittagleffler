@@ -3,6 +3,25 @@
 
 use num::complex::Complex64;
 
+// {{{ evaluate
+
+/// An algorithm used to evaluate the Mittag-Leffler function.
+pub trait MittagLefflerAlgorithm {
+    /// Evaluate the Mittag-Leffler function $E_{\alpha, \beta}(z)$.
+    ///
+    /// Note that this function does not need to evaluate the function to
+    /// machine precision. Consult each implementation for its accuracy guarantees.
+    ///
+    /// If the algorithm cannot compute the Mittag-Leffler function for a given
+    /// set of $(\alpha, \beta)$ or in a region of the complex plane, then *None*
+    /// is returned instead.
+    fn evaluate(&self, z: Complex64, alpha: f64, beta: f64) -> Option<Complex64>;
+}
+
+// }}}
+
+// {{{ known values
+
 pub fn mittag_leffler_special(z: Complex64, alpha: f64, beta: f64) -> Option<Complex64> {
     let eps = f64::EPSILON;
 
@@ -38,3 +57,5 @@ pub fn mittag_leffler_special(z: Complex64, alpha: f64, beta: f64) -> Option<Com
 
     None
 }
+
+// }}}
