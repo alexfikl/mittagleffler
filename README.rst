@@ -6,7 +6,11 @@
     :alt: REUSE
     :target: https://api.reuse.software/info/github.com/alexfikl/mittagleffler
 
-|badge-ci| |badge-reuse|
+.. |badge-rtd| image:: https://readthedocs.org/projects/mittagleffler/badge/?version=latest
+    :alt: Documentation
+    :target: https://mittagleffler.readthedocs.io/en/latest/?badge=latest
+
+|badge-ci| |badge-reuse| |badge-rtd|
 
 mittagleffler
 -------------
@@ -17,9 +21,6 @@ Currently only the algorithm described in the paper by `Roberto Garrapa (2015)
 <https://doi.org/10.1137/140971191>`__ is implemented. This seems to be the
 most accurate and computationally efficient method to date for evaluating the
 Mittag-Leffler function.
-
-Links
------
 
 * `Documentation <https://mittagleffler.readthedocs.io>`__.
 * `Code <https://github.com/alexfikl/mittagleffler>`__.
