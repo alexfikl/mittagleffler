@@ -64,3 +64,15 @@ addopts = [
     "--capture=no",
     "--verbose",
 ]
+
+[tool.mypy]
+strict = true
+python_version = "3.10"
+hide_error_codes = false
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = [
+    "scienceplots.*",
+]
+ignore_missing_imports = true

@@ -10,17 +10,27 @@ help: 			## Show this help
 
 # {{{ linting
 
-format: rustfmt							## Run all formatting scripts
+format: isort black rustfmt				## Run all formatting scripts
 	make -C python format
 .PHONY: format
 
 fmt: format
 .PHONY: fmt
 
+isort:									## Run ruff isort fixes over the source code
+	ruff check --fix --select=I scripts
+	ruff check --fix --select=RUF022 scripts
+	@echo -e "\e[1;32mruff isort clean!\e[0m"
+.PHONY: isort
+
+black:									## Run ruff format over the source code
+	ruff format scripts
+	@echo -e "\e[1;32mruff format clean!\e[0m"
+.PHONY: black
+
 rustfmt:								## Run rustfmt
 	cargo fmt -- src/*.rs tests/*.rs benches/*.rs
 	@echo -e "\e[1;32mrustfmt clean!\e[0m"
-	make -C python rustfmt
 .PHONY: rustfmt
 
 lint: typos reuse ruff clippy			## Run all linting scripts
@@ -40,7 +50,6 @@ reuse:			## Check REUSE license compliance
 clippy:			## Run clippy lint checks
 	cargo clippy --all-targets --all-features
 	@echo -e "\e[1;32mclippy clean!\e[0m"
-	make -C python clippy
 .PHONY: clippy
 
 ruff:			## Run ruff checks over the source code
