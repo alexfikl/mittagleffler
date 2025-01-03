@@ -18,6 +18,12 @@ Currently only the algorithm described in the paper by `Roberto Garrapa (2015)
 most accurate and computationally efficient method to date for evaluating the
 Mittag-Leffler function.
 
+Links
+-----
+
+* `Documentation <https://mittagleffler.readthedocs.io>`__.
+* `Code <https://github.com/alexfikl/mittagleffler>`__.
+
 Rust Crate
 ----------
 

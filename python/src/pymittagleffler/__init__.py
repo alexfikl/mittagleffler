@@ -1,5 +1,26 @@
 # SPDX-FileCopyrightText: 2023 Alexandru Fikl <alexfikl@gmail.com>
 # SPDX-License-Identifier: MIT
+
+"""
+.. autoclass:: GarrappaMittagLeffler
+    :members:
+
+    .. attribute:: eps
+        :type: float
+
+        Tolerance used by the algorithm.
+
+    .. automethod:: evaluate
+
+        Evaluate the Mittag-Leffler function at a scalar argument *z*.
+
+.. autofunction:: mittag_leffler
+
+    Evaluate the Mittag-Leffler function with parameters *alpha* and *beta*.
+
+    :arg z: any scalar or :class:`numpy.ndarray` of real or complex numbers.
+"""
+
 from __future__ import annotations
 
 from ._bindings import GarrappaMittagLeffler, mittag_leffler

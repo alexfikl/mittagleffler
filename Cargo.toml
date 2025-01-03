@@ -35,4 +35,4 @@ name = "bench"
 harness = false
 
 [package.metadata.typos.files]
-extend-exclude = ["python/target", "target"]
+extend-exclude = ["python/target", "target", "python/docs/_static"]

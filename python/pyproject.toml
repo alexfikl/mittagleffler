@@ -44,7 +44,11 @@ optional-dependencies.dev = [
     "typos",
     "uv",
 ]
-urls = { repository = "https://github.com/alexfikl/mittagleffler" }
+optional-dependencies.docs = [
+    "sphinx>=6",
+    "sphinx-book-theme",
+]
+urls = { Repository = "https://github.com/alexfikl/mittagleffler" }
 
 [tool.maturin]
 manifest-path = "Cargo.toml"
