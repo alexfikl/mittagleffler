@@ -9,6 +9,14 @@ categories = ["algorithms", "science"]
 readme = "README.rst"
 homepage = "https://github.com/alexfikl/mittagleffler"
 license = "MIT"
+exclude = [
+    ".github/*",
+    ".gitignore",
+    "benches/bench_matlab.m",
+    "benches/bench_python.py",
+    "python/*",
+    "scripts/*",
+]
 
 [lib]
 name = "mittagleffler"
