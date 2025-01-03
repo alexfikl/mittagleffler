@@ -120,6 +120,7 @@ warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
 module = [
+    "matplotlib.*",
     "scienceplots.*",
 ]
 ignore_missing_imports = true

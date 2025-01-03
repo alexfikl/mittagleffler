@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2024 Alexandru Fikl <alexfikl@gmail.com>
-# SPDX-License-Identifier: CC0-1.0
+# SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 

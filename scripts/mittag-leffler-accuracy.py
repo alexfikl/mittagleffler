@@ -73,7 +73,7 @@ except ImportError as exc:
     print("'matplotlib' package is not available for plotting")
     raise SystemExit(0) from exc
 
-from pymittagleffler import _set_recommended_matplotlib
+from pymittagleffler import _set_recommended_matplotlib  # noqa: E402,RUF100
 
 _set_recommended_matplotlib()
 fig = mp.figure()
