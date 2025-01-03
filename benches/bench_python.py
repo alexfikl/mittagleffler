@@ -236,7 +236,7 @@ def main(
     ax.bar(n + 2 * width, result_matlab[:, 1] / size, width, label="MATLAB")
 
     ax.set_xlabel(r"$n$")
-    ax.set_ylabel("$Time~(ms)$")
+    ax.set_ylabel("Improvement (mean time)")
     ax.legend()
 
     fig.savefig(outfile)
