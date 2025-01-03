@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 use std::f64::consts::PI;
+use std::fmt;
 
 use num::complex::Complex64;
 use num::{Float, Num};
@@ -20,6 +21,7 @@ use crate::algorithm::MittagLefflerAlgorithm;
 /// 1. R. Garrappa, *Numerical Evaluation of Two and Three Parameter Mittag-Leffler
 ///     Functions*, SIAM Journal on Numerical Analysis, Vol. 53, pp. 1350--1369, 2015,
 ///     DOI: [10.1137/140971191](https://doi.org/10.1137/140971191).
+#[derive(Clone, Debug)]
 pub struct GarrappaMittagLeffler {
     /// Tolerance used to control the accuracy of evaluating the inverse Laplace
     /// transform used to compute the function. This should match the tolerance
@@ -62,13 +64,22 @@ impl GarrappaMittagLeffler {
 impl MittagLefflerAlgorithm for GarrappaMittagLeffler {
     fn evaluate(&self, z: Complex64, alpha: f64, beta: f64) -> Option<Complex64> {
         if z.norm() < self.eps {
-            return Some(Complex64 {
-                re: special::Gamma::gamma(beta).recip(),
-                im: 0.0,
-            });
+            return Some(Complex64::new(special::Gamma::gamma(beta).recip(), 0.0));
         }
 
         laplace_transform_inversion(self, 1.0, z, alpha, beta)
+    }
+}
+
+impl Default for GarrappaMittagLeffler {
+    fn default() -> Self {
+        Self::new(None)
+    }
+}
+
+impl fmt::Display for GarrappaMittagLeffler {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "GarrappaMittagLeffler(eps={})", self.eps)
     }
 }
 

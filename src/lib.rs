@@ -30,7 +30,7 @@ where
 
 impl MittagLeffler for f64 {
     fn mittag_leffler(&self, alpha: f64, beta: f64) -> Option<Complex64> {
-        let ml = GarrappaMittagLeffler::new(None);
+        let ml = GarrappaMittagLeffler::default();
         let z = Complex64::new(*self, 0.0);
 
         match mittag_leffler_special(z, alpha, beta) {
@@ -42,7 +42,7 @@ impl MittagLeffler for f64 {
 
 impl MittagLeffler for Complex64 {
     fn mittag_leffler(&self, alpha: f64, beta: f64) -> Option<Complex64> {
-        let ml = GarrappaMittagLeffler::new(None);
+        let ml = GarrappaMittagLeffler::default();
 
         match mittag_leffler_special(*self, alpha, beta) {
             Some(value) => Some(value),
