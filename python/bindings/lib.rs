@@ -58,8 +58,6 @@ pub fn mittag_leffler<'py>(
     alpha: f64,
     beta: f64,
 ) -> PyResult<PyObject> {
-    println!("z: {:?} ({:?})", z, z.get_type());
-
     if let Ok(ary) = z.extract::<Complex64>() {
         let result = mittag_leffler_always_c64(&ary, alpha, beta);
         return Ok(PyComplex::from_doubles(py, result.re, result.im).into());
