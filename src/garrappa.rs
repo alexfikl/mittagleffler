@@ -63,6 +63,10 @@ impl GarrappaMittagLeffler {
 
 impl MittagLefflerAlgorithm for GarrappaMittagLeffler {
     fn evaluate(&self, z: Complex64, alpha: f64, beta: f64) -> Option<Complex64> {
+        if alpha < 0.0 {
+            return None;
+        }
+
         if z.norm() < self.eps {
             return Some(Complex64::new(special::Gamma::gamma(beta).recip(), 0.0));
         }
