@@ -18,13 +18,13 @@ fmt: format
 .PHONY: fmt
 
 isort:									## Run ruff isort fixes over the source code
-	ruff check --fix --select=I scripts
-	ruff check --fix --select=RUF022 scripts
+	ruff check --fix --config python/pyproject.toml --select=I scripts
+	ruff check --fix --config python/pyproject.toml --select=RUF022 scripts
 	@echo -e "\e[1;32mruff isort clean!\e[0m"
 .PHONY: isort
 
 black:									## Run ruff format over the source code
-	ruff format scripts
+	ruff format --config python/pyproject.toml scripts
 	@echo -e "\e[1;32mruff format clean!\e[0m"
 .PHONY: black
 
@@ -53,7 +53,7 @@ clippy:			## Run clippy lint checks
 .PHONY: clippy
 
 ruff:			## Run ruff checks over the source code
-	ruff check python scripts
+	ruff check --config python/pyproject.toml python scripts
 	@echo -e "\e[1;32mruff lint clean!\e[0m"
 .PHONY: ruff
 

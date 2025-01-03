@@ -27,8 +27,8 @@ def test_mittag_leffler_scalar() -> None:
         _ = mittag_leffler(z, alpha, beta)
         print(f"({type(z)}, {type(_)}): {_} {np.exp(z + 0j)}")
 
+    z = "1.0"
     with pytest.raises(TypeError):
-        z = "1.0"
         _ = mittag_leffler(z, alpha, beta)
 
 
