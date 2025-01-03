@@ -212,22 +212,30 @@ def main(
     fig = mp.figure()
     ax = fig.gca()
 
-    mean = result_rust[:, 1] * 1000
-    std = result_rust[:, 2] * 1000
-    (line,) = ax.plot(alpha, mean, label="Rust")
-    ax.fill_between(alpha, mean + std, mean - std, alpha=0.2, color=line.get_color())
+    # mean = result_rust[:, 1] * 1000
+    # std = result_rust[:, 2] * 1000
+    # (line,) = ax.plot(alpha, mean, label="Rust")
+    # ax.fill_between(alpha, mean + std, mean - std, alpha=0.2, color=line.get_color())
 
-    mean = result_python[:, 1] * 1000
-    std = result_python[:, 2] * 1000
-    (line,) = ax.plot(alpha, mean, label="Python")
-    ax.fill_between(alpha, mean + std, mean - std, alpha=0.2, color=line.get_color())
+    # mean = result_python[:, 1] * 1000
+    # std = result_python[:, 2] * 1000
+    # (line,) = ax.plot(alpha, mean, label="Python")
+    # ax.fill_between(alpha, mean + std, mean - std, alpha=0.2, color=line.get_color())
 
-    mean = result_matlab[:, 1] * 1000
-    std = result_matlab[:, 2] * 1000
-    (line,) = ax.plot(alpha, mean, label="MATLAB")
-    ax.fill_between(alpha, mean + std, mean - std, alpha=0.2, color=line.get_color())
+    # mean = result_matlab[:, 1] * 1000
+    # std = result_matlab[:, 2] * 1000
+    # (line,) = ax.plot(alpha, mean, label="MATLAB")
+    # ax.fill_between(alpha, mean + std, mean - std, alpha=0.2, color=line.get_color())
 
-    ax.set_xlabel(r"$\alpha$")
+    width = 0.3
+    size = result_rust[:, 1]
+    n = np.arange(size.size)
+
+    ax.bar(n, result_rust[:, 1] / size, width, label="Rust")
+    ax.bar(n + width, result_python[:, 1] / size, width, label="Python")
+    ax.bar(n + 2 * width, result_matlab[:, 1] / size, width, label="MATLAB")
+
+    ax.set_xlabel(r"$n$")
     ax.set_ylabel("$Time~(ms)$")
     ax.legend()
 
