@@ -45,7 +45,7 @@ jobs:
           path: dist/*.whl
 
   publish:
-    needs: [ 'build_sdist', 'build_wheels' ]
+    needs: [ 'build_sdist', 'build_wheels_linux' ]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
