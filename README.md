@@ -15,9 +15,10 @@ method to date for evaluating the Mittag-Leffler function.
 
 **Links**
 
-* [Documentation](https://mittagleffler.readthedocs.io).
-* [Code](https://github.com/alexfikl/mittagleffler).
-* License: MIT (see `LICENSES/MIT.txt`).
+* *Documentation*: [Rust (docs.rs)](https://docs.rs/mittagleffler/latest/mittagleffler/)
+  and [Python (readthedocs.io)](https://mittagleffler.readthedocs.io).
+* *Code*: [Github](https://github.com/alexfikl/mittagleffler).
+* *License*: [MIT](https://spdx.org/licenses/MIT.html) (see `LICENSES/MIT.txt`).
 
 **Other implementations**
 
