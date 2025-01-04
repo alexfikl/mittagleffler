@@ -13,7 +13,7 @@
 |badge-ci| |badge-reuse| |badge-rtd|
 
 mittagleffler
--------------
+=============
 
 This library implements the two-parameter Mittag-Leffler function.
 
@@ -26,7 +26,7 @@ Mittag-Leffler function.
 * `Code <https://github.com/alexfikl/mittagleffler>`__.
 
 Rust Crate
-----------
+==========
 
 The library is available as a Rust crate that implements the main algorithms.
 Evaluating the Mittag Leffler function can be performed directly by
@@ -63,7 +63,7 @@ for better performance or accuracy. They can be found in the documentation of th
 structure, but should not be changed unless there is good reason!
 
 Installation
-============
+------------
 
 The crate can be built from the root directory using
 
@@ -78,7 +78,7 @@ To run the tests, you can do
    cargo test --tests
 
 Python Bindings
----------------
+===============
 
 The library also has Python bindings (using `pyo3 <https://github.com/PyO3/pyo3>`__)
 that can be found in the ``python`` directory. The bindings are written to work
@@ -94,7 +94,7 @@ with scalars and with ``numpy`` arrays equally. For example
     result = mittag_leffler(z, alpha, beta)
 
 Installation
-============
+------------
 
 The bindings use the `maturin <https://github.com/PyO3/maturin>`__ build system
 to package the library. To create wheels for your system, directly run
