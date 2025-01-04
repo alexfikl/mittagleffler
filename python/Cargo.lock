@@ -28,9 +28,9 @@ checksum = "b248f5224d1d606005e02c97f5aa4e88eeb230488bcc03bc9ca4d7991399f2b5"
 
 [[package]]
 name = "lambert_w"
-version = "1.0.8"
+version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ee712885ade8423d61555fffa027c33a02e1e62e20c3356c379994073893e8f"
+checksum = "bfb65fe07e2fe197be2c067f3e85becc0db1b819d22e289ab953317b3bf44629"
 dependencies = [
  "libm",
 ]
@@ -68,7 +68,7 @@ dependencies = [
 
 [[package]]
 name = "mittagleffler"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "num",
  "special",
@@ -209,7 +209,7 @@ dependencies = [
 
 [[package]]
 name = "pymittagleffler"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "mittagleffler",
  "num",
