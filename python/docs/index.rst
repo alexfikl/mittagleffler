@@ -1,6 +1,30 @@
 pymittagleffler documentation
 =============================
 
+Installation
+------------
+
+This package provides bindings around the Rust crate ``mittagleffler``. It can
+be directly installed from PyPI using
+
+.. code:: bash
+
+    python -m pip install pymittagleffler
+
+For development, you need to clone this repository and go into the ``python``
+folder. We use `maturin <https://github.com/PyO3/maturin>`__ as the build system,
+since this library is just a thin wrapper around some Rust code. To install
+into your virtual environment, run
+
+.. code::
+
+    python -m pip install --verbose --no-build-isolation --editable .
+
+This assumes that you have the build requirements already installed. In general,
+the library follows the standard Python packaging rules, so read up on them in
+the `official Python packaging guides <https://packaging.python.org/en/latest/>`__
+if any of this sounds confusing.
+
 Example
 -------
 

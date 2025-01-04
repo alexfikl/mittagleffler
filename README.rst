@@ -28,6 +28,7 @@ Mittag-Leffler function.
 
 * `Documentation <https://mittagleffler.readthedocs.io>`__.
 * `Code <https://github.com/alexfikl/mittagleffler>`__.
+* License: MIT (see ``LICENSES/MIT.txt``).
 
 Rust Crate
 ==========
@@ -66,21 +67,6 @@ The algorithm from ``Garrappa2015`` has several parameters that can be tweaked
 for better performance or accuracy. They can be found in the documentation of the
 structure, but should not be changed unless there is good reason!
 
-Installation
-------------
-
-The crate can be built from the root directory using
-
-.. code:: bash
-
-    cargo build --all-features --release
-
-To run the tests, you can do
-
-.. code:: bash
-
-   cargo test --tests
-
 Python Bindings
 ===============
 
@@ -97,18 +83,4 @@ with scalars and with ``numpy`` arrays equally. For example
     z = np.linspace(0.0, 1.0, 128)
     result = mittag_leffler(z, alpha, beta)
 
-Installation
-------------
-
-The bindings use the `maturin <https://github.com/PyO3/maturin>`__ build system
-to package the library. To create wheels for your system, directly run
-
-.. code:: bash
-
-    python -m build --wheel .
-
-To run the tests, you can do
-
-.. code:: bash
-
-   python -m pytest -v -s test
+These are available on PyPI under the name ``pymittagleffler``.
