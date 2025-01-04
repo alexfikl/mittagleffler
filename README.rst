@@ -2,6 +2,10 @@
     :alt: Build Status
     :target: https://github.com/alexfikl/mittagleffler/actions?query=branch%3Amain+workflow%3ACI
 
+.. |badge-pypi| image:: https://badge.fury.io/py/pymittagleffler.svg
+    :alt: PyPI
+    :target: https://pypi.org/project/pymittagleffler/
+
 .. |badge-reuse| image:: https://api.reuse.software/badge/github.com/alexfikl/mittagleffler
     :alt: REUSE
     :target: https://api.reuse.software/info/github.com/alexfikl/mittagleffler
@@ -10,7 +14,7 @@
     :alt: Documentation
     :target: https://mittagleffler.readthedocs.io/en/latest/?badge=latest
 
-|badge-ci| |badge-reuse| |badge-rtd|
+|badge-ci| |badge-reuse| |badge-rtd| |badge-pypi|
 
 mittagleffler
 =============
