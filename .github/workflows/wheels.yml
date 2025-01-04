@@ -14,38 +14,73 @@ jobs:
   build_sdist:
     name: Build sdist
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Build sdist
         run: |
           pipx run build --sdist --outdir dist python
+
       - uses: actions/upload-artifact@v4
         with:
           name: cibw-sdist
           path: dist/*.tar.gz
 
-  build_wheels_linux:
-    name: Build wheels (ubuntu-latest)
-    runs-on: ubuntu-latest
+  build_wheels:
+    name: Build wheels (${{ matrix.os }}-${{ matrix.architecture }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        architecture: [x86-64, aarch64]
+        exclude:
+          - os: windows-latest
+            architecture: aarch64
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Set Rust target (aarch64)
+        if: matrix.architecture == 'aarch64'
+        id: target
+        run: |
+          TARGET=$(
+            if [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+              echo "aarch64-apple-darwin";
+            else
+              echo "aarch64-unknown-linux-gnu";
+            fi
+          )
+          echo "target=$TARGET" >> $GITHUB_OUTPUT
+
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
-          target: x86_64
-          manylinux: auto
+          command: build
+          target: ${{ steps.target.outputs.target }}
           args: --release --out dist -m python/Cargo.toml
+          manylinux: ${{ matrix.architecture == 'aarch64' && '2_24' || 'auto' }}
+
+      - name: Test wheels
+        if: matrix.architecture == 'x86-64'
+        run: |
+          python -m pip install --force-reinstall --verbose dist/*.whl
+          python -c 'import pymittagleffler'
+
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-linux-${{ strategy.job-index }}
+          name: cibw-wheels-${{ matrix.os }}-${{ matrix.architecture}}-${{ strategy.job-index }}
           path: dist/*.whl
 
   publish:
-    needs: [ 'build_sdist', 'build_wheels_linux' ]
+    needs: [ 'build_sdist', 'build_wheels' ]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
