@@ -1,3 +1,11 @@
+Version 0.1.2 (January 4th, 2025)
+---------------------------------
+
+Maintenance
+^^^^^^^^^^^
+
+* Switch ``README.rst`` to ``README.md`` for ``crates.io``.
+
 Version 0.1.1 (January 4th, 2025)
 ---------------------------------
 
