@@ -130,7 +130,6 @@ module = [
 ignore_missing_imports = true
 
 [tool.cibuildwheel]
-package_dir = "python"
 build = [
     "cp3{10,11,12,13}-*",
 ]
