@@ -1,13 +1,13 @@
 Version 0.1.1 (January 4th, 2025)
-=================================
+---------------------------------
 
 Maintenance
------------
+^^^^^^^^^^^
 
 * Fix CI to produce wheels for x86_64 macOS.
 
 Version 0.1.0 (January 4th, 2025)
-=================================
+---------------------------------
 
 This is the initial release of the Python bindings for the ``mittagleffler``
 Rust crate. It mainly provides a simple function to evaluate the Mittag-Leffler
