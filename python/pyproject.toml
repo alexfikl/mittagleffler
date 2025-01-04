@@ -128,3 +128,28 @@ module = [
     "scienceplots.*",
 ]
 ignore_missing_imports = true
+
+[tool.cibuildwheel]
+package_dir = "python"
+build = [
+    "cp3{10,11,12,13}-*",
+]
+test-requires = [
+    "pytest",
+]
+test-command = "python -m pytest {package}/tests"
+
+[tool.cibuildwheel.linux]
+skip = [
+    "*_i686",
+]
+
+[tool.cibuildwheel.macos]
+environment = { MACOSX_DEPLOYMENT_TARGET = "11.0" }
+
+[tool.cibuildwheel.windows]
+skip = [
+    "*-win32",
+]
+before-build = "pip install delvewheel"
+repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel}"
