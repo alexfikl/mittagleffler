@@ -26,9 +26,32 @@ Currently only the algorithm described in the paper by `Roberto Garrapa (2015)
 most accurate and computationally efficient method to date for evaluating the
 Mittag-Leffler function.
 
+**Links**
+
 * `Documentation <https://mittagleffler.readthedocs.io>`__.
 * `Code <https://github.com/alexfikl/mittagleffler>`__.
 * License: MIT (see ``LICENSES/MIT.txt``).
+
+**Other implementations**
+
+* `ml.m <https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function>`__ (MATLAB):
+  implements three-parameter Mittag-Leffler function.
+* `ml_matrix.m <https://www.mathworks.com/matlabcentral/fileexchange/66272-mittag-leffler-function-with-matrix-arguments>`__ (MATLAB):
+  implements the matrix-valued two-parameter Mittag-Leffler function.
+* `MittagLeffler.jl <https://github.com/JuliaMath/MittagLeffler.jl>`__ (Julia):
+  implements the two-parameter Mittag-Leffler function and its derivative.
+* `MittagLeffler <https://github.com/gurteksinghgill/MittagLeffler>`__ (R):
+  implements the three-parameter Mittag-Leffler function.
+* `mittag-leffler <https://github.com/khinsen/mittag-leffler>`__ (Python):
+  implements the three-parameter Mittag-Leffler function.
+* `mlf <https://github.com/tranqv/Mittag-Leffler-function-and-its-derivative>`__ (Fortran 90):
+  implements the three-parameter Mittag-Leffler function.
+* `mlpade <https://github.com/matt-black/mlpade>`__ (MATLAB):
+  implements the two-parameter Mittag-Leffler function.
+* `MittagLeffler <https://github.com/droodman/Mittag-Leffler-for-Stata>`__ (Stata):
+  implements the three-parameter Mittag-Leffler function.
+* `MittagLefflerE <https://reference.wolfram.com/language/ref/MittagLefflerE.html.en>`__ (Mathematica):
+  implements the two-parameter Mittag-Leffler function.
 
 Rust Crate
 ==========
