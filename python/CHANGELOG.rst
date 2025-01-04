@@ -1,5 +1,5 @@
-Version 0.1.0 (TDB)
--------------------
+Version 0.1.0 (January 4th, 2025)
+---------------------------------
 
 This is the initial release of the Python bindings for the ``mittagleffler``
 Rust crate. It mainly provides a simple function to evaluate the Mittag-Leffler

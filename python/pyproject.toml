@@ -48,7 +48,8 @@ optional-dependencies.docs = [
     "sphinx>=6",
     "sphinx-book-theme",
 ]
-urls = { Repository = "https://github.com/alexfikl/mittagleffler" }
+urls.Documentation = "https://mittagleffler.readthedocs.io"
+urls.Repository = "https://github.com/alexfikl/mittagleffler"
 
 [tool.maturin]
 manifest-path = "Cargo.toml"
