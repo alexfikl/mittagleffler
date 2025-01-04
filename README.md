@@ -1,7 +1,9 @@
 [![Build Status](https://github.com/alexfikl/mittagleffler/workflows/CI/badge.svg)](https://github.com/alexfikl/mittagleffler/actions?query=branch%3Amain+workflow%3ACI)
 [![REUSE](https://api.reuse.software/badge/github.com/alexfikl/mittagleffler)](https://api.reuse.software/info/github.com/alexfikl/mittagleffler)
-[![Documentation](https://readthedocs.org/projects/mittagleffler/badge/?version=latest)](https://mittagleffler.readthedocs.io/en/latest)
 [![PyPI](https://badge.fury.io/py/pymittagleffler.svg)](https://pypi.org/project/pymittagleffler/)
+[![crates.io](https://img.shields.io/crates/v/mittagleffler)](https://crates.io/crates/mittagleffler)
+[![readthedocs.io](https://img.shields.io/readthedocs/mittagleffler?label=rtd.io&color=%234280B2)](https://mittagleffler.readthedocs.io/en/latest)
+[![docs.rs](https://img.shields.io/docsrs/mittagleffler?label=docs.rs&color=%23B6690D)](https://docs.rs/mittagleffler/latest/mittagleffler/)
 
 # mittagleffler
 
