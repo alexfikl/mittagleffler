@@ -71,9 +71,9 @@ print(f"Error: Garrappa {np.max(error_garrappa_num):.8e}")
 alpha = 2
 beta = 1
 
-n = 1024 + 512
+n = 2048
 x = np.linspace(-3.0, 3.0, n)
-y = np.linspace(-3.0, 3.0, n)
+y = np.linspace(-1.5, 1.5, n)
 x, y = np.meshgrid(x, y)
 z = x + 1j * y
 del x, y
@@ -115,6 +115,7 @@ fig.savefig(filename)
 print(f"Saved results in {filename}")
 
 fig.clf()
+fig.set_size_inches(8, 4)
 ax = fig.gca()
 
 cs = ax.contourf(z.real, z.imag, np.abs(error_box_num) + 1.0e-16, locator=LogLocator(), cmap=mp.colormaps["inferno"])
