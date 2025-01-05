@@ -6,7 +6,7 @@
 [![docs.rs](https://img.shields.io/docsrs/mittagleffler?label=docs.rs&color=%23B6690D)](https://docs.rs/mittagleffler/latest/mittagleffler/)
 
 <div align="center">
-<img width="400" src="https://raw.githubusercontent.com/alexfikl/mittagleffler/refs/heads/main/python/docs/_static/mittag-leffler-accuracy-contour.png"/><br>
+<img width="600" src="https://raw.githubusercontent.com/alexfikl/mittagleffler/refs/heads/main/python/docs/_static/mittag-leffler-accuracy-contour.png"/><br>
 </div>
 
 # mittagleffler

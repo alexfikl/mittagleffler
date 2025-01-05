@@ -83,7 +83,7 @@ result_box_ref = np.cos(z)
 
 # 2. Garrappa algorithm
 ml = GarrappaMittagLeffler()
-result_box_num = mittag_leffler(ml, -z**2, alpha, beta)
+result_box_num = mittag_leffler(ml, -(z**2), alpha, beta)
 error_box_num = result_box_ref - result_box_num
 print(f"Error: Garrappa {np.max(np.abs(error_box_num)):.8e}")
 
@@ -118,7 +118,13 @@ fig.clf()
 fig.set_size_inches(8, 4)
 ax = fig.gca()
 
-cs = ax.contourf(z.real, z.imag, np.abs(error_box_num) + 1.0e-16, locator=LogLocator(), cmap=mp.colormaps["inferno"])
+cs = ax.contourf(
+    z.real,
+    z.imag,
+    np.abs(error_box_num) + 1.0e-16,
+    locator=LogLocator(),
+    cmap=mp.colormaps["inferno"],
+)
 ax.set_axis_off()
 
 filename = filename.with_stem(f"{filename.stem}-contour")
