@@ -1,15 +1,15 @@
+<div align="center">
+<img width="600" src="https://raw.githubusercontent.com/alexfikl/mittagleffler/refs/heads/main/python/docs/_static/mittag-leffler-accuracy-contour.png"/><br>
+</div>
+
+# mittagleffler
+
 [![Build Status](https://github.com/alexfikl/mittagleffler/workflows/CI/badge.svg)](https://github.com/alexfikl/mittagleffler/actions?query=branch%3Amain+workflow%3ACI)
 [![REUSE](https://api.reuse.software/badge/github.com/alexfikl/mittagleffler)](https://api.reuse.software/info/github.com/alexfikl/mittagleffler)
 [![PyPI](https://badge.fury.io/py/pymittagleffler.svg)](https://pypi.org/project/pymittagleffler/)
 [![crates.io](https://img.shields.io/crates/v/mittagleffler)](https://crates.io/crates/mittagleffler)
 [![readthedocs.io](https://img.shields.io/readthedocs/mittagleffler?label=rtd.io&color=%234280B2)](https://mittagleffler.readthedocs.io/en/latest)
 [![docs.rs](https://img.shields.io/docsrs/mittagleffler?label=docs.rs&color=%23F58042)](https://docs.rs/mittagleffler/latest/mittagleffler/)
-
-<div align="center">
-<img width="600" src="https://raw.githubusercontent.com/alexfikl/mittagleffler/refs/heads/main/python/docs/_static/mittag-leffler-accuracy-contour.png"/><br>
-</div>
-
-# mittagleffler
 
 This library implements the two-parameter Mittag-Leffler function.
 
