@@ -39,29 +39,53 @@ def mittag_leffler(
     ml: GarrappaMittagLeffler, z: Array, alpha: float, beta: float
 ) -> Array:
     result = np.empty_like(z)
-    for i in range(z.size):
+    for i in np.ndindex(*z.shape):
         result[i] = ml.evaluate(z[i], alpha, beta)
 
     return result
 
 
-# {{{ evaluate
+# {{{ evaluate (for Figure 4 in [Garrappa2015])
 
 alpha = 0.5
 beta = 1
 
+n = 256
 arg = np.pi / 2
-r = np.linspace(0.0, 12.0, 256)
+r = np.linspace(0.0, 12.0, n)
 z = r * np.exp(1j * arg)
 
 # 1. Reference result
-result_ref = np.exp(z**2) * erfc(-z)
+result_garrappa_ref = np.exp(z**2) * erfc(-z)
 
 # 2. Garrappa algorithm
 ml = GarrappaMittagLeffler()
-result_garrappa = mittag_leffler(ml, z, alpha, beta)
-error_garrappa = pointwise_error(result_ref, result_garrappa)
-print(f"Error: Garrappa {np.max(error_garrappa):.8e}")
+result_garrappa_num = mittag_leffler(ml, z, alpha, beta)
+error_garrappa_num = pointwise_error(result_garrappa_ref, result_garrappa_num)
+print(f"Error: Garrappa {np.max(error_garrappa_num):.8e}")
+
+# }}}
+
+# {{{ evaluate (for fancy plot)
+
+alpha = 2
+beta = 1
+
+n = 1024 + 512
+x = np.linspace(-3.0, 3.0, n)
+y = np.linspace(-3.0, 3.0, n)
+x, y = np.meshgrid(x, y)
+z = x + 1j * y
+del x, y
+
+# 1. Reference result
+result_box_ref = np.cos(z)
+
+# 2. Garrappa algorithm
+ml = GarrappaMittagLeffler()
+result_box_num = mittag_leffler(ml, -z**2, alpha, beta)
+error_box_num = result_box_ref - result_box_num
+print(f"Error: Garrappa {np.max(np.abs(error_box_num)):.8e}")
 
 # }}}
 
@@ -69,6 +93,7 @@ print(f"Error: Garrappa {np.max(error_garrappa):.8e}")
 
 try:
     import matplotlib.pyplot as mp
+    from matplotlib.ticker import LogLocator
 except ImportError as exc:
     print("'matplotlib' package is not available for plotting")
     raise SystemExit(0) from exc
@@ -79,13 +104,23 @@ _set_recommended_matplotlib()
 fig = mp.figure()
 ax = fig.gca()
 
-ax.semilogy(r, error_garrappa, label="Garrappa (2015)")
+ax.semilogy(r, error_garrappa_num, label="Garrappa (2015)")
 ax.axhline(ml.eps, color="k", ls="--")
 ax.set_xlabel("$|z|$")
 ax.set_ylabel("Error")
 ax.legend()
 
 filename = pathlib.Path(__file__).with_suffix(".png")
+fig.savefig(filename)
+print(f"Saved results in {filename}")
+
+fig.clf()
+ax = fig.gca()
+
+cs = ax.contourf(z.real, z.imag, np.abs(error_box_num) + 1.0e-16, locator=LogLocator(), cmap=mp.colormaps["inferno"])
+ax.set_axis_off()
+
+filename = filename.with_stem(f"{filename.stem}-contour")
 fig.savefig(filename)
 print(f"Saved results in {filename}")
 

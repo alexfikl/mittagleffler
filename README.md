@@ -5,6 +5,10 @@
 [![readthedocs.io](https://img.shields.io/readthedocs/mittagleffler?label=rtd.io&color=%234280B2)](https://mittagleffler.readthedocs.io/en/latest)
 [![docs.rs](https://img.shields.io/docsrs/mittagleffler?label=docs.rs&color=%23B6690D)](https://docs.rs/mittagleffler/latest/mittagleffler/)
 
+<div align="center">
+<img width="400" src="https://raw.githubusercontent.com/alexfikl/mittagleffler/refs/heads/main/python/docs/_static/mittag-leffler-accuracy-contour.png"/><br>
+</div>
+
 # mittagleffler
 
 This library implements the two-parameter Mittag-Leffler function.
