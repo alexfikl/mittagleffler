@@ -25,7 +25,7 @@ SPDX-FileCopyrightText = "2023 Alexandru Fikl <alexfikl@gmail.com>"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
-path = ["python/requirements.in", "python/requirements.txt", "python/requirements-dev.txt", "python/Cargo.lock"]
+path = ["python/requirements.in", "python/requirements*.txt", "python/Cargo.lock"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2024 Alexandru Fikl <alexfikl@gmail.com>"
 SPDX-License-Identifier = "CC0-1.0"
