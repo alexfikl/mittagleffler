@@ -36,17 +36,19 @@ dependencies = [
     "numpy>=2",
 ]
 optional-dependencies.dev = [
-    "mypy",
     "pyproject-fmt",
-    "pytest",
     "reuse",
-    "ruff",
     "typos",
     "uv",
 ]
 optional-dependencies.docs = [
     "sphinx>=6",
     "sphinx-book-theme",
+]
+optional-dependencies.test = [
+    "mypy",
+    "pytest",
+    "ruff",
 ]
 urls.Documentation = "https://mittagleffler.readthedocs.io"
 urls.Repository = "https://github.com/alexfikl/mittagleffler"
