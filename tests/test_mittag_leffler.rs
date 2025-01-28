@@ -20,7 +20,7 @@ fn test_param() {
 
 #[test]
 fn test_vs_exponential() {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     let (a, b) = (0.0, 10.0);
     let alpha = 1.0;
@@ -30,7 +30,7 @@ fn test_vs_exponential() {
 
     // test real only
     for _ in 0..512 {
-        let z = c64(a + (b - a) * rng.gen::<f64>(), 0.0);
+        let z = c64(a + (b - a) * rng.random::<f64>(), 0.0);
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = z.exp();
 
@@ -48,10 +48,7 @@ fn test_vs_exponential() {
 
     // test complex
     for _ in 0..512 {
-        let z = c64(
-            a + (b - a) * rng.gen::<f64>(),
-            a + (b - a) * rng.gen::<f64>(),
-        );
+        let z = c64(a + (b - a) * rng.random::<f64>(), a + (b - a) * rng.random::<f64>());
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = z.exp();
 
@@ -70,7 +67,7 @@ fn test_vs_exponential() {
 
 #[test]
 fn test_vs_cosine() {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     let (a, b) = (0.0, 10.0);
     let alpha = 2.0;
@@ -80,7 +77,7 @@ fn test_vs_cosine() {
 
     // test real only
     for _ in 0..512 {
-        let z = c64(a + (b - a) * rng.gen::<f64>(), 0.0);
+        let z = c64(a + (b - a) * rng.random::<f64>(), 0.0);
         let result = ml.evaluate(-z.powi(2), alpha, beta).unwrap();
         let reference = z.cos();
 
@@ -98,10 +95,7 @@ fn test_vs_cosine() {
 
     // test complex
     for _ in 0..512 {
-        let z = c64(
-            a + (b - a) * rng.gen::<f64>(),
-            a + (b - a) * rng.gen::<f64>(),
-        );
+        let z = c64(a + (b - a) * rng.random::<f64>(), a + (b - a) * rng.random::<f64>());
         let result = ml.evaluate(-z.powi(2), alpha, beta).unwrap();
         let reference = z.cos();
 
@@ -120,7 +114,7 @@ fn test_vs_cosine() {
 
 #[test]
 fn test_vs_hyperbolic_cosine() {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     let (a, b) = (0.0, 100.0);
     let alpha = 2.0;
@@ -130,7 +124,7 @@ fn test_vs_hyperbolic_cosine() {
 
     // test real only
     for _ in 0..512 {
-        let z = c64(a + (b - a) * rng.gen::<f64>(), 0.0);
+        let z = c64(a + (b - a) * rng.random::<f64>(), 0.0);
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = z.sqrt().cosh();
 
@@ -148,10 +142,7 @@ fn test_vs_hyperbolic_cosine() {
 
     // test complex
     for _ in 0..512 {
-        let z = c64(
-            a + (b - a) * rng.gen::<f64>(),
-            a + (b - a) * rng.gen::<f64>(),
-        );
+        let z = c64(a + (b - a) * rng.random::<f64>(), a + (b - a) * rng.random::<f64>());
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = z.sqrt().cosh();
 
@@ -170,7 +161,7 @@ fn test_vs_hyperbolic_cosine() {
 
 #[test]
 fn test_vs_exponential_inv() {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     let (a, b) = (0.0, 10.0);
     let alpha = 1.0;
@@ -180,7 +171,7 @@ fn test_vs_exponential_inv() {
 
     // test real only
     for _ in 0..512 {
-        let z = c64(a + (b - a) * rng.gen::<f64>(), 0.0);
+        let z = c64(a + (b - a) * rng.random::<f64>(), 0.0);
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = (z.exp() - 1.0) / z;
 
@@ -198,10 +189,7 @@ fn test_vs_exponential_inv() {
 
     // test complex
     for _ in 0..512 {
-        let z = c64(
-            a + (b - a) * rng.gen::<f64>(),
-            a + (b - a) * rng.gen::<f64>(),
-        );
+        let z = c64(a + (b - a) * rng.random::<f64>(), a + (b - a) * rng.random::<f64>());
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = (z.exp() - 1.0) / z;
 
@@ -220,7 +208,7 @@ fn test_vs_exponential_inv() {
 
 #[test]
 fn test_vs_hyperbolic_sine() {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     let (a, b) = (0.0, 10.0);
     let alpha = 2.0;
@@ -230,7 +218,7 @@ fn test_vs_hyperbolic_sine() {
 
     // test real only
     for _ in 0..512 {
-        let z = c64(a + (b - a) * rng.gen::<f64>(), 0.0);
+        let z = c64(a + (b - a) * rng.random::<f64>(), 0.0);
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = z.sqrt().sinh() / z.sqrt();
 
@@ -248,10 +236,7 @@ fn test_vs_hyperbolic_sine() {
 
     // test complex
     for _ in 0..512 {
-        let z = c64(
-            a + (b - a) * rng.gen::<f64>(),
-            a + (b - a) * rng.gen::<f64>(),
-        );
+        let z = c64(a + (b - a) * rng.random::<f64>(), a + (b - a) * rng.random::<f64>());
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = z.sqrt().sinh() / z.sqrt();
 
