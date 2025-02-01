@@ -100,11 +100,8 @@ develop:
 
 [doc("Editable install using pinned dependencies from requirements-test.txt")]
 pip-install:
-    {{ PYTHON }} -m pip install \
-        --verbose \
-        --requirement requirements-test.txt \
-        --no-build-isolation \
-        --editable .
+    {{ PYTHON }} -m pip install --requirement requirements-test.txt
+    {{ PYTHON }} -m pip install --verbose --no-build-isolation --editable .
 
 [doc("Run pytest tests")]
 test *PYTEST_ADDOPTS:
