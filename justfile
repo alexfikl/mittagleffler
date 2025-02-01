@@ -10,7 +10,6 @@ alias fmt: format
 
 [doc('Reformat all source code')]
 format: isort black rustfmt justfmt
-    @just python/format
 
 [doc('Run ruff isort fixes over the source code')]
 isort:
@@ -38,7 +37,6 @@ justfmt:
 
 [doc('Run all linting checks over the source code')]
 lint: typos reuse ruff clippy
-    @just python/lint
 
 [doc('Run typos over the source code and documentation')]
 typos:
@@ -63,10 +61,9 @@ clippy:
 # }}}
 # {{{ testing
 
-[doc("Pin dependency versions in a lock file")]
+[doc("Pin dependencies in Cargo.lock")]
 pin:
-    cargo update
-    @just python/pin
+    cargo update --verbose
 
 [doc("Build the project in debug mode")]
 build:
@@ -75,10 +72,6 @@ build:
 [doc("Run cargo tests")]
 test:
     RUST_BACKTRACE=1 cargo test --tests
-
-[doc("Run pytest tests")]
-pytest:
-    @just python/test
 
 # }}}
 # {{{ cleanup
