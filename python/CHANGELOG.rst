@@ -1,3 +1,18 @@
+Version 0.1.3 (February 1st, 2025)
+----------------------------------
+
+Dependencies
+^^^^^^^^^^^^
+
+* Update to the new ``rand`` 0.9.0 release.
+
+Maintenance
+^^^^^^^^^^^
+
+* Switch to using `just <https://just.systems/>`__ for development and on the CI.
+* Add a nice image to the README.
+* Update linting and formatting.
+
 Version 0.1.2 (January 4th, 2025)
 ---------------------------------
 
