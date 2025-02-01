@@ -2,6 +2,7 @@
 *.png
 *.npz
 *.so
+requirements.in
 
 # Generated directories
 /target
