@@ -48,7 +48,10 @@ fn test_vs_exponential() {
 
     // test complex
     for _ in 0..512 {
-        let z = c64(a + (b - a) * rng.random::<f64>(), a + (b - a) * rng.random::<f64>());
+        let z = c64(
+            a + (b - a) * rng.random::<f64>(),
+            a + (b - a) * rng.random::<f64>(),
+        );
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = z.exp();
 
@@ -95,7 +98,10 @@ fn test_vs_cosine() {
 
     // test complex
     for _ in 0..512 {
-        let z = c64(a + (b - a) * rng.random::<f64>(), a + (b - a) * rng.random::<f64>());
+        let z = c64(
+            a + (b - a) * rng.random::<f64>(),
+            a + (b - a) * rng.random::<f64>(),
+        );
         let result = ml.evaluate(-z.powi(2), alpha, beta).unwrap();
         let reference = z.cos();
 
@@ -142,7 +148,10 @@ fn test_vs_hyperbolic_cosine() {
 
     // test complex
     for _ in 0..512 {
-        let z = c64(a + (b - a) * rng.random::<f64>(), a + (b - a) * rng.random::<f64>());
+        let z = c64(
+            a + (b - a) * rng.random::<f64>(),
+            a + (b - a) * rng.random::<f64>(),
+        );
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = z.sqrt().cosh();
 
@@ -189,7 +198,10 @@ fn test_vs_exponential_inv() {
 
     // test complex
     for _ in 0..512 {
-        let z = c64(a + (b - a) * rng.random::<f64>(), a + (b - a) * rng.random::<f64>());
+        let z = c64(
+            a + (b - a) * rng.random::<f64>(),
+            a + (b - a) * rng.random::<f64>(),
+        );
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = (z.exp() - 1.0) / z;
 
@@ -236,7 +248,10 @@ fn test_vs_hyperbolic_sine() {
 
     // test complex
     for _ in 0..512 {
-        let z = c64(a + (b - a) * rng.random::<f64>(), a + (b - a) * rng.random::<f64>());
+        let z = c64(
+            a + (b - a) * rng.random::<f64>(),
+            a + (b - a) * rng.random::<f64>(),
+        );
         let result = ml.evaluate(z, alpha, beta).unwrap();
         let reference = z.sqrt().sinh() / z.sqrt();
 
