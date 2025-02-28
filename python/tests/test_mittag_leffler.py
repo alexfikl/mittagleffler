@@ -23,7 +23,7 @@ def test_mittag_leffler_scalar() -> None:
 
     types = (complex, np.complex64, np.complex128)
     for cls in types:
-        z = cls(1.0, 1.0)  # type: ignore[call-arg]
+        z = cls(1.0, 1.0)
         _ = mittag_leffler(z, alpha, beta)
         print(f"({type(z)}, {type(_)}): {_} {np.exp(z + 0j)}")
 
