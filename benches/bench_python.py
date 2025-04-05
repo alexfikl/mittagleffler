@@ -120,7 +120,7 @@ def benchmark_matlab(z: Array, alpha: Array, beta: Array) -> Array:
 
     log.info("Running MATLAB benchmark...")
     try:
-        subprocess.check_call(  # noqa: S603
+        subprocess.check_call(
             [  # noqa: S607
                 "matlab",
                 "-nodisplay",
