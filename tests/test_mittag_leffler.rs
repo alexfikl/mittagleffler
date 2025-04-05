@@ -20,7 +20,7 @@ fn test_param() {
 
 #[test]
 fn test_vs_exponential() {
-    let mut rng = rand::rng();
+    let mut rng = StdRng::from_seed([42; 32]);
 
     let (a, b) = (0.0, 10.0);
     let alpha = 1.0;
@@ -70,7 +70,7 @@ fn test_vs_exponential() {
 
 #[test]
 fn test_vs_cosine() {
-    let mut rng = rand::rng();
+    let mut rng = StdRng::from_seed([42; 32]);
 
     let (a, b) = (0.0, 10.0);
     let alpha = 2.0;
@@ -120,7 +120,7 @@ fn test_vs_cosine() {
 
 #[test]
 fn test_vs_hyperbolic_cosine() {
-    let mut rng = rand::rng();
+    let mut rng = StdRng::from_seed([42; 32]);
 
     let (a, b) = (0.0, 100.0);
     let alpha = 2.0;
@@ -170,7 +170,7 @@ fn test_vs_hyperbolic_cosine() {
 
 #[test]
 fn test_vs_exponential_inv() {
-    let mut rng = rand::rng();
+    let mut rng = StdRng::from_seed([42; 32]);
 
     let (a, b) = (0.0, 10.0);
     let alpha = 1.0;
@@ -220,7 +220,7 @@ fn test_vs_exponential_inv() {
 
 #[test]
 fn test_vs_hyperbolic_sine() {
-    let mut rng = rand::rng();
+    let mut rng = StdRng::from_seed([42; 32]);
 
     let (a, b) = (0.0, 10.0);
     let alpha = 2.0;
