@@ -19,8 +19,8 @@ use crate::algorithm::MittagLefflerAlgorithm;
 /// ## References
 ///
 /// 1. R. Garrappa, *Numerical Evaluation of Two and Three Parameter Mittag-Leffler
-///     Functions*, SIAM Journal on Numerical Analysis, Vol. 53, pp. 1350--1369, 2015,
-///     DOI: [10.1137/140971191](https://doi.org/10.1137/140971191).
+///    Functions*, SIAM Journal on Numerical Analysis, Vol. 53, pp. 1350--1369, 2015,
+///    DOI: [10.1137/140971191](https://doi.org/10.1137/140971191).
 #[derive(Clone, Debug)]
 pub struct GarrappaMittagLeffler {
     /// Tolerance used to control the accuracy of evaluating the inverse Laplace
