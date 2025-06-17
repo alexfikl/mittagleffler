@@ -1,3 +1,18 @@
+Version 0.1.4 (June 17th, 2025)
+-------------------------------
+
+Dependencies
+^^^^^^^^^^^^
+
+* Update to the new ``pyo3`` and ``rust-numpy`` 0.25 releases.
+
+Maintenance
+^^^^^^^^^^^
+
+* Update linting and formatting (for new ``ruff`` and ``mypy`` mainly).
+* Fix seed in tests to remove flakiness.
+* Fix some small typos in README.
+
 Version 0.1.3 (February 1st, 2025)
 ----------------------------------
 
