@@ -27,7 +27,7 @@ method to date for evaluating the Mittag-Leffler function.
 **Other implementations**
 
 * [ml.m](https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function) (MATLAB):
-  implements three-parameter Mittag-Leffler function.
+  implements the three-parameter Mittag-Leffler function.
 * [ml_matrix.m](https://www.mathworks.com/matlabcentral/fileexchange/66272-mittag-leffler-function-with-matrix-arguments) (MATLAB):
   implements the matrix-valued two-parameter Mittag-Leffler function.
 * [MittagLeffler.jl](https://github.com/JuliaMath/MittagLeffler.jl) (Julia):
@@ -48,7 +48,7 @@ method to date for evaluating the Mittag-Leffler function.
 # Rust Crate
 
 The library is available as a Rust crate that implements the main algorithms.
-Evaluating the Mittag Leffler function can be performed directly by
+Evaluating the Mittag-Leffler function can be performed directly by
 
 ```rust
 use mittagleffler::MittagLeffler;
@@ -56,13 +56,13 @@ use mittagleffler::MittagLeffler;
 let alpha = 0.75;
 let beta = 1.25;
 let z = Complex64::new(1.0, 2.0);
-println!("E_{}_{}({}) = {}", alpha, beta, z, z.mittag_leffler(alpha, beta));
+println!("E({}; {}, {}) = {}", z, alpha, beta, z.mittag_leffler(alpha, beta));
 
 let z: f64 = 3.1415;
-println!("E_{}_{}({}) = {}", alpha, beta, z, z.mittag_leffler(alpha, beta));
+println!("E({}; {}, {}) = {}", z, alpha, beta, z.mittag_leffler(alpha, beta));
 ```
 
-This method will call the best underlying algorithm and take care of any special
+This method will call the best underlying algorithm and takes care of any special
 cases that are known in the literature, e.g. for `(alpha, beta) = (1, 1)` we
 know that the Mittag-Leffler function is equivalent to the standard exponential.
 To call a specific algorithm, we can do
@@ -74,7 +74,7 @@ let eps = 1.0e-8;
 let ml = GarrappaMittagLeffler::new(eps);
 
 let z = Complex64::new(1.0, 2.0);
-println!("E_{}_{}({}) = {}", alpha, beta, z, ml.evaluate(z, alpha, beta));
+println!("E({}; {}, {}) = {}",z,  alpha, beta, ml.evaluate(z, alpha, beta));
 ```
 
 The algorithm from Garrappa (2015) has several parameters that can be tweaked
