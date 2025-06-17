@@ -68,7 +68,7 @@ pub fn mittag_leffler<'py>(
             .as_array()
             .map(|x| mittag_leffler_always_c64(&c64(*x as f64, 0.0), alpha, beta));
         #[allow(deprecated)]
-        return Ok(ary.into_pyarray(py).into_py(py));
+        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<f64>>() {
@@ -76,7 +76,7 @@ pub fn mittag_leffler<'py>(
             .as_array()
             .map(|x| mittag_leffler_always_c64(&c64(*x, 0.0), alpha, beta));
         #[allow(deprecated)]
-        return Ok(ary.into_pyarray(py).into_py(py));
+        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<Complex32>>() {
@@ -84,7 +84,7 @@ pub fn mittag_leffler<'py>(
             .as_array()
             .map(|x| mittag_leffler_always_c64(&c64(x.re, x.im), alpha, beta));
         #[allow(deprecated)]
-        return Ok(ary.into_pyarray(py).into_py(py));
+        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<Complex64>>() {
@@ -92,7 +92,7 @@ pub fn mittag_leffler<'py>(
             .as_array()
             .map(|x| mittag_leffler_always_c64(x, alpha, beta));
         #[allow(deprecated)]
-        return Ok(ary.into_pyarray(py).into_py(py));
+        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<i32>>() {
@@ -100,7 +100,7 @@ pub fn mittag_leffler<'py>(
             .as_array()
             .map(|x| mittag_leffler_always_c64(&c64(*x as f64, 0.0), alpha, beta));
         #[allow(deprecated)]
-        return Ok(ary.into_pyarray(py).into_py(py));
+        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<i64>>() {
@@ -108,7 +108,7 @@ pub fn mittag_leffler<'py>(
             .as_array()
             .map(|x| mittag_leffler_always_c64(&c64(*x as f64, 0.0), alpha, beta));
         #[allow(deprecated)]
-        return Ok(ary.into_pyarray(py).into_py(py));
+        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     Err(PyTypeError::new_err(format!(

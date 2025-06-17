@@ -105,9 +105,7 @@ pip-install:
 
 [doc("Run pytest tests")]
 test *PYTEST_ADDOPTS:
-    {{ PYTHON }} -m pytest \
-        --junit-xml=pytest-results.xml \
-        {{ PYTEST_ADDOPTS }}
+    {{ PYTHON }} -m pytest {{ PYTEST_ADDOPTS }}
 
 [doc("Remove various build artifacts")]
 clean:

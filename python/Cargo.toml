@@ -18,5 +18,5 @@ crate-type = ["cdylib"]
 [dependencies]
 mittagleffler = { path = "../"}
 num = { version = "0.4" }
-numpy = { version = "0.24" }
-pyo3 = { version = "0.24", features = ["abi3-py310", "extension-module", "num-complex"] }
+numpy = { version = "0.25" }
+pyo3 = { version = "0.25", features = ["abi3-py310", "extension-module", "num-complex"] }
