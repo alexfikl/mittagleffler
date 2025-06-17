@@ -28,7 +28,7 @@ special = { version = "0.11" }
 
 [dev-dependencies]
 rand = { version = "0.9" }
-criterion = { version = "0.5" }
+criterion = { version = "0.6" }
 
 [[bench]]
 name = "bench"
