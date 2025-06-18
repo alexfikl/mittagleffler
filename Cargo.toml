@@ -7,7 +7,7 @@ description = "High performance implementations of the Mittag-Leffler function"
 keywords = ["mittag-leffler", "special-functions"]
 categories = ["algorithms", "science"]
 readme = "README.md"
-homepage = "https://github.com/alexfikl/mittagleffler"
+repository = "https://github.com/alexfikl/mittagleffler"
 license = "MIT"
 exclude = [
     ".github/*",
