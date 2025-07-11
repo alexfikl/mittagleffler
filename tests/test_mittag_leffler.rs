@@ -32,17 +32,13 @@ fn test_vs_exponential() {
     for _ in 0..512 {
         let z = c64(a + (b - a) * rng.random::<f64>(), 0.0);
         let result = ml.evaluate(z, alpha, beta).unwrap();
-        let reference = z.exp();
+        let e_ref = z.exp();
 
-        let error = (result - reference).norm();
-        let rtol = 100.0 * eps * reference.norm();
+        let error = (result - e_ref).norm();
+        let rtol = 100.0 * eps * e_ref.norm();
         assert!(
             error < rtol,
-            "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-            result,
-            reference,
-            error,
-            rtol
+            "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
         );
     }
 
@@ -53,17 +49,13 @@ fn test_vs_exponential() {
             a + (b - a) * rng.random::<f64>(),
         );
         let result = ml.evaluate(z, alpha, beta).unwrap();
-        let reference = z.exp();
+        let e_ref = z.exp();
 
-        let error = (result - reference).norm();
-        let rtol = 100.0 * eps * reference.norm();
+        let error = (result - e_ref).norm();
+        let rtol = 100.0 * eps * e_ref.norm();
         assert!(
             error < rtol,
-            "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-            result,
-            reference,
-            error,
-            rtol
+            "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
         );
     }
 }
@@ -82,17 +74,13 @@ fn test_vs_cosine() {
     for _ in 0..512 {
         let z = c64(a + (b - a) * rng.random::<f64>(), 0.0);
         let result = ml.evaluate(-z.powi(2), alpha, beta).unwrap();
-        let reference = z.cos();
+        let e_ref = z.cos();
 
-        let error = (result - reference).norm();
-        let rtol = 100.0 * eps * reference.norm();
+        let error = (result - e_ref).norm();
+        let rtol = 100.0 * eps * e_ref.norm();
         assert!(
             error < rtol,
-            "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-            result,
-            reference,
-            error,
-            rtol
+            "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
         );
     }
 
@@ -103,17 +91,13 @@ fn test_vs_cosine() {
             a + (b - a) * rng.random::<f64>(),
         );
         let result = ml.evaluate(-z.powi(2), alpha, beta).unwrap();
-        let reference = z.cos();
+        let e_ref = z.cos();
 
-        let error = (result - reference).norm();
-        let rtol = 100.0 * eps * reference.norm();
+        let error = (result - e_ref).norm();
+        let rtol = 100.0 * eps * e_ref.norm();
         assert!(
             error < rtol,
-            "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-            result,
-            reference,
-            error,
-            rtol
+            "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
         );
     }
 }
@@ -132,17 +116,13 @@ fn test_vs_hyperbolic_cosine() {
     for _ in 0..512 {
         let z = c64(a + (b - a) * rng.random::<f64>(), 0.0);
         let result = ml.evaluate(z, alpha, beta).unwrap();
-        let reference = z.sqrt().cosh();
+        let e_ref = z.sqrt().cosh();
 
-        let error = (result - reference).norm();
-        let rtol = 100.0 * eps * reference.norm();
+        let error = (result - e_ref).norm();
+        let rtol = 100.0 * eps * e_ref.norm();
         assert!(
             error < rtol,
-            "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-            result,
-            reference,
-            error,
-            rtol
+            "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
         );
     }
 
@@ -153,17 +133,13 @@ fn test_vs_hyperbolic_cosine() {
             a + (b - a) * rng.random::<f64>(),
         );
         let result = ml.evaluate(z, alpha, beta).unwrap();
-        let reference = z.sqrt().cosh();
+        let e_ref = z.sqrt().cosh();
 
-        let error = (result - reference).norm();
-        let rtol = 100.0 * eps * reference.norm();
+        let error = (result - e_ref).norm();
+        let rtol = 100.0 * eps * e_ref.norm();
         assert!(
             error < rtol,
-            "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-            result,
-            reference,
-            error,
-            rtol
+            "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
         );
     }
 }
@@ -182,17 +158,13 @@ fn test_vs_exponential_inv() {
     for _ in 0..512 {
         let z = c64(a + (b - a) * rng.random::<f64>(), 0.0);
         let result = ml.evaluate(z, alpha, beta).unwrap();
-        let reference = (z.exp() - 1.0) / z;
+        let e_ref = (z.exp() - 1.0) / z;
 
-        let error = (result - reference).norm();
-        let rtol = 100.0 * eps * reference.norm();
+        let error = (result - e_ref).norm();
+        let rtol = 100.0 * eps * e_ref.norm();
         assert!(
             error < rtol,
-            "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-            result,
-            reference,
-            error,
-            rtol
+            "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
         );
     }
 
@@ -203,17 +175,13 @@ fn test_vs_exponential_inv() {
             a + (b - a) * rng.random::<f64>(),
         );
         let result = ml.evaluate(z, alpha, beta).unwrap();
-        let reference = (z.exp() - 1.0) / z;
+        let e_ref = (z.exp() - 1.0) / z;
 
-        let error = (result - reference).norm();
-        let rtol = 100.0 * eps * reference.norm();
+        let error = (result - e_ref).norm();
+        let rtol = 100.0 * eps * e_ref.norm();
         assert!(
             error < rtol,
-            "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-            result,
-            reference,
-            error,
-            rtol
+            "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
         );
     }
 }
@@ -232,17 +200,13 @@ fn test_vs_hyperbolic_sine() {
     for _ in 0..512 {
         let z = c64(a + (b - a) * rng.random::<f64>(), 0.0);
         let result = ml.evaluate(z, alpha, beta).unwrap();
-        let reference = z.sqrt().sinh() / z.sqrt();
+        let e_ref = z.sqrt().sinh() / z.sqrt();
 
-        let error = (result - reference).norm();
-        let rtol = 100.0 * eps * reference.norm();
+        let error = (result - e_ref).norm();
+        let rtol = 100.0 * eps * e_ref.norm();
         assert!(
             error < rtol,
-            "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-            result,
-            reference,
-            error,
-            rtol
+            "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
         );
     }
 
@@ -253,17 +217,13 @@ fn test_vs_hyperbolic_sine() {
             a + (b - a) * rng.random::<f64>(),
         );
         let result = ml.evaluate(z, alpha, beta).unwrap();
-        let reference = z.sqrt().sinh() / z.sqrt();
+        let e_ref = z.sqrt().sinh() / z.sqrt();
 
-        let error = (result - reference).norm();
-        let rtol = 100.0 * eps * reference.norm();
+        let error = (result - e_ref).norm();
+        let rtol = 100.0 * eps * e_ref.norm();
         assert!(
             error < rtol,
-            "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-            result,
-            reference,
-            error,
-            rtol
+            "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
         );
     }
 }
@@ -276,21 +236,17 @@ fn test_vs_mathematica() {
         let alpha = result.alpha;
         let beta = result.beta;
 
-        for (z, reference) in result.z.iter().zip(result.result.iter()) {
+        for (z, e_ref) in result.z.iter().zip(result.result.iter()) {
             let result = z.mittag_leffler(alpha, beta).unwrap();
-            println!("z: {}", z);
+            println!("z: {z}");
 
             // FIXME: All mathematica results seem to be accurate to 8-ish
             // digits. Not quite sure what the problem is..
-            let error = (result - reference).norm();
-            let rtol = 10.0 * eps * reference.norm();
+            let error = (result - e_ref).norm();
+            let rtol = 10.0 * eps * e_ref.norm();
             assert!(
                 error < rtol,
-                "Result {} Reference {} Error {:.8e} (rtol {:.8e})",
-                result,
-                reference,
-                error,
-                rtol
+                "Result {result} Reference {e_ref} Error {error:.8e} (rtol {rtol:.8e})",
             );
         }
     }
