@@ -1,6 +1,6 @@
 [package]
 name = "pymittagleffler"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Alexandru Fikl <alexfikl@gmail.com>"]
 edition = "2021"
 description = "High performance implementations of the Mittag-Leffler function"
