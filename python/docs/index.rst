@@ -50,7 +50,7 @@ We setup up our evaluation as follows for some purely complex values of :math:`z
    :linenos:
 
 This gives the following behaviour of the Mittag-Leffler function for the chosen
-parameters. We can see that it exibits a wide range of behaviors, both oscillatory
+parameters. We can see that it exhibits a wide range of behaviors, both oscillatory
 and fast decaying.
 
 .. image:: _static/mittag-leffler-function-real.svg
