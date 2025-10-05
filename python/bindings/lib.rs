@@ -57,7 +57,7 @@ pub fn mittag_leffler<'py>(
     z: Bound<'py, PyAny>,
     alpha: f64,
     beta: f64,
-) -> PyResult<PyObject> {
+) -> PyResult<Py<PyAny>> {
     if let Ok(ary) = z.extract::<Complex64>() {
         let result = mittag_leffler_always_c64(&ary, alpha, beta);
         return Ok(PyComplex::from_doubles(py, result.re, result.im).into());
@@ -67,7 +67,6 @@ pub fn mittag_leffler<'py>(
         let ary = ary
             .as_array()
             .map(|x| mittag_leffler_always_c64(&c64(*x as f64, 0.0), alpha, beta));
-        #[allow(deprecated)]
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
@@ -75,7 +74,6 @@ pub fn mittag_leffler<'py>(
         let ary = ary
             .as_array()
             .map(|x| mittag_leffler_always_c64(&c64(*x, 0.0), alpha, beta));
-        #[allow(deprecated)]
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
@@ -83,7 +81,6 @@ pub fn mittag_leffler<'py>(
         let ary = ary
             .as_array()
             .map(|x| mittag_leffler_always_c64(&c64(x.re, x.im), alpha, beta));
-        #[allow(deprecated)]
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
@@ -91,7 +88,6 @@ pub fn mittag_leffler<'py>(
         let ary = ary
             .as_array()
             .map(|x| mittag_leffler_always_c64(x, alpha, beta));
-        #[allow(deprecated)]
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
@@ -99,7 +95,6 @@ pub fn mittag_leffler<'py>(
         let ary = ary
             .as_array()
             .map(|x| mittag_leffler_always_c64(&c64(*x as f64, 0.0), alpha, beta));
-        #[allow(deprecated)]
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
@@ -107,7 +102,6 @@ pub fn mittag_leffler<'py>(
         let ary = ary
             .as_array()
             .map(|x| mittag_leffler_always_c64(&c64(*x as f64, 0.0), alpha, beta));
-        #[allow(deprecated)]
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
