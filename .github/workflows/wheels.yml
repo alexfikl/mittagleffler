@@ -39,8 +39,6 @@ jobs:
         include:
           - os: windows-latest
             architecture: x86-64
-          - os: macos-13
-            architecture: x86-64
           - os: macos-latest
             architecture: aarch64
 
