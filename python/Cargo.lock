@@ -22,9 +22,9 @@ checksum = "f4c7245a08504955605670dbf141fceab975f15ca21570696aebe9d2e71576bd"
 
 [[package]]
 name = "lambert_w"
-version = "1.2.28"
+version = "1.2.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "358955e35f9815d4f9347fdb43d23e3394507e0c434ed1afb36202cff3496fa3"
+checksum = "9a438b253ab68d6cce007251b340599f746d5d3003f039b77f77100b8f7adc4e"
 dependencies = [
  "num-complex",
  "num-traits",
@@ -32,9 +32,9 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.176"
+version = "0.2.177"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "58f929b4d672ea937a23a1ab494143d968337a5f47e56d0815df1e0890ddf174"
+checksum = "2874a2af47a2325c2001a6e6fad9b16a53b802102b528163885171cf92b15976"
 
 [[package]]
 name = "libm"
