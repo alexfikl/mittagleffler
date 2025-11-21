@@ -1,3 +1,11 @@
+Version 0.1.6 (November 21st, 2025)
+-----------------------------------
+
+Dependencies
+^^^^^^^^^^^^
+
+* Update to the new ``pyo3`` and ``rust-numpy`` 0.27 releases.
+
 Version 0.1.5 (October 5th, 2025)
 ---------------------------------
 
