@@ -1,3 +1,11 @@
+Version 0.1.7 (November 21st, 2025)
+-----------------------------------
+
+Maintenance
+^^^^^^^^^^^
+
+* Add ``long_description`` to Python bindings, so that it shows up on PyPI.
+
 Version 0.1.6 (November 21st, 2025)
 -----------------------------------
 

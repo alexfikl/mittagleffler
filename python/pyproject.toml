@@ -7,8 +7,9 @@ requires = [
 
 [project]
 name = "pymittagleffler"
-version = "0.1.6"
+version = "0.1.7"
 description = "High performance implementation of the Mittag-Leffler function"
+readme = "README.md"
 keywords = [
     "fractional-calculus",
     "special-functions",

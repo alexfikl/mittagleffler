@@ -1,6 +1,6 @@
 [package]
 name = "mittagleffler"
-version = "0.1.6"
+version = "0.1.7"
 authors = ["Alexandru Fikl <alexfikl@gmail.com>"]
 edition = "2021"
 description = "High performance implementations of the Mittag-Leffler function"
