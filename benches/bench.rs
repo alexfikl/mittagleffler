@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2024 Alexandru Fikl <alexfikl@gmail.com>
 // SPDX-License-Identifier: MIT
 
-use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 
 use mittagleffler::{GarrappaMittagLeffler, MittagLefflerAlgorithm};
 use num::complex::Complex64;
