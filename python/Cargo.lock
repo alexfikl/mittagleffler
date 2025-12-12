@@ -66,7 +66,7 @@ dependencies = [
 
 [[package]]
 name = "mittagleffler"
-version = "0.1.7"
+version = "0.1.8"
 dependencies = [
  "num",
  "special",
@@ -209,7 +209,7 @@ dependencies = [
 
 [[package]]
 name = "pymittagleffler"
-version = "0.1.7"
+version = "0.1.8"
 dependencies = [
  "mittagleffler",
  "num",

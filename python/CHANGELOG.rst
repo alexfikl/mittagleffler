@@ -1,3 +1,16 @@
+Version 0.1.7 (December 12th, 2025)
+-----------------------------------
+
+Dependencies
+^^^^^^^^^^^^
+
+* Updated the Rust edition to **2024**.
+
+Maintenance
+^^^^^^^^^^^
+
+* Update linting and formatting (for new ``ruff`` and ``mypy`` mainly).
+
 Version 0.1.7 (November 21st, 2025)
 -----------------------------------
 
