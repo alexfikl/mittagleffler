@@ -2,7 +2,7 @@
 name = "pymittagleffler"
 version = "0.1.7"
 authors = ["Alexandru Fikl <alexfikl@gmail.com>"]
-edition = "2021"
+edition = "2024"
 description = "High performance implementations of the Mittag-Leffler function"
 keywords = ["mittag-leffler", "special-functions"]
 categories = ["algorithms", "science"]
