@@ -1,10 +1,11 @@
-Version 0.1.7 (December 12th, 2025)
+Version 0.1.8 (December 12th, 2025)
 -----------------------------------
 
 Dependencies
 ^^^^^^^^^^^^
 
 * Updated the Rust edition to **2024**.
+* Advertise support for Python 3.14.
 
 Maintenance
 ^^^^^^^^^^^
