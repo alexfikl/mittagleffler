@@ -29,7 +29,7 @@ def test_mittag_leffler_scalar() -> None:
 
     z = "1.0"
     with pytest.raises(TypeError):
-        _ = mittag_leffler(z, alpha, beta)  # type: ignore[call-overload]
+        _ = mittag_leffler(z, alpha, beta)
 
 
 @pytest.mark.parametrize(
