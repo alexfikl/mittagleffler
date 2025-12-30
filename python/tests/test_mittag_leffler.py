@@ -29,7 +29,8 @@ def test_mittag_leffler_scalar() -> None:
 
     z = "1.0"
     with pytest.raises(TypeError):
-        _ = mittag_leffler(z, alpha, beta)
+        # NOTE: this fails type checking as well, for obvious reasons
+        _ = mittag_leffler(z, alpha, beta)  # ty: ignore[no-matching-overload]
 
 
 @pytest.mark.parametrize(
