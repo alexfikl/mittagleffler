@@ -103,12 +103,12 @@ ci-install venv=".venv":
     source {{ venv }}/bin/activate
 
     # install build dependencies (need to be first due to  --no-build-isolation)
-    {{ PYTHON }} -m pip install --requirement .ci/requirements-build.txt
+    {{ PYTHON }} -m pip install --requirement {{ REQUIREMENTS_DIR }}/requirements-build.txt
 
     # install all pinned dependencies
     {{ PYTHON }} -m pip install \
         --verbose \
-        --requirement requirements-test.txt \
+        --requirement {{ REQUIREMENTS_DIR }}/requirements-test.txt \
         --no-build-isolation \
         --editable .
 
