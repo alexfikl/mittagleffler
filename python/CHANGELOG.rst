@@ -1,3 +1,12 @@
+Version TBD (TBD)
+-----------------
+
+Maintenance
+^^^^^^^^^^^
+
+* Switch to `ty <https://github.com/astral-sh/ty>`__ for type checking.
+* Small updates to build and CI (dependency groups and cleanup).
+
 Version 0.1.8 (December 12th, 2025)
 -----------------------------------
 
