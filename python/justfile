@@ -38,7 +38,7 @@ justfmt:
 # {{{ linting
 
 [doc('Run all linting checks over the source code')]
-lint: ruff clippy mypy
+lint: ruff clippy ty
 
 [doc('Run ruff checks over the source code')]
 ruff:
@@ -50,10 +50,10 @@ clippy:
     cargo clippy --all-targets --all-features
     @echo -e "\e[1;32mclippy clean!\e[0m"
 
-[doc('Run mypy checks over the source code')]
-mypy:
-    {{ PYTHON }} -m mypy src tests
-    @echo -e "\e[1;32mmypy clean!\e[0m"
+[doc('Run ty checks over the source code')]
+ty:
+    ty check src tests
+    @echo -e "\e[1;32mty clean!\e[0m"
 
 # }}}
 # {{{ pin
@@ -115,7 +115,7 @@ clean:
 
 [doc("Remove various temporary files and caches")]
 purge: clean
-    rm -rf .ruff_cache .pytest_cache .pytest-cache .mypy_cache tags
+    rm -rf .ruff_cache .pytest_cache tags
 
 [doc("Regenerate ctags")]
 ctags:

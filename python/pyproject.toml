@@ -47,9 +47,9 @@ optional-dependencies.docs = [
     "sphinx-book-theme",
 ]
 optional-dependencies.test = [
-    "mypy",
     "pytest",
     "ruff",
+    "ty",
 ]
 urls.Documentation = "https://mittagleffler.readthedocs.io"
 urls.Repository = "https://github.com/alexfikl/mittagleffler"
@@ -119,16 +119,3 @@ addopts = [
     "--capture=no",
     "--verbose",
 ]
-
-[tool.mypy]
-strict = true
-python_version = "3.10"
-hide_error_codes = false
-warn_unused_ignores = true
-
-[[tool.mypy.overrides]]
-module = [
-    "matplotlib.*",
-    "scienceplots.*",
-]
-ignore_missing_imports = true
