@@ -46,7 +46,8 @@ jobs:
         cache-dependency-path: 'python/requirements-test.txt'
     - name: Run ruff
       run: |
-        just python/pip-install
+        just ci-install .venv && source .venv/bin/activate
+
         just python/ruff
         just ruff
 
@@ -62,9 +63,9 @@ jobs:
         just clippy
         just python/clippy
 
-  mypy:
+  ty:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
-    name: Annotations (mypy)
+    name: Annotations (ty)
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -77,8 +78,9 @@ jobs:
         cache-dependency-path: 'python/requirements-test.txt'
     - name: Main Script
       run: |
-        just python/pip-install
-        just python/mypy
+        just ci-install .venv && source .venv/bin/activate
+
+        just python/ty
 
   rustest:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
@@ -110,5 +112,6 @@ jobs:
         cache-dependency-path: 'python/requirements-test.txt'
     - name: Run tests
       run: |
-        just python/pip-install
+        just ci-install .venv && source .venv/bin/activate
+
         just python/test
