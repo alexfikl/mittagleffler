@@ -46,7 +46,7 @@ jobs:
         cache-dependency-path: '.ci/requirements-test.txt'
     - name: Run ruff
       run: |
-        just ci-install .venv && source .venv/bin/activate
+        just python/ci-install .venv && source .venv/bin/activate
 
         just python/ruff
         just ruff
@@ -78,7 +78,7 @@ jobs:
         cache-dependency-path: '.ci/requirements-test.txt'
     - name: Main Script
       run: |
-        just ci-install .venv && source .venv/bin/activate
+        just python/ci-install .venv && source .venv/bin/activate
 
         just python/ty
 
@@ -112,6 +112,6 @@ jobs:
         cache-dependency-path: '.ci/requirements-test.txt'
     - name: Run tests
       run: |
-        just ci-install .venv && source .venv/bin/activate
+        just python/ci-install .venv && source .venv/bin/activate
 
         just python/test
