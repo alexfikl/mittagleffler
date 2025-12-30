@@ -36,23 +36,19 @@ classifiers = [
 dependencies = [
     "numpy>=2",
 ]
-optional-dependencies.dev = [
-    "pyproject-fmt",
-    "reuse",
-    "typos",
-    "uv",
-]
+# NOTE: this is only here for readthedocs (keep in sync with the dependency group)
 optional-dependencies.docs = [
     "sphinx>=6",
     "sphinx-book-theme",
 ]
-optional-dependencies.test = [
-    "pytest",
-    "ruff",
-    "ty",
-]
 urls.Documentation = "https://mittagleffler.readthedocs.io"
 urls.Repository = "https://github.com/alexfikl/mittagleffler"
+
+[dependency-groups]
+dev = [ "pyproject-fmt", "reuse", "typos", "uv" ]
+# NOTE: typing dependencies: matplotlib, scienceplots
+test = [ "matplotlib", "pytest", "ruff", "scienceplots", "ty" ]
+docs = [ "sphinx>=6", "sphinx-book-theme" ]
 
 [tool.maturin]
 manifest-path = "Cargo.toml"
