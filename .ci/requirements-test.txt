@@ -34,7 +34,7 @@ packaging==25.0
     # via
     #   matplotlib
     #   pytest
-pillow==12.0.0
+pillow==12.1.0
     # via matplotlib
 pluggy==1.6.0
     # via pytest
@@ -54,7 +54,7 @@ six==1.17.0
     # via python-dateutil
 tomli==2.3.0 ; python_full_version < '3.11'
     # via pytest
-ty==0.0.8
+ty==0.0.10
     # via pymittagleffler (pyproject.toml:test)
 typing-extensions==4.15.0 ; python_full_version < '3.11'
     # via exceptiongroup
