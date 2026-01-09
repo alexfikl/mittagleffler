@@ -90,6 +90,7 @@ lint.ignore = [
     "ISC001", # single-line-implicit-string-concatenation
     "N803",   # non-lowercase-argument
     "N806",   # non-lowercase-variable-in-function
+    "RUF067", # non-empty-init-module
     "S101",   # assert
     "S102",   # exec-builtin
     "UP037",  # quoted-annotation
