@@ -46,7 +46,7 @@ pytest==9.0.2
     # via pymittagleffler (pyproject.toml:test)
 python-dateutil==2.9.0.post0
     # via matplotlib
-ruff==0.14.10
+ruff==0.14.11
     # via pymittagleffler (pyproject.toml:test)
 scienceplots==2.2.0
     # via pymittagleffler (pyproject.toml:test)
