@@ -38,7 +38,7 @@ except ImportError as exc:
 from pymittagleffler import _set_recommended_matplotlib  # noqa: E402,RUF100
 
 _set_recommended_matplotlib()
-fig = mp.figure()
+fig = mp.figure(figsize=(14, 8))
 ax = fig.gca()
 
 for i, (alpha, beta) in enumerate(zip(alphas, betas, strict=True)):

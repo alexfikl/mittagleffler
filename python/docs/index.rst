@@ -54,12 +54,12 @@ parameters. We can see that it exhibits a wide range of behaviors, both oscillat
 and fast decaying.
 
 .. image:: _static/mittag-leffler-function-real.svg
-    :width: 75%
+    :width: 90%
     :align: center
     :alt: Real part of the Mittag-Leffler function
 
 .. image:: _static/mittag-leffler-function-imag.svg
-    :width: 75%
+    :width: 90%
     :align: center
     :alt: Imaginary part of the Mittag-Leffler function
 
