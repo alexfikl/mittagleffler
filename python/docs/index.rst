@@ -88,6 +88,12 @@ library is at least 2x faster than its competitors. There is still room
 for improvement, both in the Rust crate implementation and in the bindings for
 Python.
 
+These results were obtained on Arch Linux running on an AMD Ryzen AI 9 HX 370.
+The software stack, roughly, is
+* Rust 1.92.0 (in release mode)
+* Python 3.14 (running with ``-O``)
+* MATLAB R2025b (standard parameters, hopefully also optimized)
+
 Reference
 ---------
 
