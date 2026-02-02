@@ -79,7 +79,6 @@ jobs:
     - name: Main Script
       run: |
         just python/ci-install ../.venv && source .venv/bin/activate
-
         just python/ty
 
   rustest:
@@ -113,5 +112,4 @@ jobs:
     - name: Run tests
       run: |
         just python/ci-install ../.venv && source .venv/bin/activate
-
         just python/test

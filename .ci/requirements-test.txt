@@ -25,12 +25,12 @@ numpy==2.2.6 ; python_full_version < '3.11'
     #   pymittagleffler (pyproject.toml)
     #   contourpy
     #   matplotlib
-numpy==2.4.0 ; python_full_version >= '3.11'
+numpy==2.4.2 ; python_full_version >= '3.11'
     # via
     #   pymittagleffler (pyproject.toml)
     #   contourpy
     #   matplotlib
-packaging==25.0
+packaging==26.0
     # via
     #   matplotlib
     #   pytest
@@ -40,21 +40,21 @@ pluggy==1.6.0
     # via pytest
 pygments==2.19.2
     # via pytest
-pyparsing==3.3.1
+pyparsing==3.3.2
     # via matplotlib
 pytest==9.0.2
     # via pymittagleffler (pyproject.toml:test)
 python-dateutil==2.9.0.post0
     # via matplotlib
-ruff==0.14.11
+ruff==0.14.14
     # via pymittagleffler (pyproject.toml:test)
 scienceplots==2.2.0
     # via pymittagleffler (pyproject.toml:test)
 six==1.17.0
     # via python-dateutil
-tomli==2.3.0 ; python_full_version < '3.11'
+tomli==2.4.0 ; python_full_version < '3.11'
     # via pytest
-ty==0.0.10
+ty==0.0.14
     # via pymittagleffler (pyproject.toml:test)
 typing-extensions==4.15.0 ; python_full_version < '3.11'
     # via exceptiongroup
