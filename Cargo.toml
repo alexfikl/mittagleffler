@@ -36,3 +36,7 @@ harness = false
 
 [package.metadata.typos.files]
 extend-exclude = ["python/target", "target", "python/docs/_static"]
+
+[package.metadata.typos.default.extend-words]
+# std::f64::consts
+consts = "consts"
