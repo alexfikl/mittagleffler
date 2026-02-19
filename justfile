@@ -71,7 +71,7 @@ build:
 
 [doc("Run cargo tests")]
 test:
-    RUST_BACKTRACE=1 cargo test --tests
+    RUST_BACKTRACE=1 cargo test
 
 # }}}
 # {{{ cleanup
