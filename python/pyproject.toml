@@ -54,7 +54,6 @@ docs = [ "sphinx>=6", "sphinx-book-theme" ]
 manifest-path = "Cargo.toml"
 profile = "release"
 strip = true
-
 bindings = "pyo3"
 module-name = "pymittagleffler._bindings"
 python-source = "src"
@@ -62,7 +61,6 @@ python-source = "src"
 [tool.ruff]
 target-version = "py310"
 line-length = 88
-
 preview = true
 lint.select = [
     "A",   # flake8-builtins
@@ -95,7 +93,6 @@ lint.ignore = [
     "S102",   # exec-builtin
     "UP037",  # quoted-annotation
 ]
-
 lint.flake8-quotes.docstring-quotes = "double"
 lint.flake8-quotes.inline-quotes = "double"
 lint.flake8-quotes.multiline-quotes = "double"
