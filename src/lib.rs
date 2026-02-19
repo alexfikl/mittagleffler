@@ -11,15 +11,16 @@
 //! date for evaluating the Mittag-Leffler function.
 //!
 //! ```rust
+//! use num::complex::Complex64;
 //! use mittagleffler::MittagLeffler;
 //!
 //! let alpha = 0.75;
 //! let beta = 1.25;
 //! let z = Complex64::new(1.0, 2.0);
-//! println!("E({}; {}, {}) = {}", z, alpha, beta, z.mittag_leffler(alpha, beta));
+//! println!("E({}; {}, {}) = {:?}", z, alpha, beta, z.mittag_leffler(alpha, beta));
 //!
 //! let z: f64 = 3.1415;
-//! println!("E({}; {}, {}) = {}", z, alpha, beta, z.mittag_leffler(alpha, beta));
+//! println!("E({}; {}, {}) = {:?}", z, alpha, beta, z.mittag_leffler(alpha, beta));
 //! ```
 //!
 //! # Acknowledgments
@@ -48,10 +49,12 @@ pub use garrappa::GarrappaMittagLeffler;
 /// Evaluates the Mittag-Leffler function using default parameters. It can be
 /// used as
 /// ```rust
-///     let alpha: f64 = 1.0;
-///     let beta: f64 = 1.0;
-///     let z: f64 = 1.0;
-///     let result = z.mittag_leffler(alpha, beta);
+/// use mittagleffler::MittagLeffler;
+///
+/// let alpha: f64 = 1.0;
+/// let beta: f64 = 1.0;
+/// let z: f64 = 1.0;
+/// let result = z.mittag_leffler(alpha, beta);
 /// ```
 /// on real or complex arguments.
 pub trait MittagLeffler
