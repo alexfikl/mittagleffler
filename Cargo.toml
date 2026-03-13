@@ -24,7 +24,7 @@ path = "src/lib.rs"
 
 [dependencies]
 num = { version = "0.4" }
-special = { version = "0.12" }
+special = { version = "0.13" }
 
 [dev-dependencies]
 rand = { version = "0.10" }
