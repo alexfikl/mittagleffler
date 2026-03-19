@@ -227,7 +227,27 @@ fn laplace_transform_inversion(
     let sv: Complex64 = zk
         .iter()
         .zip(zd.iter())
-        .map(|(&zk_i, &zd_i)| zk_i.powf(alpha - beta) / (zk_i.powf(alpha) - z) * zd_i)
+        // NOTE: in the MATLAB code, this was originally equivalent to
+        //
+        // .map(|(&zk_i, &zd_i)| zk_i.powf(alpha - beta) / (zk_i.powf(alpha) - z) * zd_i)
+        //
+        // The version below seems faster because it saves on some complex pow calls.
+        .map(|(&zk_i, &zd_i)| {
+            let r = zk_i.re.hypot(zk_i.im);
+            let theta = zk_i.im.atan2(zk_i.re);
+
+            // zk^(alpha − beta): use sin_cos to get both trig values in one call.
+            let (s_ab, c_ab) = ((alpha - beta) * theta).sin_cos();
+            let r_ab = r.powf(alpha - beta);
+            let zk_alpha_beta = Complex64::new(r_ab * c_ab, r_ab * s_ab);
+
+            // zk^alpha:
+            let (s_a, c_a) = (alpha * theta).sin_cos();
+            let r_a = r.powf(alpha);
+            let zk_alpha = Complex64::new(r_a * c_a, r_a * s_a);
+
+            zk_alpha_beta / (zk_alpha - z) * zd_i
+        })
         .zip(zk.iter())
         .map(|(f_i, &zk_i)| f_i * (zk_i * t).exp())
         .sum();
