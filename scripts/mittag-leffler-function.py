@@ -44,6 +44,7 @@ ax = fig.gca()
 for i, (alpha, beta) in enumerate(zip(alphas, betas, strict=True)):
     ax.plot(r, result[i].real, label=rf"$\alpha = {alpha:.2f}, \beta = {beta:.2f}$")
 
+ax.set_xlim((r[0], r[-1]))
 ax.set_xlabel("$|z|$")
 ax.set_ylabel(r"$E_{\alpha, \beta}(z)$ (real)")
 ax.legend()
@@ -59,6 +60,7 @@ ax = fig.gca()
 for i, (alpha, beta) in enumerate(zip(alphas, betas, strict=True)):
     ax.plot(r, result[i].imag, label=rf"$\alpha = {alpha:.2f}, \beta = {beta:.2f}$")
 
+ax.set_xlim((r[0], r[-1]))
 ax.set_xlabel("$|z|$")
 ax.set_ylabel(r"$E_{\alpha, \beta}(z)$ (imag)")
 ax.legend()

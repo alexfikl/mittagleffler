@@ -80,7 +80,7 @@ the associated `MATLAB implementation
 <https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function>`__.
 
 .. image:: _static/mittag-leffler-bench.svg
-    :width: 75%
+    :width: 90%
     :align: center
     :alt: Performance of the pymittagleffler library.
 
