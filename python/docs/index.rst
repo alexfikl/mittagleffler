@@ -75,8 +75,9 @@ Performance
 The results below have been generated using :download:`bench_python.py
 <../../benches/bench_python.py>`. They compare the implementation based on
 Python bindings to the Rust crate, a pure Python implementation of the same
-algorithm from Garrappa (2015) `DOI <https://doi.org/10.1137/140971191>`__ and
-the associated `MATLAB implementation
+algorithm from Garrappa (2015, `doi:10.1137/140971191
+<https://doi.org/10.1137/140971191>`__) and the associated `MATLAB
+implementation
 <https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function>`__.
 
 .. image:: _static/mittag-leffler-bench.svg

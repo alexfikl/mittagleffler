@@ -12,13 +12,18 @@
 
     .. automethod:: evaluate
 
-        Evaluate the Mittag-Leffler function at a scalar argument *z*.
+        Evaluate the Mittag-Leffler function at a scalar argument *z*. Note
+        that, unlike :func:`mittag_leffler`, this function does not use any
+        special cases and always evaluates the Mittag-Leffler function using
+        the algorithm from Garrappa (2015, `doi:10.1137/140971191
+        <https://doi.org/10.1137/140971191>`__).
 
 .. autofunction:: mittag_leffler
 
     Evaluate the Mittag-Leffler function with parameters *alpha* and *beta*.
 
     :arg z: any scalar or :class:`numpy.ndarray` of real or complex numbers.
+
 """
 
 from __future__ import annotations
