@@ -130,8 +130,10 @@ fn laplace_transform_inversion(
 
     // evaluate poles
     let theta = z.arg();
-    let kmin = (-alpha / 2.0 - theta / (2.0 * PI)).ceil() as i64;
-    let kmax = (alpha / 2.0 - theta / (2.0 * PI)).floor() as i64;
+    let theta_over_2pi = theta / (2.0 * PI);
+    let half_alpha = alpha / 2.0;
+    let kmin = (-half_alpha - theta_over_2pi).ceil() as i64;
+    let kmax = (half_alpha - theta_over_2pi).floor() as i64;
     let mut s_star: Vec<Complex64> = (kmin..=kmax)
         .map(|k| {
             znorm.powf(alpha.recip())
@@ -382,6 +384,7 @@ fn find_optional_unbounded_param(
     let mut n;
     let mut h;
     let mut f_bar;
+    let mut sqrt_1_12a;
 
     loop {
         let phi = phibar_star * t;
@@ -389,7 +392,8 @@ fn find_optional_unbounded_param(
 
         n = (phi / PI * (1.0 - 3.0 * log_eps_phi / 2.0 + (1.0 - 2.0 * log_eps_phi).sqrt())).ceil();
         a = PI * n / phi;
-        mu = phibar_star_sq * (4.0 - a).abs() / (7.0 - (1.0 + 12.0 * a).sqrt()).abs();
+        sqrt_1_12a = (1.0 + 12.0 * a).sqrt();
+        mu = phibar_star_sq * (4.0 - a).abs() / (7.0 - sqrt_1_12a).abs();
         f_bar = ((phibar_star_sq - phi_star_sq) / mu).powf(-p);
 
         let found = (p < ml.p_eps) || (F_MIN < f_bar && f_bar < F_MAX);
@@ -402,7 +406,7 @@ fn find_optional_unbounded_param(
     }
 
     mu = mu.powi(2);
-    h = (-3.0 * a - 2.0 + 2.0 * (1.0 + 12.0 * a).sqrt()) / (4.0 - a) / n;
+    h = (-3.0 * a - 2.0 + 2.0 * sqrt_1_12a) / (4.0 - a) / n;
 
     // adjust the integration parameters
     let thresh = (log_eps - LOG_MACH_EPS) / t;
