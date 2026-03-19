@@ -5,7 +5,7 @@ use std::f64::consts::{LN_10, PI};
 use std::fmt;
 
 // ln(f64::EPSILON) — a fixed mathematical constant, never changes.
-const LOG_MACH_EPS: f64 = -36.04365338911715;
+const LOG_MACH_EPS: f64 = -36.043_653_389_117_15;
 
 use num::Float;
 use num::complex::Complex64;
