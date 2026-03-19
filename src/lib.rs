@@ -38,11 +38,11 @@
 mod algorithm;
 mod garrappa;
 
-use crate::algorithm::mittag_leffler_special;
-use num::complex::Complex64;
-
 pub use algorithm::MittagLefflerAlgorithm;
+pub use algorithm::mittag_leffler_special;
 pub use garrappa::GarrappaMittagLeffler;
+
+use num::complex::Complex64;
 
 /// Mittag-Leffler function.
 ///

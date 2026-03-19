@@ -8,7 +8,7 @@ use pyo3::exceptions::PyTypeError;
 use pyo3::prelude::*;
 use pyo3::types::PyComplex;
 
-use mittagleffler::{GarrappaMittagLeffler, MittagLeffler, MittagLefflerAlgorithm};
+use mittagleffler::{mittag_leffler_special, GarrappaMittagLeffler, MittagLefflerAlgorithm};
 
 #[pyclass]
 #[pyo3(name = "GarrappaMittagLeffler")]
@@ -27,7 +27,7 @@ impl PyGarrappaMittagLeffler {
     }
 
     pub fn evaluate(&self, z: Complex64, alpha: f64, beta: f64) -> Option<Complex64> {
-        self.inner.evaluate(z, alpha, beta)
+        mittag_leffler_special(z, alpha, beta).or_else(|| self.inner.evaluate(z, alpha, beta))
     }
 
     #[setter(eps)]
@@ -41,8 +41,8 @@ impl PyGarrappaMittagLeffler {
     }
 }
 
-fn mittag_leffler_always_c64(z: &Complex64, alpha: f64, beta: f64) -> Complex64 {
-    match z.mittag_leffler(alpha, beta) {
+fn eval(ml: &GarrappaMittagLeffler, z: Complex64, alpha: f64, beta: f64) -> Complex64 {
+    match mittag_leffler_special(z, alpha, beta).or_else(|| ml.evaluate(z, alpha, beta)) {
         Some(value) => value,
         None => Complex64 {
             re: f64::NAN,
@@ -58,50 +58,48 @@ pub fn mittag_leffler<'py>(
     alpha: f64,
     beta: f64,
 ) -> PyResult<Py<PyAny>> {
+    let ml = GarrappaMittagLeffler::default();
+
     if let Ok(ary) = z.extract::<Complex64>() {
-        let result = mittag_leffler_always_c64(&ary, alpha, beta);
+        let result = eval(&ml, ary, alpha, beta);
         return Ok(PyComplex::from_doubles(py, result.re, result.im).into());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<f32>>() {
         let ary = ary
             .as_array()
-            .map(|x| mittag_leffler_always_c64(&c64(*x as f64, 0.0), alpha, beta));
+            .map(|x| eval(&ml, c64(*x as f64, 0.0), alpha, beta));
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<f64>>() {
-        let ary = ary
-            .as_array()
-            .map(|x| mittag_leffler_always_c64(&c64(*x, 0.0), alpha, beta));
+        let ary = ary.as_array().map(|x| eval(&ml, c64(*x, 0.0), alpha, beta));
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<Complex32>>() {
         let ary = ary
             .as_array()
-            .map(|x| mittag_leffler_always_c64(&c64(x.re, x.im), alpha, beta));
+            .map(|x| eval(&ml, c64(x.re as f64, x.im as f64), alpha, beta));
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<Complex64>>() {
-        let ary = ary
-            .as_array()
-            .map(|x| mittag_leffler_always_c64(x, alpha, beta));
+        let ary = ary.as_array().map(|x| eval(&ml, *x, alpha, beta));
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<i32>>() {
         let ary = ary
             .as_array()
-            .map(|x| mittag_leffler_always_c64(&c64(*x as f64, 0.0), alpha, beta));
+            .map(|x| eval(&ml, c64(*x as f64, 0.0), alpha, beta));
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<i64>>() {
         let ary = ary
             .as_array()
-            .map(|x| mittag_leffler_always_c64(&c64(*x as f64, 0.0), alpha, beta));
+            .map(|x| eval(&ml, c64(*x as f64, 0.0), alpha, beta));
         return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
     }
 
