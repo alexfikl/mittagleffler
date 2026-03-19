@@ -116,9 +116,16 @@ def benchmark_matlab(z: Array, alpha: Array, beta: Array) -> Array:
 
     # {{{ run benchmark
 
+    import os
+
+    env = os.environ.copy()
+    env["LD_LIBRARY_PATH"] = f"/usr/lib/gnutls3.8.9/:{env.get('LD_LIBRARY_PATH', '')}"
+
     import subprocess  # noqa: S404
 
     log.info("Running MATLAB benchmark...")
+    datafile = dirname / "bench_result.mat"
+
     try:
         subprocess.check_call(
             [  # noqa: S607
@@ -130,14 +137,16 @@ def benchmark_matlab(z: Array, alpha: Array, beta: Array) -> Array:
                 "run('bench_matlab.m'); exit;",
             ],
             cwd=dirname,
+            env=env,
         )
     except subprocess.CalledProcessError as exc:
-        log.error("Failed to run MATLAB benchmark. Check folder '%s'", dirname)
-        raise SystemExit(exc.returncode) from exc
+        if not datafile.exists():
+            log.error("Failed to run MATLAB benchmark. Check folder '%s'", dirname)
+            raise SystemExit(exc.returncode) from exc
 
     from scipy.io import loadmat
 
-    data = loadmat(dirname / "bench_result.mat")
+    data = loadmat(datafile)
     result = data["result"]
 
     # }}}
