@@ -1,5 +1,20 @@
-Version 0.1.9 (February 19)
----------------------------
+Version 0.2.0 (March 19, 2026)
+------------------------------
+
+Features
+^^^^^^^^
+
+* The performance of the library was improve quite a bit. In the little benchmark
+  on ``readthedocs.org``, its now up to 5-12x faster than the Python code and up
+  to 3-7x faster than the MATLAB code.
+
+Maintenance
+^^^^^^^^^^^
+
+* Small updates to build and CI (dependency groups and cleanup).
+
+Version 0.1.9 (February 19, 2026)
+---------------------------------
 
 Dependencies
 ^^^^^^^^^^^^
