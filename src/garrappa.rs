@@ -155,11 +155,17 @@ fn laplace_transform_inversion(
     phi_star.push(f64::INFINITY);
 
     // evaluate the strength of the singularities
+    // p[j] = 1.0 for all j > 0; p[0] = max(0, -2*(alpha - beta + 1))
+    // q[j] = 1.0 for all j < n_star-1; q[n_star-1] = infinity
     let n_star = s_star.len();
-    let mut p = vec![1.0; n_star];
-    p[0] = (-2.0 * (alpha - beta + 1.0)).max(0.0);
-    let mut q = vec![1.0; n_star];
-    q[n_star - 1] = f64::INFINITY;
+    let p = |j: usize| -> f64 {
+        if j == 0 {
+            (-2.0 * (alpha - beta + 1.0)).max(0.0)
+        } else {
+            1.0
+        }
+    };
+    let q = |j: usize| -> f64 { if j == n_star - 1 { f64::INFINITY } else { 1.0 } };
 
     // find admissible regions
     let region_index: Vec<usize> = phi_star
@@ -185,13 +191,13 @@ fn laplace_transform_inversion(
                     t,
                     phi_star[j],
                     phi_star[j + 1],
-                    p[j],
-                    q[j],
+                    p(j),
+                    q(j),
                     log_eps,
                 );
             } else {
                 (mu[j], npoints[j], h[j]) =
-                    find_optional_unbounded_param(ml, t, phi_star[j], p[j], log_eps);
+                    find_optional_unbounded_param(ml, t, phi_star[j], p(j), log_eps);
             }
         }
 
