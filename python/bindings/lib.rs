@@ -27,7 +27,7 @@ impl PyGarrappaMittagLeffler {
     }
 
     pub fn evaluate(&self, z: Complex64, alpha: f64, beta: f64) -> Option<Complex64> {
-        mittag_leffler_special(z, alpha, beta).or_else(|| self.inner.evaluate(z, alpha, beta))
+        self.inner.evaluate(z, alpha, beta)
     }
 
     #[setter(eps)]
