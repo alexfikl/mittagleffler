@@ -238,15 +238,16 @@ fn laplace_transform_inversion(
         .map(|(&zk_i, &zd_i)| {
             let r = zk_i.re.hypot(zk_i.im);
             let theta = zk_i.im.atan2(zk_i.re);
+            let ln_r = r.ln();
 
             // zk^(alpha − beta): use sin_cos to get both trig values in one call.
             let (s_ab, c_ab) = ((alpha - beta) * theta).sin_cos();
-            let r_ab = r.powf(alpha - beta);
+            let r_ab = ((alpha - beta) * ln_r).exp();
             let zk_alpha_beta = Complex64::new(r_ab * c_ab, r_ab * s_ab);
 
             // zk^alpha:
             let (s_a, c_a) = (alpha * theta).sin_cos();
-            let r_a = r.powf(alpha);
+            let r_a = (alpha * ln_r).exp();
             let zk_alpha = Complex64::new(r_a * c_a, r_a * s_a);
 
             zk_alpha_beta / (zk_alpha - z) * zd_i
