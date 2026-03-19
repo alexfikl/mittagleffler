@@ -72,21 +72,24 @@ Performance
     optimizations are possible and any suggestions or tests in this direction
     are very welcome.
 
-The results below have been generated using
-:download:`bench_python.py <../../benches/bench_python.py>`. They compare the
-implementation based on the Rust crate, a pure Python implementation of the same
+The results below have been generated using :download:`bench_python.py
+<../../benches/bench_python.py>`. They compare the implementation based on
+Python bindings to the Rust crate, a pure Python implementation of the same
 algorithm from Garrappa (2015) `DOI <https://doi.org/10.1137/140971191>`__ and
-the associated `MATLAB implementation <https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function>`__.
+the associated `MATLAB implementation
+<https://www.mathworks.com/matlabcentral/fileexchange/48154-the-mittag-leffler-function>`__.
 
 .. image:: _static/mittag-leffler-bench.svg
     :width: 75%
     :align: center
     :alt: Performance of the pymittagleffler library.
 
-The results are all normalized to the Rust implementation. As we can see, this
-library is at least 2x faster than its competitors. There is still room
-for improvement, both in the Rust crate implementation and in the bindings for
-Python.
+The benchmark computes the Mittag-Leffler function of a vector of 256 complex numbers
+with a fixed :math:`\beta` and over a range of :math:`\alpha` parameters.
+The results show the minimum time (full line), the mean time (dashed line) and
+the region of :math:`[\text{min}, \text{mean} + \text{std}]`. In this test, the
+Python bindings to the Rust crate clearly outcompete the other implementations by
+an order of magnitude.
 
 These results were obtained on Arch Linux running on an AMD Ryzen AI 9 HX 370.
 The software stack, roughly, is

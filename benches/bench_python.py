@@ -27,12 +27,14 @@ Array = np.ndarray[tuple[int, ...], np.dtype[np.inexact]]
 def timeit(
     stmt: str | Callable[[], object],
     *,
-    repeat: int = 16,
-    number: int = 1,
+    repeat: int = 32,
 ) -> tuple[float, float, float]:
     import timeit as _timeit
 
-    r = np.array(_timeit.repeat(stmt=stmt, repeat=repeat + 1, number=number))
+    # time it and disregard first run
+    r = np.array(_timeit.repeat(stmt=stmt, repeat=repeat + 1, number=1))
+    r = r[1:]
+
     return np.min(r), np.mean(r), np.std(r, ddof=1)
 
 
@@ -218,34 +220,26 @@ def main(
     from pymittagleffler import _set_recommended_matplotlib  # noqa: E402,RUF100
 
     _set_recommended_matplotlib()
-    fig = mp.figure()
+    fig = mp.figure(figsize=(12, 8))
     ax = fig.gca()
 
-    # mean = result_rust[:, 1] * 1000
-    # std = result_rust[:, 2] * 1000
-    # (line,) = ax.plot(alpha, mean, label="Rust")
-    # ax.fill_between(alpha, mean + std, mean - std, alpha=0.2, color=line.get_color())
+    results = [
+        ("Rust", result_rust),
+        ("Python", result_python),
+        ("MATLAB", result_matlab),
+    ]
 
-    # mean = result_python[:, 1] * 1000
-    # std = result_python[:, 2] * 1000
-    # (line,) = ax.plot(alpha, mean, label="Python")
-    # ax.fill_between(alpha, mean + std, mean - std, alpha=0.2, color=line.get_color())
+    for label, result in results:
+        tmin = result[:, 0] * 1000
+        mean = result[:, 1] * 1000
+        std = result[:, 2] * 1000
 
-    # mean = result_matlab[:, 1] * 1000
-    # std = result_matlab[:, 2] * 1000
-    # (line,) = ax.plot(alpha, mean, label="MATLAB")
-    # ax.fill_between(alpha, mean + std, mean - std, alpha=0.2, color=line.get_color())
+        (line,) = ax.plot(alpha, tmin, label=label)
+        ax.plot(alpha, mean, ls="--", lw=1, color=line.get_color())
+        ax.fill_between(alpha, tmin, mean + std, alpha=0.2, color=line.get_color())
 
-    width = 0.3
-    size = result_rust[:, 1]
-    n = np.arange(size.size)
-
-    ax.bar(n, result_rust[:, 1] / size, width, label="Rust")
-    ax.bar(n + width, result_python[:, 1] / size, width, label="Python")
-    ax.bar(n + 2 * width, result_matlab[:, 1] / size, width, label="MATLAB")
-
-    ax.set_xlabel(r"$n$")
-    ax.set_ylabel("Improvement (mean time)")
+    ax.set_xlabel(r"$\alpha$")
+    ax.set_ylabel("Minimum Time (ms)")
     ax.legend()
 
     fig.savefig(outfile)

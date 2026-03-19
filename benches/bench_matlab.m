@@ -11,20 +11,20 @@ beta = d.beta;
 gamma = 1.0;
 
 n = length(alpha);
-nrepeats = 16;
+nrepeats = 32;
 result = zeros(n, 3);
-times = zeros(nrepeats, 1);
+times = zeros(nrepeats + 1, 1);
 
 for i = 1:n
-    for j = 1:nrepeats
+    for j = 1:nrepeats + 1
         tic();
         arrayfun(@(zk) ml(zk, alpha(i), beta, gamma), z);
         times(j) = toc();
     end
 
-    result(i, 1) = min(times);
-    result(i, 2) = mean(times);
-    result(i, 3) = std(times);
+    result(i, 1) = min(times(2:end));
+    result(i, 2) = mean(times(2:end));
+    result(i, 3) = std(times(2:end));
 end
 
 save('bench_result.mat', 'alpha', 'result');

@@ -55,12 +55,20 @@ def _set_recommended_matplotlib() -> None:
 
     defaults: dict[str, dict[str, object]] = {
         "figure": {
-            "figsize": (8, 8),
+            "figsize": (10, 10),
             "dpi": 300,
             "constrained_layout.use": True,
         },
         "text": {"usetex": True},
-        "legend": {"fontsize": 20},
+        "legend": {
+            "fontsize": 20,
+            "frameon": True,
+            "fancybox": False,
+            "facecolor": "white",
+            "edgecolor": "black",
+            "framealpha": 1.0,
+            "columnspacing": 0.8,
+        },
         "lines": {"linewidth": 2, "markersize": 10},
         "axes": {
             "labelsize": 28,
