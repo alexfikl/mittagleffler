@@ -7,8 +7,8 @@ use std::fmt;
 // ln(f64::EPSILON) — a fixed mathematical constant, never changes.
 const LOG_MACH_EPS: f64 = -36.04365338911715;
 
+use num::Float;
 use num::complex::Complex64;
-use num::{Float, Num};
 
 use crate::algorithm::MittagLefflerAlgorithm;
 
@@ -94,25 +94,11 @@ impl fmt::Display for GarrappaMittagLeffler {
 
 // {{{ impl
 
-fn argsort<T: Float>(data: &[T]) -> Vec<usize> {
-    let mut indices: Vec<usize> = (0..data.len()).collect();
-    indices.sort_by(|&i, &j| {
-        data[i]
-            .partial_cmp(&data[j])
-            .unwrap_or(std::cmp::Ordering::Equal)
-    });
-    indices
-}
-
 fn argmin<T: Float>(data: &[T]) -> Option<usize> {
     data.iter()
         .enumerate()
         .min_by(|(_, x), (_, y)| x.partial_cmp(y).unwrap_or(std::cmp::Ordering::Equal))
         .map(|(j, _)| j)
-}
-
-fn pick<T: Num + Copy>(data: &[T], indices: &[usize]) -> Vec<T> {
-    indices.iter().map(|&i| data[i]).collect()
 }
 
 fn laplace_transform_inversion(
@@ -134,24 +120,30 @@ fn laplace_transform_inversion(
     let half_alpha = alpha / 2.0;
     let kmin = (-half_alpha - theta_over_2pi).ceil() as i64;
     let kmax = (half_alpha - theta_over_2pi).floor() as i64;
-    let mut s_star: Vec<Complex64> = (kmin..=kmax)
-        .map(|k| {
-            znorm.powf(alpha.recip())
-                * Complex64::new(0.0, (theta + 2.0 * PI * (k as f64)) / alpha).exp()
+
+    // evaluate poles: build (phi, s) pairs, filter out phi <= eps, sort by phi,
+    // then prepend the origin sentinel and append phi = +inf.
+    let alpha_recip = alpha.recip();
+    let mut poles: Vec<(f64, Complex64)> = (kmin..=kmax)
+        .filter_map(|k| {
+            let s = znorm.powf(alpha_recip)
+                * Complex64::new(0.0, (theta + 2.0 * PI * (k as f64)) / alpha).exp();
+            let phi = (s.re + s.norm()) / 2.0;
+            if phi > ml.eps { Some((phi, s)) } else { None }
         })
         .collect();
+    poles.sort_unstable_by(|(a, _), (b, _)| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
 
-    // sort poles
-    let mut phi_star: Vec<f64> = s_star.iter().map(|s| (s.re + s.norm()) / 2.0).collect();
-
-    let mut phi_star_index = argsort(&phi_star);
-    phi_star_index.retain(|&i| phi_star[i] > ml.eps);
-    s_star = pick(&s_star, &phi_star_index);
-    phi_star = pick(&phi_star, &phi_star_index);
-
-    // add back the origin
-    s_star.insert(0, Complex64::new(0.0, 0.0));
-    phi_star.insert(0, 0.0);
+    // s_star and phi_star: origin at index 0, poles follow, phi = +inf as sentinel at the end.
+    let n_poles = poles.len();
+    let mut s_star: Vec<Complex64> = Vec::with_capacity(n_poles + 1);
+    let mut phi_star: Vec<f64> = Vec::with_capacity(n_poles + 2);
+    s_star.push(Complex64::new(0.0, 0.0));
+    phi_star.push(0.0);
+    for (phi, s) in poles {
+        s_star.push(s);
+        phi_star.push(phi);
+    }
     phi_star.push(f64::INFINITY);
 
     // evaluate the strength of the singularities
