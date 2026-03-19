@@ -7,7 +7,7 @@ SPDX-PackageSupplier = "Alexandru Fikl <alexfikl@gmail.com>"
 SPDX-PackageDownloadLocation = "https://github.com/alexfikl/mittagleffler"
 
 [[annotations]]
-path = ["Cargo.toml", "Cargo.lock", "justfile", "README.md", ".readthedocs.yml"]
+path = ["Cargo.toml", "Cargo.lock", ".cargo/config.toml", "justfile", "README.md", ".readthedocs.yml"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2023 Alexandru Fikl <alexfikl@gmail.com>"
 SPDX-License-Identifier = "CC0-1.0"
