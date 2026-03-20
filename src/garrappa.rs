@@ -9,8 +9,16 @@ const LOG_MACH_EPS: f64 = -36.043_653_389_117_15;
 
 use num::Float;
 use num::complex::Complex64;
+use smallvec::SmallVec;
 
 use crate::algorithm::MittagLefflerAlgorithm;
+
+// Inline capacities for SmallVec buffers.
+//
+// The number of poles is bounded by floor(alpha) * 2, so N_POLES = 16 covers
+// alpha up to ~7.5 without a heap fallback. N_REGIONS is almost always 1-2.
+const N_POLES: usize = 16;
+const N_REGIONS: usize = 4;
 
 /// Parameters for evaluating the Mittag-Leffler function.
 ///
@@ -124,7 +132,7 @@ fn laplace_transform_inversion(
     // evaluate poles: build (phi, s) pairs, filter out phi <= eps, sort by phi,
     // then prepend the origin sentinel and append phi = +inf.
     let alpha_recip = alpha.recip();
-    let mut poles: Vec<(f64, Complex64)> = (kmin..=kmax)
+    let mut poles: SmallVec<[(f64, Complex64); N_POLES]> = (kmin..=kmax)
         .filter_map(|k| {
             let s = znorm.powf(alpha_recip)
                 * Complex64::new(0.0, (theta + 2.0 * PI * (k as f64)) / alpha).exp();
@@ -136,8 +144,8 @@ fn laplace_transform_inversion(
 
     // s_star and phi_star: origin at index 0, poles follow, phi = +inf as sentinel at the end.
     let n_poles = poles.len();
-    let mut s_star: Vec<Complex64> = Vec::with_capacity(n_poles + 1);
-    let mut phi_star: Vec<f64> = Vec::with_capacity(n_poles + 2);
+    let mut s_star: SmallVec<[Complex64; N_POLES]> = SmallVec::with_capacity(n_poles + 1);
+    let mut phi_star: SmallVec<[f64; N_POLES]> = SmallVec::with_capacity(n_poles + 2);
     s_star.push(Complex64::new(0.0, 0.0));
     phi_star.push(0.0);
     for (phi, s) in poles {
@@ -160,7 +168,7 @@ fn laplace_transform_inversion(
     let q = |j: usize| -> f64 { if j == n_star - 1 { f64::INFINITY } else { 1.0 } };
 
     // find admissible regions
-    let region_index: Vec<usize> = phi_star
+    let region_index: SmallVec<[usize; N_REGIONS]> = phi_star
         .windows(2)
         .map(|x| x[0] < d_log_eps / t && x[0] < x[1])
         .enumerate()
@@ -169,9 +177,9 @@ fn laplace_transform_inversion(
 
     // evaluate parameters of the Laplace Transform inversion in each region
     let nregions = region_index.last().unwrap() + 1;
-    let mut mu = vec![f64::INFINITY; nregions];
-    let mut npoints = vec![f64::INFINITY; nregions];
-    let mut h = vec![f64::INFINITY; nregions];
+    let mut mu: SmallVec<[f64; N_REGIONS]> = smallvec::smallvec![f64::INFINITY; nregions];
+    let mut npoints: SmallVec<[f64; N_REGIONS]> = smallvec::smallvec![f64::INFINITY; nregions];
+    let mut h: SmallVec<[f64; N_REGIONS]> = smallvec::smallvec![f64::INFINITY; nregions];
 
     let mut found_region = false;
     while !found_region {
