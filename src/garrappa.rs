@@ -248,42 +248,106 @@ fn laplace_transform_inversion(
     //   exp(zk*t) = exp(mu*t) * exp(-mu*t*(h*k)^2) * cis(2*mu*t*h*k)
     //
     // plus some more polar decompositions below.
+    //
+    // We exploit k/−k symmetry: for a pair (k, -k) with k > 0:
+    //   - hk_sq, ln1p_hk_sq, ln_r, r_ab, r_a, exp(-mu_t*hk_sq) are identical
+    //   - theta(-k) = -theta(k), so sin_cos of angle just flips the sin sign
+    // This halves the number of atan, ln_1p, and shared exp calls.
     let ln_mu = mu_min.ln();
     let alpha_minus_beta = alpha - beta;
     let exp_mu_t = (mu_min * t).exp();
     let mu_t = mu_min * t;
+    let two_mu = 2.0 * mu_min;
 
-    let sv: Complex64 = (-n_min..=n_min)
+    // Inline helper: compute the integrand contribution for a single node
+    // given hk_i (= h*k), ln_r, theta, and the shared real exp factor.
+    //
+    // The real exp factor exp(-mu_t * hk_sq) * exp_mu_t is passed in as
+    // `exp_real` to allow sharing between +k and -k.
+    #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
+    fn node_contrib(
+        hk_i: f64,
+        theta: f64,
+        ln_r: f64,
+        exp_real: f64,
+        alpha: f64,
+        alpha_minus_beta: f64,
+        z: Complex64,
+        mu_t: f64,
+        two_mu: f64,
+    ) -> Complex64 {
+        // zk^(alpha − beta)
+        let (s_ab, c_ab) = (alpha_minus_beta * theta).sin_cos();
+        let r_ab = (alpha_minus_beta * ln_r).exp();
+        let zk_alpha_beta = Complex64::new(r_ab * c_ab, r_ab * s_ab);
+
+        // zk^alpha
+        let (s_a, c_a) = (alpha * theta).sin_cos();
+        let r_a = (alpha * ln_r).exp();
+        let zk_alpha = Complex64::new(r_a * c_a, r_a * s_a);
+
+        // zd = derivative factor: 2*mu*(i - hk)
+        let zd = Complex64::new(-two_mu * hk_i, two_mu);
+        let f = zk_alpha_beta / (zk_alpha - z) * zd;
+
+        // exp(zk*t): only the cis part varies between +k and -k
+        let (s_exp, c_exp) = (2.0 * mu_t * hk_i).sin_cos();
+        let exp_zk_t = exp_real * Complex64::new(c_exp, s_exp);
+
+        f * exp_zk_t
+    }
+
+    // k = 0 term
+    let sv0 = node_contrib(
+        0.0,
+        0.0,
+        ln_mu,
+        exp_mu_t,
+        alpha,
+        alpha_minus_beta,
+        z,
+        mu_t,
+        two_mu,
+    );
+
+    // k = 1..N pairs: each pair shares the expensive transcendentals
+    let sv_pairs: Complex64 = (1..=n_min)
         .map(|k| {
             let hk_i = h_min * (k as f64);
             let hk_sq = hk_i * hk_i;
 
-            // polar decomposition of zk = r exp(i theta)
-            let ln1p_hk_sq = hk_sq.ln_1p();
-            let ln_r = ln_mu + ln1p_hk_sq;
-            let theta = 2.0 * hk_i.atan();
+            // shared between +k and -k
+            let ln_r = ln_mu + hk_sq.ln_1p();
+            let theta = 2.0 * hk_i.atan(); // theta for +k; -k uses -theta
+            let exp_real = exp_mu_t * (-mu_t * hk_sq).exp(); // shared real factor
 
-            // zk^(alpha − beta)
-            let (s_ab, c_ab) = (alpha_minus_beta * theta).sin_cos();
-            let r_ab = (alpha_minus_beta * ln_r).exp();
-            let zk_alpha_beta = Complex64::new(r_ab * c_ab, r_ab * s_ab);
-
-            // zk^alpha
-            let (s_a, c_a) = (alpha * theta).sin_cos();
-            let r_a = (alpha * ln_r).exp();
-            let zk_alpha = Complex64::new(r_a * c_a, r_a * s_a);
-
-            // zd = derivative factor: 2*mu*(i - hk)
-            let zd_i = Complex64::new(-2.0 * mu_min * hk_i, 2.0 * mu_min);
-            let f_i = zk_alpha_beta / (zk_alpha - z) * zd_i;
-
-            // exp(zk*t)
-            let (s_exp, c_exp) = (2.0 * mu_t * hk_i).sin_cos();
-            let exp_zk_t = exp_mu_t * (-mu_t * hk_sq).exp() * Complex64::new(c_exp, s_exp);
-
-            f_i * exp_zk_t
+            // +k and -k contributions
+            node_contrib(
+                hk_i,
+                theta,
+                ln_r,
+                exp_real,
+                alpha,
+                alpha_minus_beta,
+                z,
+                mu_t,
+                two_mu,
+            ) + node_contrib(
+                -hk_i,
+                -theta,
+                ln_r,
+                exp_real,
+                alpha,
+                alpha_minus_beta,
+                z,
+                mu_t,
+                two_mu,
+            )
         })
         .sum();
+
+    let sv = sv0 + sv_pairs;
     let integral = h_min * sv / Complex64::new(0.0, 2.0 * PI);
 
     // evaluate residues
