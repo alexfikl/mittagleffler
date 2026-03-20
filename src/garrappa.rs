@@ -203,7 +203,6 @@ fn laplace_transform_inversion(
         }
 
         if log_eps >= 0.0 {
-            println!("Failed to find an admissible region");
             return None;
         }
     }
