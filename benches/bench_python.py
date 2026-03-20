@@ -46,6 +46,18 @@ def timeit(
 MATLAB_ML_URL = "https://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/48154/versions/6/download/zip/ml.zip"
 
 
+def benchmark_hyp2f1(z: Array, alpha: Array, beta: float) -> Array:
+    log.info("Running scipy.special.hyp2f1 benchmark...")
+
+    from scipy.special import hyp2f1
+
+    result = np.empty((alpha.size, 3))
+    for i in range(alpha.size):
+        result[i] = timeit(lambda i=i: hyp2f1(alpha[i], beta, np.pi / 4, z))
+
+    return result
+
+
 def benchmark_rust(z: Array, alpha: Array, beta: float) -> Array:
     log.info("Running Rust benchmark...")
 
@@ -186,6 +198,7 @@ def main(
         data = np.load(filename, allow_pickle=True)
 
         alpha = data["alpha"]
+        result_hyp2f1 = data["result_hyp2f1"]
         result_rust = data["result_rust"]
         result_python = data["result_python"]
         result_matlab = data["result_matlab"]
@@ -197,6 +210,7 @@ def main(
         r = np.linspace(0.0, 12.0, 256)
         z = r * np.exp(1j * arg)
 
+        result_hyp2f1 = benchmark_hyp2f1(z, alpha, beta)
         result_rust = benchmark_rust(z, alpha, beta)
         result_python = benchmark_python(z, alpha, beta)
         result_matlab = benchmark_matlab(z, alpha, beta)
@@ -204,6 +218,7 @@ def main(
         np.savez(
             outfile.with_suffix(".npz"),
             alpha=alpha,
+            result_hyp2f1=result_hyp2f1,
             result_rust=result_rust,
             result_python=result_python,
             result_matlab=result_matlab,
@@ -227,6 +242,7 @@ def main(
         ("Rust", result_rust),
         ("Python", result_python),
         ("MATLAB", result_matlab),
+        # ("scipy.special.hyp2f1", result_hyp2f1),
     ]
 
     for label, result in results:
