@@ -214,43 +214,67 @@ fn laplace_transform_inversion(
     let h_min = h[jmin];
 
     // evaluate inverse Laplace Transform integral
-    let hk: Vec<f64> = (-n_min..=n_min).map(|k| h_min * (k as f64)).collect();
-    let zk: Vec<Complex64> = hk
-        .iter()
-        .map(|&hk_i| mu_min * Complex64::new(1.0, hk_i).powi(2))
-        .collect();
-    let zd: Vec<Complex64> = hk
-        .iter()
-        .map(|&hk_i| Complex64::new(-2.0 * mu_min * hk_i, 2.0 * mu_min))
-        .collect();
+    //
+    // NOTE: in the MATLAB code, the inner computation was originally equivalent to
+    //
+    //      k = -N:N;
+    //      u = h*k;
+    //      z = mu*(1i*u+1).^2;
+    //      zd = -2*mu*u + 2*mu*1i;
+    //      zexp = exp(z*t);
+    //      F = z.^(alpha*gama-beta)./(z.^alpha - lambda).^gama.*zd;
+    //      S = zexp.*F;
+    //      Integral = h*sum(S)/2/pi/1i;
+    //
+    // The version below is faster: it avoids complex powf and other transcendental
+    // functions + it precomputes a bunch of values that are constant. The compiler
+    // can probably do some of that, but better safe than sorry.
+    //
+    // All quadrature nodes have the form zk = mu * (1 + i*h*k)^2, which means their
+    // polar components reduce to exact closed forms - avoiding more costly
+    // transcendental function evaluation. We have
+    //
+    //   |zk| = mu * (1 + (h*k)^2)
+    //   ln|zk| = ln(mu) + ln(1 + (h*k)^2)
+    //   arg(zk) = 2 * atan(h*k)
+    //   exp(zk*t) = exp(mu*t) * exp(-mu*t*(h*k)^2) * cis(2*mu*t*h*k)
+    //
+    // plus some more polar decompositions below.
+    let ln_mu = mu_min.ln();
+    let alpha_minus_beta = alpha - beta;
+    let exp_mu_t = (mu_min * t).exp();
+    let mu_t = mu_min * t;
 
-    let sv: Complex64 = zk
-        .iter()
-        .zip(zd.iter())
-        // NOTE: in the MATLAB code, this was originally equivalent to
-        //
-        // .map(|(&zk_i, &zd_i)| zk_i.powf(alpha - beta) / (zk_i.powf(alpha) - z) * zd_i)
-        //
-        // The version below seems faster because it saves on some complex pow calls.
-        .map(|(&zk_i, &zd_i)| {
-            let r = zk_i.re.hypot(zk_i.im);
-            let theta = zk_i.im.atan2(zk_i.re);
-            let ln_r = r.ln();
+    let sv: Complex64 = (-n_min..=n_min)
+        .map(|k| {
+            let hk_i = h_min * (k as f64);
+            let hk_sq = hk_i * hk_i;
 
-            // zk^(alpha − beta): use sin_cos to get both trig values in one call.
-            let (s_ab, c_ab) = ((alpha - beta) * theta).sin_cos();
-            let r_ab = ((alpha - beta) * ln_r).exp();
+            // polar decomposition of zk = r exp(i theta)
+            let ln1p_hk_sq = hk_sq.ln_1p();
+            let ln_r = ln_mu + ln1p_hk_sq;
+            let theta = 2.0 * hk_i.atan();
+
+            // zk^(alpha − beta)
+            let (s_ab, c_ab) = (alpha_minus_beta * theta).sin_cos();
+            let r_ab = (alpha_minus_beta * ln_r).exp();
             let zk_alpha_beta = Complex64::new(r_ab * c_ab, r_ab * s_ab);
 
-            // zk^alpha:
+            // zk^alpha
             let (s_a, c_a) = (alpha * theta).sin_cos();
             let r_a = (alpha * ln_r).exp();
             let zk_alpha = Complex64::new(r_a * c_a, r_a * s_a);
 
-            zk_alpha_beta / (zk_alpha - z) * zd_i
+            // zd = derivative factor: 2*mu*(i - hk)
+            let zd_i = Complex64::new(-2.0 * mu_min * hk_i, 2.0 * mu_min);
+            let f_i = zk_alpha_beta / (zk_alpha - z) * zd_i;
+
+            // exp(zk*t)
+            let (s_exp, c_exp) = (2.0 * mu_t * hk_i).sin_cos();
+            let exp_zk_t = exp_mu_t * (-mu_t * hk_sq).exp() * Complex64::new(c_exp, s_exp);
+
+            f_i * exp_zk_t
         })
-        .zip(zk.iter())
-        .map(|(f_i, &zk_i)| f_i * (zk_i * t).exp())
         .sum();
     let integral = h_min * sv / Complex64::new(0.0, 2.0 * PI);
 
