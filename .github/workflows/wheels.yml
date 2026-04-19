@@ -68,7 +68,7 @@ jobs:
           command: build
           target: ${{ steps.target.outputs.target }}
           args: --release --out dist -m python/Cargo.toml
-          manylinux: '2_24'
+          manylinux: '2_28'
 
       - name: Test wheels
         if: matrix.architecture == 'x86-64'
