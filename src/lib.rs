@@ -25,7 +25,7 @@
 //!
 //! # Acknowledgments
 //!
-//! Work on ``pycaputo`` was sponsored, in part, by
+//! Work on ``mittagleffler`` was sponsored, in part, by
 //!
 //! * the West University of Timișoara (Romania) under START Grant No. 33580/25.05.2023,
 //! * the CNCS-UEFISCDI (Romania), under Project No. ROSUA-2024-0002,
