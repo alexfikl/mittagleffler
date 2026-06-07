@@ -51,12 +51,12 @@ test = [ "matplotlib", "pytest", "ruff", "scienceplots", "ty" ]
 docs = [ "sphinx>=6", "sphinx-book-theme" ]
 
 [tool.maturin]
+module-name = "pymittagleffler._bindings"
+bindings = "pyo3"
+python-source = "src"
 manifest-path = "Cargo.toml"
 profile = "release"
 strip = true
-bindings = "pyo3"
-module-name = "pymittagleffler._bindings"
-python-source = "src"
 
 [tool.ruff]
 target-version = "py310"
@@ -105,11 +105,11 @@ lint.isort.required-imports = [
 ]
 
 [tool.pytest]
-testpaths = [ "tests" ]
-cache_dir = ".pytest-cache"
 addopts = [
     "-rswx",
     "--durations=25",
     "--capture=no",
     "--verbose",
 ]
+cache_dir = ".pytest-cache"
+testpaths = [ "tests" ]
