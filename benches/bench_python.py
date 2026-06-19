@@ -5,13 +5,16 @@ from __future__ import annotations
 
 import logging
 import pathlib
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 import numpy as np
 import rich.logging
 
 from pymittagleffler import mittag_leffler
 from pymittagleffler.fallback import mittag_leffler_garrappa
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 log = logging.getLogger(pathlib.Path(__file__).stem)
 log.setLevel(logging.INFO)
