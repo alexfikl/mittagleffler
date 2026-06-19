@@ -16,7 +16,11 @@ iniconfig==2.3.0
     # via pytest
 kiwisolver==1.5.0
     # via matplotlib
-matplotlib==3.10.9
+matplotlib==3.10.9 ; python_full_version < '3.11'
+    # via
+    #   pymittagleffler (pyproject.toml:test)
+    #   scienceplots
+matplotlib==3.11.0 ; python_full_version >= '3.11'
     # via
     #   pymittagleffler (pyproject.toml:test)
     #   scienceplots
@@ -42,11 +46,11 @@ pygments==2.20.0
     # via pytest
 pyparsing==3.3.2
     # via matplotlib
-pytest==9.0.3
+pytest==9.1.1
     # via pymittagleffler (pyproject.toml:test)
 python-dateutil==2.9.0.post0
     # via matplotlib
-ruff==0.15.16
+ruff==0.15.18
     # via pymittagleffler (pyproject.toml:test)
 scienceplots==2.2.1
     # via pymittagleffler (pyproject.toml:test)
@@ -54,7 +58,7 @@ six==1.17.0
     # via python-dateutil
 tomli==2.4.1 ; python_full_version < '3.11'
     # via pytest
-ty==0.0.44
+ty==0.0.51
     # via pymittagleffler (pyproject.toml:test)
 typing-extensions==4.15.0 ; python_full_version < '3.11'
     # via exceptiongroup
