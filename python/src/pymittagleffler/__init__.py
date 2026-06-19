@@ -10,7 +10,7 @@
 
         Tolerance used by the algorithm.
 
-    .. automethod:: evaluate
+    .. automethod:: evaluate(z: complex, alpha: float, beta: float) -> complex | None
 
         Evaluate the Mittag-Leffler function at a scalar argument *z*. Note
         that, unlike :func:`mittag_leffler`, this function does not use any
@@ -18,13 +18,12 @@
         the algorithm from Garrappa (2015, `doi:10.1137/140971191
         <https://doi.org/10.1137/140971191>`__).
 
-.. autofunction:: mittag_leffler
+.. autofunction:: mittag_leffler(z: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.inexact[Any]]], alpha: float, beta: float) -> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.inexact[Any]]]
 
     Evaluate the Mittag-Leffler function with parameters *alpha* and *beta*.
 
     :arg z: any scalar or :class:`numpy.ndarray` of real or complex numbers.
-
-"""
+"""  # noqa: E501
 
 from __future__ import annotations
 
