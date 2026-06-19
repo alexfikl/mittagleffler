@@ -29,9 +29,12 @@
 from __future__ import annotations
 
 import pathlib
-from collections.abc import Sequence
+from typing import TYPE_CHECKING
 
 from ._bindings import GarrappaMittagLeffler, mittag_leffler
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 __all__ = ("GarrappaMittagLeffler", "mittag_leffler")
 
