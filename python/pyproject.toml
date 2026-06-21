@@ -47,7 +47,7 @@ urls.Repository = "https://github.com/alexfikl/mittagleffler"
 [dependency-groups]
 dev = [ "pyproject-fmt", "reuse", "typos", "uv" ]
 # NOTE: typing dependencies: matplotlib, scienceplots
-test = [ "matplotlib", "pytest", "ruff", "scienceplots", "ty" ]
+test = [ "matplotlib", "pytest", "pytest-github-actions-annotate-failures", "ruff", "scienceplots", "ty" ]
 docs = [ "sphinx>=6", "sphinx-book-theme" ]
 
 [tool.maturin]

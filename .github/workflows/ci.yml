@@ -48,8 +48,8 @@ jobs:
       run: |
         just python/ci-install ../.venv && source .venv/bin/activate
 
-        just python/ruff
-        just ruff
+        just python/ruff --output-format=github
+        just ruff --output-format=github
 
   clippy:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
@@ -79,7 +79,7 @@ jobs:
     - name: Main Script
       run: |
         just python/ci-install ../.venv && source .venv/bin/activate
-        just python/ty
+        just python/ty --output-format=github
 
   rustest:
     if: "!contains(github.event.head_commit.message, 'skip ci')"

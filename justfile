@@ -18,8 +18,8 @@ isort:
     @echo -e "\e[1;32mruff isort clean!\e[0m"
 
 [doc('Run ruff format over the source code')]
-black:
-    ruff format --config {{ PYPROJECT }} scripts benches
+black *ARGS:
+    ruff format {{ ARGS }} --config {{ PYPROJECT }} scripts benches
     @echo -e "\e[1;32mruff format clean!\e[0m"
 
 [doc("Run rustfmt over the source code")]
@@ -49,8 +49,8 @@ reuse:
     @echo -e "\e[1;32mREUSE compliant!\e[0m"
 
 [doc('Run ruff checks over the source code')]
-ruff:
-    ruff check --config {{ PYPROJECT }} scripts benches
+ruff *ARGS:
+    ruff check {{ ARGS }} --config {{ PYPROJECT }} scripts benches
     @echo -e "\e[1;32mruff clean!\e[0m"
 
 [doc("Run clippy lint checks")]
