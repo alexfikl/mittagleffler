@@ -29,7 +29,12 @@ numpy==2.2.6 ; python_full_version < '3.11'
     #   pymittagleffler (pyproject.toml)
     #   contourpy
     #   matplotlib
-numpy==2.4.6 ; python_full_version >= '3.11'
+numpy==2.4.6 ; python_full_version == '3.11.*'
+    # via
+    #   pymittagleffler (pyproject.toml)
+    #   contourpy
+    #   matplotlib
+numpy==2.5.0 ; python_full_version >= '3.12'
     # via
     #   pymittagleffler (pyproject.toml)
     #   contourpy
@@ -47,6 +52,10 @@ pygments==2.20.0
 pyparsing==3.3.2
     # via matplotlib
 pytest==9.1.1
+    # via
+    #   pymittagleffler (pyproject.toml:test)
+    #   pytest-github-actions-annotate-failures
+pytest-github-actions-annotate-failures==0.4.2
     # via pymittagleffler (pyproject.toml:test)
 python-dateutil==2.9.0.post0
     # via matplotlib

@@ -4,7 +4,9 @@ maturin==1.14.1
     # via -r ../.ci/requirements-build.in
 numpy==2.2.6 ; python_full_version < '3.11'
     # via -r ../.ci/requirements-build.in
-numpy==2.4.6 ; python_full_version >= '3.11'
+numpy==2.4.6 ; python_full_version == '3.11.*'
+    # via -r ../.ci/requirements-build.in
+numpy==2.5.0 ; python_full_version >= '3.12'
     # via -r ../.ci/requirements-build.in
 tomli==2.4.1 ; python_full_version < '3.11'
     # via maturin
