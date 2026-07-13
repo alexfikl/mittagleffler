@@ -1,3 +1,19 @@
+Version 0.2.1 (July 13, 2026)
+-----------------------------
+
+Features
+^^^^^^^^
+
+* More performance improvements. Minor compared to last time, but still notable.
+  We now use ``smallvec`` to avoid allocations and take advantage of some
+  symmetries in the equations.
+
+Maintenance
+^^^^^^^^^^^
+
+* Small updates to build and CI (dependency groups and cleanup).
+* Update benchmark script.
+
 Version 0.2.0 (March 19, 2026)
 ------------------------------
 
