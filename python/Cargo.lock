@@ -27,9 +27,9 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
 name = "lambert_w"
-version = "2.0.3"
+version = "2.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d0452ace452e1ef835a8616a980f7c49faca9f9a4798bcf605b734dd6baeb59"
+checksum = "cf079ac3984422f463d8e3393339d5e8ffebcad5cb21ed2be323f3e14962e680"
 dependencies = [
  "num-complex",
  "num-traits",
