@@ -17,7 +17,7 @@ from docutils import nodes
 m = metadata.metadata("pymittagleffler")
 project = m["Name"]
 author = m["Author-email"]
-copyright = f"2024 {author}"  # noqa: A001
+copyright = f"2024 {author}"  # ruff:ignore[builtin-variable-shadowing]
 version = m["Version"]
 release = version
 url = "https://github.com/alexfikl/mittagleffler"

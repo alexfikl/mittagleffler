@@ -23,7 +23,7 @@
     Evaluate the Mittag-Leffler function with parameters *alpha* and *beta*.
 
     :arg z: any scalar or :class:`numpy.ndarray` of real or complex numbers.
-"""  # noqa: E501
+"""  # ruff:ignore[line-too-long]
 
 from __future__ import annotations
 

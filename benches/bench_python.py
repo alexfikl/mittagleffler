@@ -138,14 +138,14 @@ def benchmark_matlab(z: Array, alpha: Array, beta: Array) -> Array:
     env = os.environ.copy()
     env["LD_LIBRARY_PATH"] = f"/usr/lib/gnutls3.8.9/:{env.get('LD_LIBRARY_PATH', '')}"
 
-    import subprocess  # noqa: S404
+    import subprocess  # ruff:ignore[suspicious-subprocess-import]
 
     log.info("Running MATLAB benchmark...")
     datafile = dirname / "bench_result.mat"
 
     try:
         subprocess.check_call(
-            [  # noqa: S607
+            [  # ruff:ignore[start-process-with-partial-path]
                 "matlab",
                 "-nodisplay",
                 "-nosplash",
@@ -235,7 +235,7 @@ def main(
         print("'matplotlib' package is not available for plotting")
         raise SystemExit(0) from exc
 
-    from pymittagleffler import _set_recommended_matplotlib  # noqa: E402,RUF100
+    from pymittagleffler import _set_recommended_matplotlib
 
     _set_recommended_matplotlib()
     fig = mp.figure(figsize=(12, 8))
