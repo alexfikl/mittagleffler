@@ -112,7 +112,7 @@ has a strong dependence on both of these parameters, as much as :math:`7 \times`
 These results were obtained on Arch Linux running on an AMD Ryzen AI 9 HX 370.
 The software stack, roughly, is
 
-* ``mittagleffler`` version 0.2.1.
+* ``mittagleffler`` version 0.3.0.
 * Rust 1.99.1 (in release mode) and compiled with the extra ``target-cpu=x86-64-v3``.
 * Python 3.14 (running with ``-O``).
 * MATLAB R2026a (standard parameters, hopefully also optimized).
