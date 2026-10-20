@@ -1,3 +1,24 @@
+Version 0.3.0 (October 20, 2026)
+--------------------------------
+
+Dependencies
+^^^^^^^^^^^^
+
+* Advertise support for Python 3.15.
+* Update to the new ``pyo3`` and ``rust-numpy`` 0.30 releases.
+
+Features
+^^^^^^^^
+
+* Implement parallel evaluation in Python using ``rayon``. This is quite a big
+  performance boost. Use ``RAYON_NUM_THREADS`` to control the number of threads.
+
+Maintenance
+^^^^^^^^^^^
+
+* Small updates to build, CI, linting.
+* Update benchmark script.
+
 Version 0.2.1 (July 13, 2026)
 -----------------------------
 
