@@ -16,7 +16,9 @@ path = "bindings/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
+ndarray = { version = "0.17", features = ["rayon"] }
 mittagleffler = { path = "../"}
 num = { version = "0.4" }
 numpy = { version = "0.30" }
 pyo3 = { version = "0.30", features = ["abi3-py310", "extension-module", "num-complex"] }
+rayon = { version = "1" }
