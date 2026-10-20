@@ -85,20 +85,27 @@ implementation
     :align: center
     :alt: Performance of the pymittagleffler library.
 
-The benchmark computes the Mittag-Leffler function of a vector of 256 complex numbers
-with a fixed :math:`\beta` and over a range of :math:`\alpha` parameters.
-The results show the minimum time (full line), the mean time (dashed line) and
-the region of :math:`[\text{min}, \text{mean} + \text{std}]`. In this test, the
-Python bindings to the Rust crate clearly outcompete the other implementations by
-an order of magnitude.
+The benchmark computes the Mittag-Leffler function of a vector of 256 complex
+numbers with a fixed :math:`\beta` and over a range of :math:`\alpha`
+parameters. The vertical axis shows the ratio of the minimum time of each
+implementation to the minimum time of the fully threaded Rust implementation,
+using the best of 32 timed runs. The all-threaded Rust implementation is
+therefore at :math:`1 \times` and larger values are slower. The separate
+single-threaded Rust series separates the algorithmic speedup from the parallel
+one.
+
+The all-threaded results use all available cores. Their number can be
+controlled with the ``RAYON_NUM_THREADS`` environment variable. Note that the
+Python reference is intended as a straightforward pure Python implementation of
+the same algorithm, not as an optimized NumPy implementation.
 
 These results were obtained on Arch Linux running on an AMD Ryzen AI 9 HX 370.
 The software stack, roughly, is
 
-* ``mittagleffler`` version 0.2.0.
-* Rust 1.94.0 (in release mode) and compiled with the extra ``target-cpu=x86-64-v3``.
+* ``mittagleffler`` version 0.2.1.
+* Rust 1.99.1 (in release mode) and compiled with the extra ``target-cpu=x86-64-v3``.
 * Python 3.14 (running with ``-O``).
-* MATLAB R2025b (standard parameters, hopefully also optimized).
+* MATLAB R2026a (standard parameters, hopefully also optimized).
 
 Reference
 ---------
