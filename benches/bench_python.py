@@ -15,6 +15,7 @@ from pymittagleffler.fallback import mittag_leffler_garrappa
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+    from multiprocessing.connection import Connection
 
 log = logging.getLogger(pathlib.Path(__file__).stem)
 log.setLevel(logging.INFO)
@@ -61,12 +62,52 @@ def benchmark_hyp2f1(z: Array, alpha: Array, beta: float) -> Array:
     return result
 
 
-def benchmark_rust(z: Array, alpha: Array, beta: float) -> Array:
-    log.info("Running Rust benchmark...")
-
+def _benchmark_rust_impl(z: Array, alpha: Array, beta: float) -> Array:
     result = np.empty((alpha.size, 3))
     for i in range(alpha.size):
         result[i] = timeit(lambda i=i: mittag_leffler(z, float(alpha[i]), beta))
+
+    return result
+
+
+def _benchmark_rust_worker(
+    z: Array, alpha: Array, beta: float, threads: int, conn: Connection
+) -> None:
+    import os
+
+    if threads < 1:
+        os.environ.pop("RAYON_NUM_THREADS", None)
+        os.environ.pop("RAYON_RS_NUM_CPUS", None)
+    else:
+        os.environ["RAYON_NUM_THREADS"] = str(threads)
+
+    conn.send(_benchmark_rust_impl(z, alpha, beta))
+    conn.close()
+
+
+def benchmark_rust(z: Array, alpha: Array, beta: float, *, threads: int = -1) -> Array:
+    if threads < 1:
+        log.info("Running Rust (all threads) benchmark...")
+    else:
+        log.info("Running Rust (%d threads) benchmark...", threads)
+
+    import multiprocessing as mp
+
+    context = mp.get_context("spawn")
+    recv_conn, send_conn = context.Pipe(duplex=False)
+    process = context.Process(
+        target=_benchmark_rust_worker,
+        args=(z, alpha, beta, threads, send_conn),
+    )
+
+    process.start()
+    send_conn.close()
+
+    try:
+        result = recv_conn.recv()
+    finally:
+        process.join()
+        recv_conn.close()
 
     return result
 
@@ -203,6 +244,7 @@ def main(
         alpha = data["alpha"]
         result_hyp2f1 = data["result_hyp2f1"]
         result_rust = data["result_rust"]
+        result_rust_serial = data["result_rust_serial"]
         result_python = data["result_python"]
         result_matlab = data["result_matlab"]
     else:
@@ -214,7 +256,8 @@ def main(
         z = r * np.exp(1j * arg)
 
         result_hyp2f1 = benchmark_hyp2f1(z, alpha, beta)
-        result_rust = benchmark_rust(z, alpha, beta)
+        result_rust = benchmark_rust(z, alpha, beta, threads=-1)
+        result_rust_serial = benchmark_rust(z, alpha, beta, threads=1)
         result_python = benchmark_python(z, alpha, beta)
         result_matlab = benchmark_matlab(z, alpha, beta)
 
@@ -223,6 +266,7 @@ def main(
             alpha=alpha,
             result_hyp2f1=result_hyp2f1,
             result_rust=result_rust,
+            result_rust_serial=result_rust_serial,
             result_python=result_python,
             result_matlab=result_matlab,
         )
@@ -241,25 +285,40 @@ def main(
     fig = mp.figure(figsize=(12, 8))
     ax = fig.gca()
 
+    baseline = result_rust[:, 0]
+
+    ax.plot(
+        alpha,
+        np.ones_like(alpha),
+        color="tab:blue",
+        lw=3,
+        label=r"pymittagleffler",
+    )
+
     results = [
-        ("Rust", result_rust),
-        ("Python", result_python),
-        ("MATLAB", result_matlab),
-        # ("scipy.special.hyp2f1", result_hyp2f1),
+        ("pymittagleffler (1 thread)", result_rust_serial, "tab:blue", "--"),
+        ("MATLAB", result_matlab, "tab:red", "-"),
+        ("Python", result_python, "tab:orange", "-"),
     ]
 
-    for label, result in results:
-        tmin = result[:, 0] * 1000
-        mean = result[:, 1] * 1000
-        std = result[:, 2] * 1000
+    for label, result, color, ls in results:
+        if result is None:
+            continue
 
-        (line,) = ax.plot(alpha, tmin, label=label)
-        ax.plot(alpha, mean, ls="--", lw=1, color=line.get_color())
-        ax.fill_between(alpha, tmin, mean + std, alpha=0.2, color=line.get_color())
+        ratio = result[:, 0] / baseline
+        ax.plot(
+            alpha,
+            ratio,
+            color=color,
+            ls=ls,
+            label=label,
+        )
 
+    ax.axhline(1.0, color="black", lw=0.8)
     ax.set_xlabel(r"$\alpha$")
-    ax.set_ylabel("Minimum Time (ms)")
-    ax.legend()
+    ax.set_ylabel(r"Improvement ($\times$)")
+    ax.set_ylim(bottom=0.8)
+    ax.legend(loc="upper left")
 
     fig.savefig(outfile)
     log.info("Saved plot in '%s'", outfile)
