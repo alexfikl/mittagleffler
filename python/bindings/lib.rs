@@ -1,14 +1,19 @@
 // SPDX-FileCopyrightText: 2024 Alexandru Fikl <alexfikl@gmail.com>
 // SPDX-License-Identifier: MIT
 
-use num::complex::{c64, Complex32, Complex64};
+use num::complex::{Complex32, Complex64, c64};
 
+use numpy::ndarray::Zip;
 use numpy::{IntoPyArray, PyReadonlyArrayDyn};
 use pyo3::exceptions::PyTypeError;
 use pyo3::prelude::*;
 use pyo3::types::PyComplex;
 
-use mittagleffler::{mittag_leffler_special, GarrappaMittagLeffler, MittagLefflerAlgorithm};
+use mittagleffler::{GarrappaMittagLeffler, MittagLefflerAlgorithm, mittag_leffler_special};
+
+/// NOTE: below this many elements, the overhead of spawning parallel work
+/// outweighs the gain, so arrays are evaluated serially.
+const PARALLEL_THRESHOLD: usize = 32;
 
 #[pyclass]
 #[pyo3(name = "GarrappaMittagLeffler")]
@@ -41,6 +46,7 @@ impl PyGarrappaMittagLeffler {
     }
 }
 
+#[inline]
 fn eval(ml: &GarrappaMittagLeffler, z: Complex64, alpha: f64, beta: f64) -> Complex64 {
     match mittag_leffler_special(z, alpha, beta).or_else(|| ml.evaluate(z, alpha, beta)) {
         Some(value) => value,
@@ -49,6 +55,35 @@ fn eval(ml: &GarrappaMittagLeffler, z: Complex64, alpha: f64, beta: f64) -> Comp
             im: f64::NAN,
         },
     }
+}
+
+#[inline]
+fn evaluate_array<'py, T, F>(
+    py: Python<'py>,
+    ary: PyReadonlyArrayDyn<'py, T>,
+    alpha: f64,
+    beta: f64,
+    to_complex: F,
+) -> PyResult<Py<PyAny>>
+where
+    T: numpy::Element + Copy,
+    F: Fn(T) -> Complex64 + Send + Sync,
+{
+    let ml = GarrappaMittagLeffler::default();
+    let view = ary.as_array();
+
+    let result = if view.len() < PARALLEL_THRESHOLD || rayon::current_num_threads() <= 1 {
+        view.map(|x| eval(&ml, to_complex(*x), alpha, beta))
+    } else {
+        // NOTE: the GIL is released while evaluating
+        py.detach(|| Zip::from(view).par_map_collect(|x| eval(&ml, to_complex(*x), alpha, beta)))
+    };
+
+    Ok(result
+        .into_pyarray(py)
+        .into_pyobject(py)?
+        .into_any()
+        .unbind())
 }
 
 #[pyfunction]
@@ -66,41 +101,27 @@ pub fn mittag_leffler<'py>(
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<f32>>() {
-        let ary = ary
-            .as_array()
-            .map(|x| eval(&ml, c64(*x as f64, 0.0), alpha, beta));
-        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
+        return evaluate_array(py, ary, alpha, beta, |x| c64(x as f64, 0.0));
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<f64>>() {
-        let ary = ary.as_array().map(|x| eval(&ml, c64(*x, 0.0), alpha, beta));
-        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
+        return evaluate_array(py, ary, alpha, beta, |x| c64(x, 0.0));
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<Complex32>>() {
-        let ary = ary
-            .as_array()
-            .map(|x| eval(&ml, c64(x.re as f64, x.im as f64), alpha, beta));
-        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
+        return evaluate_array(py, ary, alpha, beta, |x| c64(x.re as f64, x.im as f64));
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<Complex64>>() {
-        let ary = ary.as_array().map(|x| eval(&ml, *x, alpha, beta));
-        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
+        return evaluate_array(py, ary, alpha, beta, |x| x);
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<i32>>() {
-        let ary = ary
-            .as_array()
-            .map(|x| eval(&ml, c64(*x as f64, 0.0), alpha, beta));
-        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
+        return evaluate_array(py, ary, alpha, beta, |x| c64(x as f64, 0.0));
     }
 
     if let Ok(ary) = z.extract::<PyReadonlyArrayDyn<i64>>() {
-        let ary = ary
-            .as_array()
-            .map(|x| eval(&ml, c64(*x as f64, 0.0), alpha, beta));
-        return Ok(ary.into_pyarray(py).into_pyobject(py)?.into_any().unbind());
+        return evaluate_array(py, ary, alpha, beta, |x| c64(x as f64, 0.0));
     }
 
     Err(PyTypeError::new_err(format!(
