@@ -90,7 +90,7 @@ dependencies = [
 
 [[package]]
 name = "mittagleffler"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "num",
  "smallvec",
@@ -250,7 +250,7 @@ dependencies = [
 
 [[package]]
 name = "pymittagleffler"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "mittagleffler",
  "ndarray",
