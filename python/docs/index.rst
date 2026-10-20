@@ -83,7 +83,7 @@ implementation
 .. image:: _static/mittag-leffler-bench.svg
     :width: 90%
     :align: center
-    :alt: Performance of the pymittagleffler library.
+    :alt: Comparison with the pymittagleffler library.
 
 The benchmark computes the Mittag-Leffler function of a vector of 256 complex
 numbers with a fixed :math:`\beta` and over a range of :math:`\alpha`
@@ -98,6 +98,16 @@ The all-threaded results use all available cores. Their number can be
 controlled with the ``RAYON_NUM_THREADS`` environment variable. Note that the
 Python reference is intended as a straightforward pure Python implementation of
 the same algorithm, not as an optimized NumPy implementation.
+
+.. image:: _static/mittag-leffler-heatmap.png
+    :width: 90%
+    :align: center
+    :alt: Parameter performance of the pymittagleffler library.
+
+This benchmark computes the Mittag-Leffler function over a range of :math:`\alpha`
+and :math:`|z|`, with :math:`\text{arg} z = \pi / 2`. The results show the minimum
+time over this range over a series of 32 runs. We can see that the performance
+has a strong dependence on both of these parameters, as much as :math:`7 \times`.
 
 These results were obtained on Arch Linux running on an AMD Ryzen AI 9 HX 370.
 The software stack, roughly, is
