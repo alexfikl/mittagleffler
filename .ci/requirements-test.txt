@@ -67,7 +67,7 @@ python-dateutil==3.0.0 ; python_full_version < '3.11'
     # via matplotlib
 python-dateutil==4.0.0 ; python_full_version >= '3.11'
     # via matplotlib
-ruff==0.17.4
+ruff==0.17.5
     # via pymittagleffler (pyproject.toml:test)
 scienceplots==2.2.2
     # via pymittagleffler (pyproject.toml:test)
@@ -75,7 +75,7 @@ six==1.17.0 ; python_full_version < '3.11'
     # via python-dateutil
 tomli==2.5.0 ; python_full_version < '3.11'
     # via pytest
-ty==0.0.99
+ty==0.0.102
     # via pymittagleffler (pyproject.toml:test)
 typing-extensions==4.16.0 ; python_full_version < '3.11'
     # via exceptiongroup
